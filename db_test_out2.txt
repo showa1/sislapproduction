@@ -1,0 +1,6 @@
+--- KAMAR_A_R INFO ---
+Array
+(
+    [total_bed] => 100
+    [bed_kosong] => 74
+)

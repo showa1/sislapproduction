@@ -1,0 +1,35 @@
+--- STATUS PASIEN ---
+Array
+(
+    [0] => Array
+        (
+            [statuspasien] => SUDAH DI PERIKSA
+        )
+
+    [1] => Array
+        (
+            [statuspasien] => PENGUNJUNG BARU
+        )
+
+    [2] => Array
+        (
+            [statuspasien] => PENGUNJUNG LAMA
+        )
+
+    [3] => Array
+        (
+            [statuspasien] => MENUNGGU ADMISI PASIEN
+        )
+
+)
+
+--- BED_M COUNT ---
+SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "bed_m" does not exist
+LINE 1: SELECT COUNT(*) FROM bed_m
+                             ^
+The SQL being executed was: SELECT COUNT(*) FROM bed_m
+--- KAMAR_M INFO ---
+SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "kamar_m" does not exist
+LINE 1: SELECT kamar_id, kamar_nama, kelaskamar_id FROM kamar_m LIMI...
+                                                        ^
+The SQL being executed was: SELECT kamar_id, kamar_nama, kelaskamar_id FROM kamar_m LIMIT 1

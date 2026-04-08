@@ -1,0 +1,42 @@
+--- TOTAL RESEP ---
+1270
+--- PENDAPATAN ---
+306074158.871998
+--- STOK MINIMAL ---
+1224
+--- OBAT EXPIRED < 90 HARI ---
+431
+--- TOP OBAT ---
+Array
+(
+    [0] => Array
+        (
+            [obatalkes_nama] => AMLODIPINE 10 MG TAB
+            [total] => 4657
+        )
+
+    [1] => Array
+        (
+            [obatalkes_nama] => POLIFIX/HYPAFIX 10CM X 5M (@1CM)
+            [total] => 4193
+        )
+
+    [2] => Array
+        (
+            [obatalkes_nama] => OMEPRAZOLE 20 MG
+            [total] => 3974
+        )
+
+    [3] => Array
+        (
+            [obatalkes_nama] => EMBALASE
+            [total] => 3693
+        )
+
+    [4] => Array
+        (
+            [obatalkes_nama] => POVIDONE IODINE 10% 1000 ML (@1ML)
+            [total] => 3691
+        )
+
+)

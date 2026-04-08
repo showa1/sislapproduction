@@ -1,0 +1,219 @@
+--- STOCK OUT (Stok = 0) ---
+316
+--- DEAD STOCK (Tidak bergerak 180 hari) ---
+ERR: SQLSTATE[42703]: Undefined column: 7 ERROR:  column "tgl_tr" does not exist
+LINE 5:             WHERE tgl_tr >= NOW() - INTERVAL '180 days'
+                          ^
+The SQL being executed was: SELECT COUNT(DISTINCT st.obatalkes_id)
+        FROM stokobatalkes_t st
+        WHERE st.obatalkes_id NOT IN (
+            SELECT DISTINCT obatalkes_id FROM stokobatalkes_t
+            WHERE tgl_tr >= NOW() - INTERVAL '180 days'
+        )
+--- DEAD STOCK (try with create_time) ---
+1145
+--- STOKOBATALKES_T COLUMNS ---
+stokobatalkes_id
+ruangan_id
+penerimaandetail_id
+terimamutasidetail_id
+returresepdet_id
+returdetail_id
+mutasioadetail_id
+obatalkespasien_id
+pemusnahanoadet_id
+stokopnamedet_id
+obatalkes_id
+tglkadaluarsa
+nobatch
+tglstok_in
+tglstok_out
+qtystok_in
+qtystok_out
+harganetto
+persendiscount
+jmldiscount
+persenppn
+persenpph
+persenmargin
+jmlmargin
+stokoa_aktif
+create_time
+update_time
+create_loginpemakai_id
+update_loginpemakai_id
+create_ruangan
+stokobatalkesasal_id
+satuankecil_id
+tglterima
+lokasiobat_id
+rakobat_id
+pemakaianobatdetail_id
+produksigasmedisdet_id
+
+--- NILAI ASET GUDANG ---
+ERR: SQLSTATE[42703]: Undefined column: 7 ERROR:  column om.harga_satuan does not exist
+LINE 1: SELECT SUM((st.qtystok_in - st.qtystok_out) * om.harga_satua...
+                                                      ^
+The SQL being executed was: SELECT SUM((st.qtystok_in - st.qtystok_out) * om.harga_satuan) 
+            FROM stokobatalkes_t st
+            JOIN obatalkes_m om ON om.obatalkes_id = st.obatalkes_id
+            WHERE om.obatalkes_aktif = true
+--- OBATALKES_M COLUMNS (looking for harga) ---
+harganetto
+hargajual
+hargamaksimum
+hargaminimum
+hargaaverage
+hargajualnonrj
+
+--- DISTRIBUSI KATEGORI STOK ---
+Array
+(
+    [0] => Array
+        (
+            [obatalkes_kategori] => Generic
+            [jumlah_item] => 1176
+        )
+
+    [1] => Array
+        (
+            [obatalkes_kategori] => Non Generic
+            [jumlah_item] => 495
+        )
+
+)
+
+--- STATUS PO PENDING ---
+114
+--- LEAD TIME (days avg) ---
+0.8
+--- ACTIVITY LOG (last 5) ---
+Array
+(
+    [0] => Array
+        (
+            [create_time] => 2026-03-17 14:45:41
+            [obatalkes_nama] => FOLAVIT (ASAM FOLAT) 1000 MCG
+            [qtystok_in] => 0
+            [qtystok_out] => 9
+        )
+
+    [1] => Array
+        (
+            [create_time] => 2026-03-17 14:45:02
+            [obatalkes_nama] => ALCOHOL SWAB 
+            [qtystok_in] => 0
+            [qtystok_out] => 1
+        )
+
+    [2] => Array
+        (
+            [create_time] => 2026-03-17 14:45:00
+            [obatalkes_nama] => GLUCOSA TEST (GDS) SINOCARE
+            [qtystok_in] => 0
+            [qtystok_out] => 1
+        )
+
+    [3] => Array
+        (
+            [create_time] => 2026-03-17 14:44:57
+            [obatalkes_nama] => BLOOD LANCET 28G SINOCARE
+            [qtystok_in] => 0
+            [qtystok_out] => 1
+        )
+
+    [4] => Array
+        (
+            [create_time] => 2026-03-17 14:44:56
+            [obatalkes_nama] => ENTRAMIX VANILA 174 GR
+            [qtystok_in] => 0
+            [qtystok_out] => 1
+        )
+
+)
+
+--- STOK MENIPIS DETAIL (Top 10) ---
+Array
+(
+    [0] => Array
+        (
+            [obatalkes_nama] => NEUROSANBE PLUS 500 MG
+            [obatalkes_kategori] => Non Generic
+            [stok] => -100
+            [jmlminimalstok] => 35
+        )
+
+    [1] => Array
+        (
+            [obatalkes_nama] => BORRAGINOL S SUPPO
+            [obatalkes_kategori] => Non Generic
+            [stok] => -40
+            [jmlminimalstok] => 11
+        )
+
+    [2] => Array
+        (
+            [obatalkes_nama] => 1/3 TUBULER PLATE 7H
+            [obatalkes_kategori] => Generic
+            [stok] => 0
+            [jmlminimalstok] => 0
+        )
+
+    [3] => Array
+        (
+            [obatalkes_nama] => ACPULSIF 5 MG(CISAPRIDE)
+            [obatalkes_kategori] => Non Generic
+            [stok] => 0
+            [jmlminimalstok] => 75
+        )
+
+    [4] => Array
+        (
+            [obatalkes_nama] => ACANTHE SUNSCREEN SPF 30 OILY SKIN
+            [obatalkes_kategori] => Non Generic
+            [stok] => 0
+            [jmlminimalstok] => 0
+        )
+
+    [5] => Array
+        (
+            [obatalkes_nama] => 1/3 TUBULER PLATE 8H
+            [obatalkes_kategori] => Generic
+            [stok] => 0
+            [jmlminimalstok] => 1
+        )
+
+    [6] => Array
+        (
+            [obatalkes_nama] => 1/3 TUBULER PLATE 8H
+            [obatalkes_kategori] => Generic
+            [stok] => 0
+            [jmlminimalstok] => 0
+        )
+
+    [7] => Array
+        (
+            [obatalkes_nama] => 3 WAY STOPCOCK
+            [obatalkes_kategori] => Generic
+            [stok] => 0
+            [jmlminimalstok] => 47
+        )
+
+    [8] => Array
+        (
+            [obatalkes_nama] => ACANTHE SUNSCREEN SPF 30 DRY SKIN
+            [obatalkes_kategori] => Non Generic
+            [stok] => 0
+            [jmlminimalstok] => 0
+        )
+
+    [9] => Array
+        (
+            [obatalkes_nama] => ACNE FELDIN LOTION NETTO 110 ML
+            [obatalkes_kategori] => Non Generic
+            [stok] => 0
+            [jmlminimalstok] => 0
+        )
+
+)
