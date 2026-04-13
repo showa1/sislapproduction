@@ -9,6 +9,11 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yii;
 use DateTime;
 use DateInterval;
+use yii\helpers\ArrayHelper;
+use app\models\PegawaiM;
+use app\models\RuanganM;
+use app\models\PenjaminpasienM;
+use app\models\KategoritindakanM;
 
 class JasaDokterController extends BaseController
 {    
@@ -18,6 +23,8 @@ class JasaDokterController extends BaseController
     public $params = [];
 
     public $statuscari;
+
+    public $dokter_id, $ruangan_id, $penjamin_id, $kategoritindakan_id, $keyword, $status_verif;
 
     /**
      * Displays homepage.
@@ -31,11 +38,28 @@ class JasaDokterController extends BaseController
         $dropdownselect = [
             'start' =>  Yii::$app->request->get('date_from'),
             'to' =>  Yii::$app->request->get('date_to'),
+            'dokter_id' => $this->dokter_id,
+            'ruangan_id' => $this->ruangan_id,
+            'penjamin_id' => $this->penjamin_id,
+            'kategoritindakan_id' => $this->kategoritindakan_id,
+            'keyword' => $this->keyword,
+            'status_verif' => $this->status_verif,
         ];
 
         return $this->render('index', [
             'dataProvider' => $this->dataprovider(),
-            'dropdownselect' => $dropdownselect
+            'dropdownselect' => $dropdownselect,
+            'stats' => $this->getSummaryStats(),
+            'dataDokter' => ArrayHelper::map(Yii::$app->db->createCommand("
+                SELECT DISTINCT pgm.pegawai_id, pgm.nama_pegawai 
+                FROM tindakanpelayanan_t tp 
+                JOIN pegawai_m pgm ON pgm.pegawai_id = tp.dokterpemeriksa1_id 
+                ORDER BY pgm.nama_pegawai
+            ")->queryAll(), 'pegawai_id', 'nama_pegawai'),
+            'dataRuangan' => ArrayHelper::map(RuanganM::find()->where(['ruangan_aktif' => true])->orderBy('ruangan_nama')->all(), 'ruangan_id', 'ruangan_nama'),
+            'dataPenjamin' => ArrayHelper::map(PenjaminpasienM::find()->where(['penjamin_aktif' => true])->orderBy('penjamin_nama')->all(), 'penjamin_id', 'penjamin_nama'),
+            'dataKategori' => ArrayHelper::map(KategoritindakanM::find()->where(['kategoritindakan_aktif' => true])->orderBy('kategoritindakan_nama')->all(), 'kategoritindakan_id', 'kategoritindakan_nama'),
+            'statuscari' => $this->statuscari,
         ]);
 
     }
@@ -45,12 +69,25 @@ class JasaDokterController extends BaseController
         $this->dateFrom = Yii::$app->request->get('date_from');
         $this->dateTo = Yii::$app->request->get('date_to');
         if (!empty($this->dateFrom)) {
-            $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d');
+            $date = DateTime::createFromFormat('d-m-Y', $this->dateFrom);
+            if ($date) {
+                $this->dateFrom = $date->format('Y-m-d');
+            }
         }
         
         if (!empty($this->dateTo)) {
-            $this->dateTo = DateTime::createFromFormat('d-m-Y', $this->dateTo)->format('Y-m-d');
+            $date = DateTime::createFromFormat('d-m-Y', $this->dateTo);
+            if ($date) {
+                $this->dateTo = $date->format('Y-m-d');
+            }
         }
+
+        $this->dokter_id = Yii::$app->request->get('dokter_id');
+        $this->ruangan_id = Yii::$app->request->get('ruangan_id');
+        $this->penjamin_id = Yii::$app->request->get('penjamin_id');
+        $this->kategoritindakan_id = Yii::$app->request->get('kategoritindakan_id');
+        $this->keyword = Yii::$app->request->get('keyword');
+        $this->status_verif = Yii::$app->request->get('status_verif');
 
         $cari = Yii::$app->request->get('cari');
         
@@ -78,7 +115,7 @@ class JasaDokterController extends BaseController
         $dataProvider = new SqlDataProvider([
             'sql' => $this->statuscari ? $this->baseQuery() : $this->queryKosong(),
             'params' => $this->params,
-            'pagination' => false,  // Disable pagination untuk ekspor semua data
+            'pagination' => false,
         ]);
         
         $models = $dataProvider->getModels();
@@ -246,7 +283,102 @@ class JasaDokterController extends BaseController
         $query .= " WHERE date(pp.tglpembayaran) between :datefrom AND :dateto ";
         $this->params = array_merge($this->params, [':datefrom' => $this->dateFrom, ':dateto' => $this->dateTo]);
 
+        if (!empty($this->dokter_id)) {
+            $query .= " AND tp.dokterpemeriksa1_id = :dokter_id ";
+            $this->params[':dokter_id'] = $this->dokter_id;
+        }
+        if (!empty($this->ruangan_id)) {
+            $query .= " AND tp.ruangan_id = :ruangan_id ";
+            $this->params[':ruangan_id'] = $this->ruangan_id;
+        }
+        if (!empty($this->penjamin_id)) {
+            $query .= " AND pd.penjamin_id = :penjamin_id ";
+            $this->params[':penjamin_id'] = $this->penjamin_id;
+        }
+        if (!empty($this->kategoritindakan_id)) {
+            $query .= " AND dt.kategoritindakan_id = :kategoritindakan_id ";
+            $this->params[':kategoritindakan_id'] = $this->kategoritindakan_id;
+        }
+        if (!empty($this->keyword)) {
+            $query .= " AND (p.nama_pasien ILIKE :keyword OR p.no_rekam_medik ILIKE :keyword) ";
+            $this->params[':keyword'] = "%{$this->keyword}%";
+        }
+        if ($this->status_verif === '1') {
+            $query .= " AND tp.verifikasitagihan_id IS NOT NULL ";
+        } elseif ($this->status_verif === '0') {
+            $query .= " AND tp.verifikasitagihan_id IS NULL ";
+        }
+
         return $query;
+    }
+
+    public function getSummaryStats()
+    {
+        if (!$this->statuscari) {
+            return [
+                'total_jasa' => 0,
+                'total_dokter' => 0,
+                'tindakan_terbanyak' => '-'
+            ];
+        }
+
+        $cte = "
+            WITH komponen AS (
+                SELECT
+                    tk.tindakanpelayanan_id,
+                    tk.komponentarif_id,
+                    km.komponentarif_nama,
+                    SUM(tk.tarif_tindakankomp) AS total_uang_komponen
+                FROM tindakankomponen_t tk
+                JOIN komponentarif_m km
+                    ON km.komponentarif_id = tk.komponentarif_id
+                WHERE tk.komponentarif_id in ('21','76','80','5')
+                GROUP BY
+                    tk.tindakanpelayanan_id,
+                    tk.komponentarif_id,
+                    km.komponentarif_nama
+            ),
+            rekap_komponen AS (
+                SELECT
+                    tindakanpelayanan_id,
+                    SUM(total_uang_komponen) AS total_uang_tindakan
+                FROM komponen
+                GROUP BY tindakanpelayanan_id
+            )
+        ";
+
+        $sqlStats = $cte . "
+            SELECT 
+                SUM(rk.total_uang_tindakan) as total_jasa,
+                COUNT(DISTINCT tp.dokterpemeriksa1_id) as total_dokter
+            FROM tindakanpelayanan_t tp
+            JOIN pendaftaran_t pd ON pd.pendaftaran_id = tp.pendaftaran_id
+            JOIN pasien_m p ON p.pasien_id = tp.pasien_id
+            JOIN daftartindakan_m dt ON dt.daftartindakan_id = tp.daftartindakan_id
+            JOIN pembayaranpelayanan_t pp ON pp.pendaftaran_id = pd.pendaftaran_id
+            JOIN rekap_komponen rk ON rk.tindakanpelayanan_id = tp.tindakanpelayanan_id
+        ";
+
+        $sqlStats = $this->queryFilter($sqlStats);
+        $stats = Yii::$app->db->createCommand($sqlStats, $this->params)->queryOne();
+
+        $sqlTindakan = "
+            SELECT dt.daftartindakan_nama, COUNT(*) as jumlah
+            FROM tindakanpelayanan_t tp
+            JOIN pendaftaran_t pd ON pd.pendaftaran_id = tp.pendaftaran_id
+            JOIN pasien_m p ON p.pasien_id = tp.pasien_id
+            JOIN daftartindakan_m dt ON dt.daftartindakan_id = tp.daftartindakan_id
+            JOIN pembayaranpelayanan_t pp ON pp.pendaftaran_id = pd.pendaftaran_id
+        ";
+        $sqlTindakan = $this->queryFilter($sqlTindakan);
+        $sqlTindakan .= " GROUP BY dt.daftartindakan_nama ORDER BY jumlah DESC LIMIT 1 ";
+        $topTindakan = Yii::$app->db->createCommand($sqlTindakan, $this->params)->queryOne();
+
+        return [
+            'total_jasa' => $stats['total_jasa'] ?? 0,
+            'total_dokter' => $stats['total_dokter'] ?? 0,
+            'tindakan_terbanyak' => $topTindakan['daftartindakan_nama'] ?? '-'
+        ];
     }
 
     public function countQuery()
@@ -303,12 +435,8 @@ class JasaDokterController extends BaseController
             ";
 
         $query = $this->queryFilter($query);
-
-        $command = Yii::$app->db->createCommand($query);
-        $command->bindValue(':datefrom', $this->dateFrom);
-        $command->bindValue(':dateto', $this->dateTo);
         
-        return $command->queryScalar();
+        return Yii::$app->db->createCommand($query, $this->params)->queryScalar();
     }
 
 }
