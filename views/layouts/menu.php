@@ -251,10 +251,10 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                         <span class="nav-link">Eksekutif</span>
                     </li>
 
-                    <li class="nav-item menu-item-searchable <?= ($currentRoute == '/eksekutif/default/index') ? 'active' : '' ?>">
-                        <a class="nav-link <?= ($currentRoute == '/eksekutif/default/index') ? 'active' : '' ?>" href="<?= Url::to(['/eksekutif/default/index']) ?>">
+                    <li class="nav-item menu-item-searchable <?= ($currentRoute == '/eksekutif/dashboard/index') ? 'active' : '' ?>">
+                        <a class="nav-link <?= ($currentRoute == '/eksekutif/dashboard/index') ? 'active' : '' ?>" href="<?= Url::to(['/eksekutif/dashboard/index']) ?>">
                             <i class="bi bi-speedometer"></i>
-                            <span class="menu-title">Dashboard Eksekutif</span>
+                            <span class="menu-title">Ringkasan Eksekutif</span>
                         </a>
                     </li>
                     <?php endif; ?>
@@ -290,9 +290,9 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                         <span class="nav-link">Laboratorium</span>
                     </li>
 
-                    <li class="nav-item menu-item-searchable <?= ($currentRoute == '/laboratorium/default/index') ? 'active' : '' ?>">
-                        <a class="nav-link <?= ($currentRoute == '/laboratorium/default/index') ? 'active' : '' ?>" href="<?= Url::to(['/laboratorium/default/index']) ?>">
-                            <i class="bi bi-droplet-half"></i>
+                    <li class="nav-item menu-item-searchable <?= ($currentRoute == '/laboratorium/dashboard/index') ? 'active' : '' ?>">
+                        <a class="nav-link <?= ($currentRoute == '/laboratorium/dashboard/index') ? 'active' : '' ?>" href="<?= Url::to(['/laboratorium/dashboard/index']) ?>">
+                            <i class="bi bi-speedometer2"></i>
                             <span class="menu-title">Dashboard Laboratorium</span>
                         </a>
                     </li>
@@ -306,6 +306,8 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                         <?php
                         $menuUrl = Url::to([$value['url']]);
                         $isActive = ($currentRoute == $value['url']) ? 'active' : '';
+                        // Lewati "Dashboard Laboratorium" dari Module->menu agar tidak muncul dobel di sini
+                        if ($value['url'] === '/laboratorium/dashboard/index') continue;
                         ?>
                         <li class="nav-item menu-item-searchable <?= $isActive ?>">
                             <a class="nav-link <?= $isActive ?>" href="<?= $menuUrl ?>">

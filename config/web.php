@@ -47,14 +47,19 @@ $config = [
         'assetManager' => [
             'bundles' => [
                 'yii\web\JqueryAsset' => [
-                    'sourcePath' => null,
+                    'sourcePath' => '@webroot/template/vendors/js',
                     'js' => [
-                        'template/vendors/js/vendor.bundle.base.js',
-                    ]
+                        'vendor.bundle.base.js',
+                    ],
                 ],
             ],
         ],
         'db' => $db,
+        'db_dashboard' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'sqlite:@app/runtime/dashboard.db',
+            'charset' => 'utf8',
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

@@ -1,0 +1,457 @@
+=== SAMPLE: rincianpemeriksaanlabrad_v ===
+Array
+(
+    [profilrs_id] => 1
+    [pasien_id] => 39140
+    [no_rekam_medik] => 031297
+    [tgl_rekam_medik] => 2026-05-29
+    [jenisidentitas] => KTP
+    [no_identitas_pasien] => 3301036107720003
+    [namadepan] => Ny. 
+    [nama_pasien] => KOSIYAH
+    [nama_bin] => 
+    [jeniskelamin] => PEREMPUAN
+    [tempat_lahir] => 
+    [tanggal_lahir] => 1972-07-21
+    [alamat_pasien] => JL KALI NANGKA 001/009, DOPLANG, ADIPALA, CILACAP
+    [rt] => 1
+    [rw] => 9
+    [statusperkawinan] => KAWIN
+    [agama] => ISLAM
+    [golongandarah] => 
+    [rhesus] => 
+    [anakke] => 0
+    [jumlah_bersaudara] => 0
+    [no_telepon_pasien] => 085701547513
+    [no_mobile_pasien] => 085701547513
+    [warga_negara] => WNI
+    [photopasien] => 
+    [alamatemail] => 
+    [pendaftaran_id] => 108204
+    [no_pendaftaran] => RD2607040007
+    [tgl_pendaftaran] => 2026-07-04 14:21:56
+    [umur] => 53 Thn 11 Bln 13 Hr
+    [no_asuransi] => 0003651015082
+    [namapemilik_asuransi] => KOSIYAH
+    [nopokokperusahaan] => 
+    [namaperusahaan] => BPJS
+    [tglselesaiperiksa] => 2026-07-04 16:09:22
+    [tindakanpelayanan_id] => 776569
+    [penjamin_id] => 67
+    [penjamin_nama] => Non Pbi
+    [carabayar_id] => 2
+    [carabayar_nama] => BPJS Kesehatan
+    [kelaspelayanan_id] => 6
+    [kelaspelayanan_nama] => Tanpa Kelas
+    [instalasi_id] => 5
+    [instalasi_nama] => Laboratorium
+    [ruangan_id] => 53
+    [ruangan_nama] => Laboratorium
+    [tgl_tindakan] => 2026-07-06 20:42:25
+    [daftartindakan_id] => 773
+    [daftartindakan_kode] => 0124
+    [daftartindakan_nama] => Gula Darah Sewaktu 
+    [tipepaket_id] => 1
+    [tipepaket_nama] => NON PAKET
+    [tarif_rsakomodasi] => 0
+    [tarif_medis] => 0
+    [tarif_paramedis] => 0
+    [tarif_bhp] => 0
+    [tarif_satuan] => 57000
+    [tarif_tindakan] => 57000
+    [satuantindakan] => KALI
+    [qty_tindakan] => 1
+    [cyto_tindakan] => 
+    [tarifcyto_tindakan] => 0
+    [discount_tindakan] => 0
+    [pembebasan_tindakan] => 0
+    [subsidiasuransi_tindakan] => 0
+    [subsidipemerintah_tindakan] => 0
+    [subsisidirumahsakit_tindakan] => 0
+    [iurbiaya_tindakan] => 0
+    [create_time] => 2026-07-07 05:36:14
+    [update_time] => 2026-07-07 05:36:14
+    [create_loginpemakai_id] => 792
+    [update_loginpemakai_id] => 792
+    [create_ruangan] => 53
+    [jeniskasuspenyakit_id] => 18
+    [jeniskasuspenyakit_nama] => Umum
+    [pembayaranpelayanan_id] => 
+    [pegawai_id] => 2152
+    [gelardepan] => dr.
+    [nama_pegawai] => AGUS RIYADI
+    [gelarbelakang_id] => 35
+    [gelarbelakang_nama] => Sp.PK.
+    [ruanganpendaftaran_id] => 7
+    [tindakansudahbayar_id] => 
+    [jenispemeriksaanlab_nama] => GULA DARAH
+    [pemeriksaanlab_id] => 667
+    [pemeriksaanlab_kode] => 0124
+    [pemeriksaanlab_urutan] => 6
+    [pemeriksaanlab_nama] => Gula Darah Sewaktu 
+    [pasienmasukpenunjang_id] => 76405
+    [no_masukpenunjang] => LB006
+    [tglmasukpenunjang] => 2026-07-06 07:25:35
+    [kunjungan] => KUNJUNGAN LAMA
+    [statusperiksa] => SUDAH DI PERIKSA
+    [tglcetakkartuasuransi] => 
+    [kodefeskestk1] => 
+    [nama_feskestk1] => 
+    [masaberlakukartu] => 
+    [nokartukeluarga] => 
+    [nopassport] => 
+    [status_konfirmasi] => SUDAH DIKONFIRMASI
+    [tgl_konfirmasi] => 2026-07-04 16:23:20
+    [asuransipasien_aktif] => 1
+)
+
+Kolom tersedia: profilrs_id, pasien_id, no_rekam_medik, tgl_rekam_medik, jenisidentitas, no_identitas_pasien, namadepan, nama_pasien, nama_bin, jeniskelamin, tempat_lahir, tanggal_lahir, alamat_pasien, rt, rw, statusperkawinan, agama, golongandarah, rhesus, anakke, jumlah_bersaudara, no_telepon_pasien, no_mobile_pasien, warga_negara, photopasien, alamatemail, pendaftaran_id, no_pendaftaran, tgl_pendaftaran, umur, no_asuransi, namapemilik_asuransi, nopokokperusahaan, namaperusahaan, tglselesaiperiksa, tindakanpelayanan_id, penjamin_id, penjamin_nama, carabayar_id, carabayar_nama, kelaspelayanan_id, kelaspelayanan_nama, instalasi_id, instalasi_nama, ruangan_id, ruangan_nama, tgl_tindakan, daftartindakan_id, daftartindakan_kode, daftartindakan_nama, tipepaket_id, tipepaket_nama, tarif_rsakomodasi, tarif_medis, tarif_paramedis, tarif_bhp, tarif_satuan, tarif_tindakan, satuantindakan, qty_tindakan, cyto_tindakan, tarifcyto_tindakan, discount_tindakan, pembebasan_tindakan, subsidiasuransi_tindakan, subsidipemerintah_tindakan, subsisidirumahsakit_tindakan, iurbiaya_tindakan, create_time, update_time, create_loginpemakai_id, update_loginpemakai_id, create_ruangan, jeniskasuspenyakit_id, jeniskasuspenyakit_nama, pembayaranpelayanan_id, pegawai_id, gelardepan, nama_pegawai, gelarbelakang_id, gelarbelakang_nama, ruanganpendaftaran_id, tindakansudahbayar_id, jenispemeriksaanlab_nama, pemeriksaanlab_id, pemeriksaanlab_kode, pemeriksaanlab_urutan, pemeriksaanlab_nama, pasienmasukpenunjang_id, no_masukpenunjang, tglmasukpenunjang, kunjungan, statusperiksa, tglcetakkartuasuransi, kodefeskestk1, nama_feskestk1, masaberlakukartu, nokartukeluarga, nopassport, status_konfirmasi, tgl_konfirmasi, asuransipasien_aktif
+
+=== SAMPLE: rinciantagihapasienlaboratorium_v ===
+Array
+(
+    [profilrs_id] => 1
+    [pasien_id] => 813
+    [no_rekam_medik] => 000002
+    [tgl_rekam_medik] => 2019-11-12
+    [jenisidentitas] => KTA
+    [no_identitas_pasien] => 54645645454
+    [namadepan] => An. 
+    [nama_pasien] => TEST A
+    [nama_bin] => 
+    [jeniskelamin] => LAKI-LAKI
+    [tempat_lahir] => 
+    [tanggal_lahir] => 2010-11-12
+    [alamat_pasien] => CILACAP
+    [rt] => 
+    [rw] => 
+    [statusperkawinan] => 
+    [agama] => ISLAM
+    [golongandarah] => 
+    [rhesus] => 
+    [anakke] => 9
+    [jumlah_bersaudara] => 10
+    [no_telepon_pasien] => 
+    [no_mobile_pasien] => 0245454
+    [warga_negara] => WNI
+    [photopasien] => 
+    [alamatemail] => 
+    [pendaftaran_id] => 1130
+    [no_pendaftaran] => RJ1911120002
+    [tgl_pendaftaran] => 2019-11-12 10:13:27
+    [umur] => 09 Thn 00 Bln 00 Hr
+    [no_asuransi] => 
+    [namapemilik_asuransi] => 
+    [nopokokperusahaan] => 
+    [namaperusahaan] => 
+    [tglselesaiperiksa] => 2019-11-12 11:05:28
+    [tindakanpelayanan_id] => 760
+    [penjamin_id] => 398
+    [penjamin_nama] => Umum
+    [carabayar_id] => 1
+    [carabayar_nama] => PRIBADI
+    [kelaspelayanan_id] => 6
+    [kelaspelayanan_nama] => Tanpa Kelas
+    [instalasi_id] => 9
+    [instalasi_nama] => Farmasi
+    [ruangan_id] => 59
+    [ruangan_nama] => Apotek
+    [tgl_tindakan] => 2019-11-12 10:55:28
+    [daftartindakan_id] => 7903
+    [daftartindakan_kode] => 025
+    [daftartindakan_nama] => IV CATHETER 18
+    [tipepaket_id] => 1
+    [tipepaket_nama] => NON PAKET
+    [daftartindakan_karcis] => 
+    [daftartindakan_visite] => 
+    [daftartindakan_konsul] => 
+    [tarif_rsakomodasi] => 0
+    [tarif_medis] => 0
+    [tarif_paramedis] => 0
+    [tarif_bhp] => 0
+    [tarif_satuan] => 13226
+    [tarif_tindakan] => 13226
+    [satuantindakan] => kotak
+    [qty_tindakan] => 1
+    [cyto_tindakan] => 
+    [tarifcyto_tindakan] => 0
+    [discount_tindakan] => 0
+    [pembebasan_tindakan] => 0
+    [subsidiasuransi_tindakan] => 0
+    [subsidipemerintah_tindakan] => 0
+    [subsisidirumahsakit_tindakan] => 0
+    [iurbiaya_tindakan] => 0
+    [create_time] => 2019-11-12 10:55:28
+    [update_time] => 2019-11-12 10:55:28
+    [create_loginpemakai_id] => 1
+    [update_loginpemakai_id] => 1
+    [create_ruangan] => 59
+    [jeniskasuspenyakit_id] => 9
+    [jeniskasuspenyakit_nama] => Tenggorokan, Hidung, dan Telinga (THT)
+    [pembayaranpelayanan_id] => 
+    [kategoritindakan_id] => 4
+    [kategoritindakan_nama] => BHP
+    [pegawai_id] => 2086
+    [gelardepan] => dr.
+    [nama_pegawai] => HARIYUDO
+    [gelarbelakang_id] => 60
+    [gelarbelakang_nama] => Sp.THT-KL
+    [ruanganpendaftaran_id] => 383
+    [tindakansudahbayar_id] => 
+    [biayaservice] => 0
+    [biayaadministrasi] => 0
+    [biayakonseling] => 0
+    [is_alkes] => 1
+    [tglcetakkartuasuransi] => 
+    [kodefeskestk1] => 
+    [nama_feskestk1] => 
+    [masaberlakukartu] => 
+    [nokartukeluarga] => 
+    [nopassport] => 
+    [status_konfirmasi] => 
+    [tgl_konfirmasi] => 
+    [asuransipasien_aktif] => 
+)
+
+Kolom tersedia: profilrs_id, pasien_id, no_rekam_medik, tgl_rekam_medik, jenisidentitas, no_identitas_pasien, namadepan, nama_pasien, nama_bin, jeniskelamin, tempat_lahir, tanggal_lahir, alamat_pasien, rt, rw, statusperkawinan, agama, golongandarah, rhesus, anakke, jumlah_bersaudara, no_telepon_pasien, no_mobile_pasien, warga_negara, photopasien, alamatemail, pendaftaran_id, no_pendaftaran, tgl_pendaftaran, umur, no_asuransi, namapemilik_asuransi, nopokokperusahaan, namaperusahaan, tglselesaiperiksa, tindakanpelayanan_id, penjamin_id, penjamin_nama, carabayar_id, carabayar_nama, kelaspelayanan_id, kelaspelayanan_nama, instalasi_id, instalasi_nama, ruangan_id, ruangan_nama, tgl_tindakan, daftartindakan_id, daftartindakan_kode, daftartindakan_nama, tipepaket_id, tipepaket_nama, daftartindakan_karcis, daftartindakan_visite, daftartindakan_konsul, tarif_rsakomodasi, tarif_medis, tarif_paramedis, tarif_bhp, tarif_satuan, tarif_tindakan, satuantindakan, qty_tindakan, cyto_tindakan, tarifcyto_tindakan, discount_tindakan, pembebasan_tindakan, subsidiasuransi_tindakan, subsidipemerintah_tindakan, subsisidirumahsakit_tindakan, iurbiaya_tindakan, create_time, update_time, create_loginpemakai_id, update_loginpemakai_id, create_ruangan, jeniskasuspenyakit_id, jeniskasuspenyakit_nama, pembayaranpelayanan_id, kategoritindakan_id, kategoritindakan_nama, pegawai_id, gelardepan, nama_pegawai, gelarbelakang_id, gelarbelakang_nama, ruanganpendaftaran_id, tindakansudahbayar_id, biayaservice, biayaadministrasi, biayakonseling, is_alkes, tglcetakkartuasuransi, kodefeskestk1, nama_feskestk1, masaberlakukartu, nokartukeluarga, nopassport, status_konfirmasi, tgl_konfirmasi, asuransipasien_aktif
+
+=== SAMPLE: rinciantagihapasienpenunjang_v ===
+Kolom: profilrs_id, pasien_id, no_rekam_medik, tgl_rekam_medik, jenisidentitas, no_identitas_pasien, namadepan, nama_pasien, nama_bin, jeniskelamin, tempat_lahir, tanggal_lahir, alamat_pasien, rt, rw, statusperkawinan, agama, golongandarah, rhesus, anakke, jumlah_bersaudara, no_telepon_pasien, no_mobile_pasien, warga_negara, photopasien, alamatemail, pendaftaran_id, no_pendaftaran, tgl_pendaftaran, umur, no_asuransi, namapemilik_asuransi, nopokokperusahaan, namaperusahaan, tglselesaiperiksa, tindakanpelayanan_id, penjamin_id, penjamin_nama, carabayar_id, carabayar_nama, kelaspelayanan_id, kelaspelayanan_nama, instalasi_id, instalasi_nama, ruangan_id, ruangan_nama, tgl_tindakan, daftartindakan_id, daftartindakan_kode, daftartindakan_nama, tipepaket_id, tipepaket_nama, daftartindakan_karcis, daftartindakan_visite, daftartindakan_konsul, tarif_rsakomodasi, tarif_medis, tarif_paramedis, tarif_bhp, tarif_satuan, tarif_tindakan, satuantindakan, qty_tindakan, cyto_tindakan, tarifcyto_tindakan, discount_tindakan, pembebasan_tindakan, subsidiasuransi_tindakan, subsidipemerintah_tindakan, subsisidirumahsakit_tindakan, iurbiaya_tindakan, create_time, update_time, create_loginpemakai_id, update_loginpemakai_id, create_ruangan, jeniskasuspenyakit_id, jeniskasuspenyakit_nama, pembayaranpelayanan_id, kategoritindakan_id, kategoritindakan_nama, pegawai_id, gelardepan, nama_pegawai, gelarbelakang_id, gelarbelakang_nama, ruanganpendaftaran_id, pasienmasukpenunjang_id, no_masukpenunjang, tglmasukpenunjang, ruanganpenunjang_id, tindakansudahbayar_id, tglcetakkartuasuransi, kodefeskestk1, nama_feskestk1, masaberlakukartu, nokartukeluarga, nopassport, status_konfirmasi, tgl_konfirmasi, asuransipasien_aktif
+
+=== SAMPLE: tanggunganpenjamin_m ===
+Array
+(
+    [0] => Array
+        (
+            [tanggunganpenjamin_id] => 5158
+            [penjamin_id] => 63
+            [carabayar_id] => 3
+            [kelaspelayanan_id] => 25
+            [tipenonpaket_id] => 1
+            [subsidiasuransitind] => 100
+            [subsidipemerintahtind] => 0
+            [subsidirumahsakittind] => 0
+            [iurbiayatind] => 0
+            [subsidiasuransioa] => 100
+            [subsidipemerintahoa] => 0
+            [subsidirumahsakitoa] => 0
+            [iurbiayaoa] => 0
+            [persentanggcytopel] => 0
+            [makstanggpel] => 0
+            [tanggunganpenjamin_aktif] => 1
+        )
+
+    [1] => Array
+        (
+            [tanggunganpenjamin_id] => 5159
+            [penjamin_id] => 64
+            [carabayar_id] => 3
+            [kelaspelayanan_id] => 25
+            [tipenonpaket_id] => 1
+            [subsidiasuransitind] => 100
+            [subsidipemerintahtind] => 0
+            [subsidirumahsakittind] => 0
+            [iurbiayatind] => 0
+            [subsidiasuransioa] => 100
+            [subsidipemerintahoa] => 0
+            [subsidirumahsakitoa] => 0
+            [iurbiayaoa] => 0
+            [persentanggcytopel] => 0
+            [makstanggpel] => 0
+            [tanggunganpenjamin_aktif] => 1
+        )
+
+    [2] => Array
+        (
+            [tanggunganpenjamin_id] => 5168
+            [penjamin_id] => 65
+            [carabayar_id] => 3
+            [kelaspelayanan_id] => 25
+            [tipenonpaket_id] => 1
+            [subsidiasuransitind] => 100
+            [subsidipemerintahtind] => 0
+            [subsidirumahsakittind] => 0
+            [iurbiayatind] => 0
+            [subsidiasuransioa] => 100
+            [subsidipemerintahoa] => 0
+            [subsidirumahsakitoa] => 0
+            [iurbiayaoa] => 0
+            [persentanggcytopel] => 0
+            [makstanggpel] => 0
+            [tanggunganpenjamin_aktif] => 1
+        )
+
+)
+
+=== SAMPLE: asalrujukan_m ===
+Array
+(
+    [0] => Array
+        (
+            [asalrujukan_id] => 3
+            [asalrujukan_nama] => PKM / Puskesmas
+            [asalrujukan_institusi] => PUSKESMAS
+            [asalrujukan_namalainnya] => PUSKESMAS
+            [asalrujukan_aktif] => 1
+        )
+
+    [1] => Array
+        (
+            [asalrujukan_id] => 4
+            [asalrujukan_nama] => Rumah Sakit
+            [asalrujukan_institusi] => RUMAH SAKIT
+            [asalrujukan_namalainnya] => RUMAH SAKIT
+            [asalrujukan_aktif] => 1
+        )
+
+    [2] => Array
+        (
+            [asalrujukan_id] => 5
+            [asalrujukan_nama] => Klinik
+            [asalrujukan_institusi] => KLINIK
+            [asalrujukan_namalainnya] => KLINIK
+            [asalrujukan_aktif] => 1
+        )
+
+    [3] => Array
+        (
+            [asalrujukan_id] => 6
+            [asalrujukan_nama] => Instansi Lain
+            [asalrujukan_institusi] => INSTANSI LAIN
+            [asalrujukan_namalainnya] => INSTANSI LAIN
+            [asalrujukan_aktif] => 1
+        )
+
+    [4] => Array
+        (
+            [asalrujukan_id] => 7
+            [asalrujukan_nama] => Datang Sendiri
+            [asalrujukan_institusi] => DATANG SENDIRI
+            [asalrujukan_namalainnya] => DATANG SENDIRI
+            [asalrujukan_aktif] => 
+        )
+
+)
+
+=== Kolom rujukan_t ===
+  rujukan_id (integer)
+  asalrujukan_id (integer)
+  no_rujukan (character varying)
+  nama_perujuk (character varying)
+  tanggal_rujukan (timestamp without time zone)
+  diagnosa_rujukan (text)
+  aktif_rujukan (boolean)
+  rujukandari_id (integer)
+  kddiagnosa_rujukan (character varying)
+  keluhan_rujukan (character varying)
+
+=== MAIN QUERY via VIEW rincianpemeriksaanlabrad_v ===
+Semua kolom view: profilrs_id, pasien_id, no_rekam_medik, tgl_rekam_medik, jenisidentitas, no_identitas_pasien, namadepan, nama_pasien, nama_bin, jeniskelamin, tempat_lahir, tanggal_lahir, alamat_pasien, rt, rw, statusperkawinan, agama, golongandarah, rhesus, anakke, jumlah_bersaudara, no_telepon_pasien, no_mobile_pasien, warga_negara, photopasien, alamatemail, pendaftaran_id, no_pendaftaran, tgl_pendaftaran, umur, no_asuransi, namapemilik_asuransi, nopokokperusahaan, namaperusahaan, tglselesaiperiksa, tindakanpelayanan_id, penjamin_id, penjamin_nama, carabayar_id, carabayar_nama, kelaspelayanan_id, kelaspelayanan_nama, instalasi_id, instalasi_nama, ruangan_id, ruangan_nama, tgl_tindakan, daftartindakan_id, daftartindakan_kode, daftartindakan_nama, tipepaket_id, tipepaket_nama, tarif_rsakomodasi, tarif_medis, tarif_paramedis, tarif_bhp, tarif_satuan, tarif_tindakan, satuantindakan, qty_tindakan, cyto_tindakan, tarifcyto_tindakan, discount_tindakan, pembebasan_tindakan, subsidiasuransi_tindakan, subsidipemerintah_tindakan, subsisidirumahsakit_tindakan, iurbiaya_tindakan, create_time, update_time, create_loginpemakai_id, update_loginpemakai_id, create_ruangan, jeniskasuspenyakit_id, jeniskasuspenyakit_nama, pembayaranpelayanan_id, pegawai_id, gelardepan, nama_pegawai, gelarbelakang_id, gelarbelakang_nama, ruanganpendaftaran_id, tindakansudahbayar_id, jenispemeriksaanlab_nama, pemeriksaanlab_id, pemeriksaanlab_kode, pemeriksaanlab_urutan, pemeriksaanlab_nama, pasienmasukpenunjang_id, no_masukpenunjang, tglmasukpenunjang, kunjungan, statusperiksa, tglcetakkartuasuransi, kodefeskestk1, nama_feskestk1, masaberlakukartu, nokartukeluarga, nopassport, status_konfirmasi, tgl_konfirmasi, asuransipasien_aktif
+
+Kolom tanggal ditemukan: tgl_tindakan
+Sample rows: 3
+Array
+(
+    [profilrs_id] => 1
+    [pasien_id] => 39836
+    [no_rekam_medik] => 031955
+    [tgl_rekam_medik] => 2026-07-05
+    [jenisidentitas] => KTP
+    [no_identitas_pasien] => 3301036312890001
+    [namadepan] => Ny. 
+    [nama_pasien] => WINDRIANI
+    [nama_bin] => 
+    [jeniskelamin] => PEREMPUAN
+    [tempat_lahir] => CILACAP
+    [tanggal_lahir] => 1989-12-23
+    [alamat_pasien] => JL SRANDIL RT 007/03 ADIRAJA, ADIPALA, CILACAP
+    [rt] => 7
+    [rw] => 3
+    [statusperkawinan] => KAWIN
+    [agama] => ISLAM
+    [golongandarah] => 
+    [rhesus] => 
+    [anakke] => 0
+    [jumlah_bersaudara] => 0
+    [no_telepon_pasien] => 085726597700
+    [no_mobile_pasien] => 085726597700
+    [warga_negara] => WNI
+    [photopasien] => 
+    [alamatemail] => 
+    [pendaftaran_id] => 108216
+    [no_pendaftaran] => RD2607050005
+    [tgl_pendaftaran] => 2026-07-05 09:46:07
+    [umur] => 36 Thn 06 Bln 12 Hr
+    [no_asuransi] => 0002901482616
+    [namapemilik_asuransi] => WINDRIANI
+    [nopokokperusahaan] => 
+    [namaperusahaan] => BPJS
+    [tglselesaiperiksa] => 2026-07-05 14:15:26
+    [tindakanpelayanan_id] => 775606
+    [penjamin_id] => 67
+    [penjamin_nama] => Non Pbi
+    [carabayar_id] => 2
+    [carabayar_nama] => BPJS Kesehatan
+    [kelaspelayanan_id] => 6
+    [kelaspelayanan_nama] => Tanpa Kelas
+    [instalasi_id] => 5
+    [instalasi_nama] => Laboratorium
+    [ruangan_id] => 53
+    [ruangan_nama] => Laboratorium
+    [tgl_tindakan] => 2026-07-05 11:11:51
+    [daftartindakan_id] => 5719
+    [daftartindakan_kode] => LAB-5719
+    [daftartindakan_nama] => Anti Hiv
+    [tipepaket_id] => 1
+    [tipepaket_nama] => NON PAKET
+    [tarif_rsakomodasi] => 0
+    [tarif_medis] => 0
+    [tarif_paramedis] => 0
+    [tarif_bhp] => 0
+    [tarif_satuan] => 83400
+    [tarif_tindakan] => 83400
+    [satuantindakan] => KALI
+    [qty_tindakan] => 1
+    [cyto_tindakan] => 
+    [tarifcyto_tindakan] => 0
+    [discount_tindakan] => 0
+    [pembebasan_tindakan] => 0
+    [subsidiasuransi_tindakan] => 0
+    [subsidipemerintah_tindakan] => 0
+    [subsisidirumahsakit_tindakan] => 0
+    [iurbiaya_tindakan] => 0
+    [create_time] => 2026-07-05 11:12:41
+    [update_time] => 2026-07-05 11:12:41
+    [create_loginpemakai_id] => 439
+    [update_loginpemakai_id] => 439
+    [create_ruangan] => 53
+    [jeniskasuspenyakit_id] => 18
+    [jeniskasuspenyakit_nama] => Umum
+    [pembayaranpelayanan_id] => 
+    [pegawai_id] => 2152
+    [gelardepan] => dr.
+    [nama_pegawai] => AGUS RIYADI
+    [gelarbelakang_id] => 35
+    [gelarbelakang_nama] => Sp.PK.
+    [ruanganpendaftaran_id] => 7
+    [tindakansudahbayar_id] => 
+    [jenispemeriksaanlab_nama] => IMUNOSEROLOGI
+    [pemeriksaanlab_id] => 964
+    [pemeriksaanlab_kode] => HIV-02
+    [pemeriksaanlab_urutan] => 0
+    [pemeriksaanlab_nama] => Anti HIV
+    [pasienmasukpenunjang_id] => 76370
+    [no_masukpenunjang] => LB007
+    [tglmasukpenunjang] => 2026-07-05 11:11:51
+    [kunjungan] => KUNJUNGAN BARU
+    [statusperiksa] => SEDANG PERIKSA
+    [tglcetakkartuasuransi] => 
+    [kodefeskestk1] => 
+    [nama_feskestk1] => 
+    [masaberlakukartu] => 
+    [nokartukeluarga] => 
+    [nopassport] => 
+    [status_konfirmasi] => SUDAH DIKONFIRMASI
+    [tgl_konfirmasi] => 2026-07-05 11:02:14
+    [asuransipasien_aktif] => 1
+)

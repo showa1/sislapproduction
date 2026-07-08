@@ -1,0 +1,2761 @@
+=== TABEL: penjamin / rujukan / asuransi ===
+Array
+(
+    [0] => Array
+        (
+            [table_name] => asalrujukan_m
+        )
+
+    [1] => Array
+        (
+            [table_name] => asuransipasien_m
+        )
+
+    [2] => Array
+        (
+            [table_name] => informasiasuransipasien_v
+        )
+
+    [3] => Array
+        (
+            [table_name] => informasipiutangpenjamin_v
+        )
+
+    [4] => Array
+        (
+            [table_name] => informasirujukankeluarbpjs_v
+        )
+
+    [5] => Array
+        (
+            [table_name] => informasirujukanpenunjangkeluar_v
+        )
+
+    [6] => Array
+        (
+            [table_name] => informasiumurpiutangpenjamin_v
+        )
+
+    [7] => Array
+        (
+            [table_name] => inforujukankeluar_v
+        )
+
+    [8] => Array
+        (
+            [table_name] => infoumurpiutangpenjamin_v
+        )
+
+    [9] => Array
+        (
+            [table_name] => jenistarifpenjamin_m
+        )
+
+    [10] => Array
+        (
+            [table_name] => labklinikrujukan_m
+        )
+
+    [11] => Array
+        (
+            [table_name] => laporanpemeriksaanrujukan_v
+        )
+
+    [12] => Array
+        (
+            [table_name] => laporanpemeriksaanrujukanrs_v
+        )
+
+    [13] => Array
+        (
+            [table_name] => laporanrujukankeluar_v
+        )
+
+    [14] => Array
+        (
+            [table_name] => nilairujukan_m
+        )
+
+    [15] => Array
+        (
+            [table_name] => obatalkespenjamin_m
+        )
+
+    [16] => Array
+        (
+            [table_name] => pasienrujukanluardokter_v
+        )
+
+    [17] => Array
+        (
+            [table_name] => pencarianseprujukankeluar_v
+        )
+
+    [18] => Array
+        (
+            [table_name] => penjaminpasien_m
+        )
+
+    [19] => Array
+        (
+            [table_name] => penjaminrek_m
+        )
+
+    [20] => Array
+        (
+            [table_name] => rl3_14_kegiatanrujukan
+        )
+
+    [21] => Array
+        (
+            [table_name] => rl3_14_kegiatanrujukan_v
+        )
+
+    [22] => Array
+        (
+            [table_name] => rujukan_t
+        )
+
+    [23] => Array
+        (
+            [table_name] => rujukandari_m
+        )
+
+    [24] => Array
+        (
+            [table_name] => rujukankeluar_m
+        )
+
+    [25] => Array
+        (
+            [table_name] => rujukankhususpasien_t
+        )
+
+    [26] => Array
+        (
+            [table_name] => rujukanpasien_r
+        )
+
+    [27] => Array
+        (
+            [table_name] => tanggunganpenjamin_m
+        )
+
+)
+
+=== asalrujukan (dari rujukan_t.asalrujukan_id) ===
+Array
+(
+    [0] => Array
+        (
+            [table_name] => asalaset_m
+        )
+
+    [1] => Array
+        (
+            [table_name] => asalrujukan_m
+        )
+
+    [2] => Array
+        (
+            [table_name] => asesmenmasalahkep_t
+        )
+
+    [3] => Array
+        (
+            [table_name] => masalahkeperawatan_m
+        )
+
+)
+
+=== Sample asalrujukan_m ===
+Array
+(
+    [0] => Array
+        (
+            [asalrujukan_id] => 3
+            [asalrujukan_nama] => PKM / Puskesmas
+            [asalrujukan_institusi] => PUSKESMAS
+            [asalrujukan_namalainnya] => PUSKESMAS
+            [asalrujukan_aktif] => 1
+        )
+
+    [1] => Array
+        (
+            [asalrujukan_id] => 4
+            [asalrujukan_nama] => Rumah Sakit
+            [asalrujukan_institusi] => RUMAH SAKIT
+            [asalrujukan_namalainnya] => RUMAH SAKIT
+            [asalrujukan_aktif] => 1
+        )
+
+    [2] => Array
+        (
+            [asalrujukan_id] => 5
+            [asalrujukan_nama] => Klinik
+            [asalrujukan_institusi] => KLINIK
+            [asalrujukan_namalainnya] => KLINIK
+            [asalrujukan_aktif] => 1
+        )
+
+    [3] => Array
+        (
+            [asalrujukan_id] => 6
+            [asalrujukan_nama] => Instansi Lain
+            [asalrujukan_institusi] => INSTANSI LAIN
+            [asalrujukan_namalainnya] => INSTANSI LAIN
+            [asalrujukan_aktif] => 1
+        )
+
+    [4] => Array
+        (
+            [asalrujukan_id] => 7
+            [asalrujukan_nama] => Datang Sendiri
+            [asalrujukan_institusi] => DATANG SENDIRI
+            [asalrujukan_namalainnya] => DATANG SENDIRI
+            [asalrujukan_aktif] => 
+        )
+
+)
+
+=== Sample penjamin_t ===
+SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "penjamin_t" does not exist
+LINE 1: SELECT * FROM penjamin_t LIMIT 3
+                      ^
+The SQL being executed was: SELECT * FROM penjamin_t LIMIT 3
+
+=== Sample asuransipasien_t ===
+SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "asuransipasien_t" does not exist
+LINE 1: SELECT * FROM asuransipasien_t LIMIT 1
+                      ^
+The SQL being executed was: SELECT * FROM asuransipasien_t LIMIT 1
+
+=== Sample asuransi_m ===
+SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "asuransi_m" does not exist
+LINE 1: SELECT * FROM asuransi_m LIMIT 3
+                      ^
+The SQL being executed was: SELECT * FROM asuransi_m LIMIT 3
+
+=== Kolom rujukan_t ===
+Array
+(
+    [0] => Array
+        (
+            [column_name] => rujukan_id
+            [data_type] => integer
+        )
+
+    [1] => Array
+        (
+            [column_name] => asalrujukan_id
+            [data_type] => integer
+        )
+
+    [2] => Array
+        (
+            [column_name] => no_rujukan
+            [data_type] => character varying
+        )
+
+    [3] => Array
+        (
+            [column_name] => nama_perujuk
+            [data_type] => character varying
+        )
+
+    [4] => Array
+        (
+            [column_name] => tanggal_rujukan
+            [data_type] => timestamp without time zone
+        )
+
+    [5] => Array
+        (
+            [column_name] => diagnosa_rujukan
+            [data_type] => text
+        )
+
+    [6] => Array
+        (
+            [column_name] => aktif_rujukan
+            [data_type] => boolean
+        )
+
+    [7] => Array
+        (
+            [column_name] => rujukandari_id
+            [data_type] => integer
+        )
+
+    [8] => Array
+        (
+            [column_name] => kddiagnosa_rujukan
+            [data_type] => character varying
+        )
+
+    [9] => Array
+        (
+            [column_name] => keluhan_rujukan
+            [data_type] => character varying
+        )
+
+)
+
+=== Kolom pasien_m ===
+  pasien_id
+  kelompokumur_id
+  kecamatan_id
+  pendidikan_id
+  profilrs_id
+  kelurahan_id
+  loginpemakai_id
+  suku_id
+  pekerjaan_id
+  kabupaten_id
+  propinsi_id
+  dokrekammedis_id
+  no_rekam_medik
+  tgl_rekam_medik
+  jenisidentitas
+  no_identitas_pasien
+  namadepan
+  nama_pasien
+  nama_bin
+  jeniskelamin
+  tempat_lahir
+  tanggal_lahir
+  alamat_pasien
+  rt
+  rw
+  statusperkawinan
+  agama
+  golongandarah
+  rhesus
+  anakke
+  jumlah_bersaudara
+  no_telepon_pasien
+  no_mobile_pasien
+  warga_negara
+  photopasien
+  alamatemail
+  statusrekammedis
+  create_time
+  update_time
+  create_loginpemakai_id
+  update_loginpemakai_id
+  tgl_meninggal
+  ispasienluar
+  create_ruangan
+  nama_ibu
+  nama_ayah
+  norm_lama
+  pegawai_id
+  garis_latitude
+  garis_longitude
+  no_jamkespa
+  nofingerprint
+  fingerprint_data
+  nama_perusahaan_bekerja
+  pasien_ibu_id
+  no_rekam_medik_ibu
+  satusehat_id
+
+=== Kolom pendaftaran_t ===
+  pendaftaran_id
+  pasienpulang_id
+  pasienbatalperiksa_id
+  penanggungjawab_id
+  penjamin_id
+  shift_id
+  pasien_id
+  persalinan_id
+  pegawai_id
+  instalasi_id
+  caramasuk_id
+  pengirimanrm_id
+  peminjamanrm_id
+  jeniskasuspenyakit_id
+  pembayaranpelayanan_id
+  kelaspelayanan_id
+  carabayar_id
+  pasienadmisi_id
+  kelompokumur_id
+  golonganumur_id
+  rujukan_id
+  antrian_id
+  karcis_id
+  ruangan_id
+  no_pendaftaran
+  tgl_pendaftaran
+  no_urutantri
+  transportasi
+  keadaanmasuk
+  statusperiksa
+  statuspasien
+  kunjungan
+  alihstatus
+  byphone
+  kunjunganrumah
+  statusmasuk
+  umur
+  tglselesaiperiksa
+  keterangan_reg
+  create_time
+  update_time
+  create_loginpemakai_id
+  update_loginpemakai_id
+  create_ruangan
+  nopendaftaran_aktif
+  status_konfirmasi
+  tgl_konfirmasi
+  tglrenkontrol
+  statusfarmasi
+  panggilantrian
+  asuransipasien_id
+  tglakandilayani
+  keterangan_pendaftaran
+  statusdokrm
+  sep_id
+  ruangankontrol_id
+  isumumkebpjs
+  waktuverifikasipasien
+  jml_panggil
+  panggilperiksa
+  waktuselesaiperiksa
+  waktuspanggilpasien
+  waktumulaiperiksa
+  tat_pelayanan_pasien
+  istraveling
+  kamarruangan_id
+  jenis_rujukan
+  jadwalhemodialisa_id
+  ppjp_id
+  isbacahakpasien
+  isbacaedukasitransfusi
+  statuskirim_wsbpjs
+  respons_wsbpjs
+  doktertujuankontrol_id
+  sep_get_id
+  buatjanjipoli_id
+  respons_antrol
+  clinicalpatway_id
+  satusehat_id
+  request
+  response
+  diagnosasatusehat_id
+  is_eklaim
+
+=== Cek penjamin_id di tindakanpelayanan_t ===
+Array
+(
+    [0] => Array
+        (
+            [penjamin_id] => 2
+        )
+
+    [1] => Array
+        (
+            [penjamin_id] => 3
+        )
+
+    [2] => Array
+        (
+            [penjamin_id] => 6
+        )
+
+    [3] => Array
+        (
+            [penjamin_id] => 8
+        )
+
+    [4] => Array
+        (
+            [penjamin_id] => 9
+        )
+
+)
+
+=== Tabel yang mengandung kolom 'penjamin_nama' ===
+Array
+(
+    [0] => Array
+        (
+            [table_name] => asuransipasien_m
+            [column_name] => penjamin_id
+        )
+
+    [1] => Array
+        (
+            [table_name] => buatjanjipoli_t
+            [column_name] => penjamin_id
+        )
+
+    [2] => Array
+        (
+            [table_name] => bukuregisterpasien_v
+            [column_name] => penjamin_id
+        )
+
+    [3] => Array
+        (
+            [table_name] => bukuregisterpasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [4] => Array
+        (
+            [table_name] => bukuregisterpenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [5] => Array
+        (
+            [table_name] => bukuregisterpenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [6] => Array
+        (
+            [table_name] => bukuregisterri_v
+            [column_name] => penjamin_id
+        )
+
+    [7] => Array
+        (
+            [table_name] => bukuregisterri_v
+            [column_name] => penjamin_nama
+        )
+
+    [8] => Array
+        (
+            [table_name] => daftarpasienmeninggal_v
+            [column_name] => penjamin_id
+        )
+
+    [9] => Array
+        (
+            [table_name] => daftarpasienmeninggal_v
+            [column_name] => penjamin_nama
+        )
+
+    [10] => Array
+        (
+            [table_name] => eklaim_v
+            [column_name] => penjamin_nama
+        )
+
+    [11] => Array
+        (
+            [table_name] => hasilpemeriksaanlab_v
+            [column_name] => penjamin_id
+        )
+
+    [12] => Array
+        (
+            [table_name] => hasilpemeriksaanlab_v
+            [column_name] => penjamin_nama
+        )
+
+    [13] => Array
+        (
+            [table_name] => hasilpemeriksaanrad_v
+            [column_name] => penjamin_id
+        )
+
+    [14] => Array
+        (
+            [table_name] => hasilpemeriksaanrad_v
+            [column_name] => penjamin_nama
+        )
+
+    [15] => Array
+        (
+            [table_name] => infoclinicalpatway_v
+            [column_name] => penjamin_id
+        )
+
+    [16] => Array
+        (
+            [table_name] => infoclinicalpatway_v
+            [column_name] => penjamin_nama
+        )
+
+    [17] => Array
+        (
+            [table_name] => infokunjunganhd_v
+            [column_name] => penjamin_id
+        )
+
+    [18] => Array
+        (
+            [table_name] => infokunjunganhd_v
+            [column_name] => penjamin_nama
+        )
+
+    [19] => Array
+        (
+            [table_name] => infokunjunganmcu_v
+            [column_name] => penjamin_id
+        )
+
+    [20] => Array
+        (
+            [table_name] => infokunjunganmcu_v
+            [column_name] => penjamin_nama
+        )
+
+    [21] => Array
+        (
+            [table_name] => infokunjunganpersalinan_v
+            [column_name] => penjamin_id
+        )
+
+    [22] => Array
+        (
+            [table_name] => infokunjunganpersalinan_v
+            [column_name] => penjamin_nama
+        )
+
+    [23] => Array
+        (
+            [table_name] => infokunjunganrd_v
+            [column_name] => penjamin_id
+        )
+
+    [24] => Array
+        (
+            [table_name] => infokunjunganrd_v
+            [column_name] => penjamin_nama
+        )
+
+    [25] => Array
+        (
+            [table_name] => infokunjunganri_v
+            [column_name] => penjamin_id
+        )
+
+    [26] => Array
+        (
+            [table_name] => infokunjunganri_v
+            [column_name] => penjamin_nama
+        )
+
+    [27] => Array
+        (
+            [table_name] => infokunjunganrj_v
+            [column_name] => penjamin_id
+        )
+
+    [28] => Array
+        (
+            [table_name] => infokunjunganrj_v
+            [column_name] => penjamin_nama
+        )
+
+    [29] => Array
+        (
+            [table_name] => infokunjunganrjrdri_v
+            [column_name] => penjamin_id
+        )
+
+    [30] => Array
+        (
+            [table_name] => infokunjunganrjrdri_v
+            [column_name] => penjamin_nama
+        )
+
+    [31] => Array
+        (
+            [table_name] => infomasipasiensudahbayarapotek_v
+            [column_name] => penjamin_id
+        )
+
+    [32] => Array
+        (
+            [table_name] => infomasipasiensudahbayarapotek_v
+            [column_name] => penjamin_nama
+        )
+
+    [33] => Array
+        (
+            [table_name] => infopasienbatalperiksa_v
+            [column_name] => penjamin_id
+        )
+
+    [34] => Array
+        (
+            [table_name] => infopasienbatalperiksa_v
+            [column_name] => penjamin_nama
+        )
+
+    [35] => Array
+        (
+            [table_name] => infopasienkarcis_v
+            [column_name] => penjamin_id
+        )
+
+    [36] => Array
+        (
+            [table_name] => infopasienkarcis_v
+            [column_name] => penjamin_nama
+        )
+
+    [37] => Array
+        (
+            [table_name] => infopasienmasukkamar_v
+            [column_name] => penjamin_id
+        )
+
+    [38] => Array
+        (
+            [table_name] => infopasienmasukkamar_v
+            [column_name] => penjamin_nama
+        )
+
+    [39] => Array
+        (
+            [table_name] => infopasienmasukkamarinfo_v
+            [column_name] => penjamin_id
+        )
+
+    [40] => Array
+        (
+            [table_name] => infopasienmasukkamarinfo_v
+            [column_name] => penjamin_nama
+        )
+
+    [41] => Array
+        (
+            [table_name] => infopasienpengunjung_v
+            [column_name] => penjamin_id
+        )
+
+    [42] => Array
+        (
+            [table_name] => infopasienpengunjung_v
+            [column_name] => penjamin_nama
+        )
+
+    [43] => Array
+        (
+            [table_name] => infopasienpengunjung_v
+            [column_name] => penjaminadmisi_id
+        )
+
+    [44] => Array
+        (
+            [table_name] => infopasienpengunjung_v
+            [column_name] => penjaminadmisi_nama
+        )
+
+    [45] => Array
+        (
+            [table_name] => infopasienprogramrujukbalik_v
+            [column_name] => penjamin_id
+        )
+
+    [46] => Array
+        (
+            [table_name] => infopasienprogramrujukbalik_v
+            [column_name] => penjamin_nama
+        )
+
+    [47] => Array
+        (
+            [table_name] => infopasienruanganri_v
+            [column_name] => penjamin_id
+        )
+
+    [48] => Array
+        (
+            [table_name] => infopasienruanganri_v
+            [column_name] => penjamin_nama
+        )
+
+    [49] => Array
+        (
+            [table_name] => inforawatdaruratapotikblbayar_v
+            [column_name] => penjamin_id
+        )
+
+    [50] => Array
+        (
+            [table_name] => inforawatdaruratapotikblbayar_v
+            [column_name] => penjamin_nama
+        )
+
+    [51] => Array
+        (
+            [table_name] => inforawatinapapotikblmbayar_v
+            [column_name] => penjamin_id
+        )
+
+    [52] => Array
+        (
+            [table_name] => inforawatinapapotikblmbayar_v
+            [column_name] => penjamin_nama
+        )
+
+    [53] => Array
+        (
+            [table_name] => inforawatjalanapotikblmbayar_v
+            [column_name] => penjamin_id
+        )
+
+    [54] => Array
+        (
+            [table_name] => inforawatjalanapotikblmbayar_v
+            [column_name] => penjamin_nama
+        )
+
+    [55] => Array
+        (
+            [table_name] => informasiantrianpasien_v
+            [column_name] => penjamin_id
+        )
+
+    [56] => Array
+        (
+            [table_name] => informasiantrianpasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [57] => Array
+        (
+            [table_name] => informasiasuransipasien_v
+            [column_name] => penjamin_id
+        )
+
+    [58] => Array
+        (
+            [table_name] => informasiasuransipasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [59] => Array
+        (
+            [table_name] => informasibayaruangmuka_v
+            [column_name] => penjamin_id
+        )
+
+    [60] => Array
+        (
+            [table_name] => informasibayaruangmuka_v
+            [column_name] => penjamin_nama
+        )
+
+    [61] => Array
+        (
+            [table_name] => informasicopyresep_v
+            [column_name] => penjamin_id
+        )
+
+    [62] => Array
+        (
+            [table_name] => informasikasirfisioterapi_v
+            [column_name] => penjamin_id
+        )
+
+    [63] => Array
+        (
+            [table_name] => informasikasirfisioterapi_v
+            [column_name] => penjamin_nama
+        )
+
+    [64] => Array
+        (
+            [table_name] => informasikasirhdpulang_v
+            [column_name] => penjamin_id
+        )
+
+    [65] => Array
+        (
+            [table_name] => informasikasirhdpulang_v
+            [column_name] => penjamin_nama
+        )
+
+    [66] => Array
+        (
+            [table_name] => informasikasirinappulang_v
+            [column_name] => penjamin_id
+        )
+
+    [67] => Array
+        (
+            [table_name] => informasikasirinappulang_v
+            [column_name] => penjamin_nama
+        )
+
+    [68] => Array
+        (
+            [table_name] => informasikasirmcu_v
+            [column_name] => penjamin_id
+        )
+
+    [69] => Array
+        (
+            [table_name] => informasikasirmcu_v
+            [column_name] => penjamin_nama
+        )
+
+    [70] => Array
+        (
+            [table_name] => informasikasirrawatjalan_v
+            [column_name] => penjamin_id
+        )
+
+    [71] => Array
+        (
+            [table_name] => informasikasirrawatjalan_v
+            [column_name] => penjamin_nama
+        )
+
+    [72] => Array
+        (
+            [table_name] => informasikasirrdpulang_v
+            [column_name] => penjamin_id
+        )
+
+    [73] => Array
+        (
+            [table_name] => informasikasirrdpulang_v
+            [column_name] => penjamin_nama
+        )
+
+    [74] => Array
+        (
+            [table_name] => informasipasienkepenunj_v
+            [column_name] => penjamin_id
+        )
+
+    [75] => Array
+        (
+            [table_name] => informasipasienkepenunj_v
+            [column_name] => penjamin_nama
+        )
+
+    [76] => Array
+        (
+            [table_name] => informasipasienpegawai_v
+            [column_name] => penjamin_id
+        )
+
+    [77] => Array
+        (
+            [table_name] => informasipasienpegawai_v
+            [column_name] => penjamin_nama
+        )
+
+    [78] => Array
+        (
+            [table_name] => informasipasiensudahbayar_v
+            [column_name] => penjamin_nama
+        )
+
+    [79] => Array
+        (
+            [table_name] => informasipembayaranklaimmerchant_v
+            [column_name] => penjamin_id
+        )
+
+    [80] => Array
+        (
+            [table_name] => informasipembayaranklaimmerchant_v
+            [column_name] => penjamin_nama
+        )
+
+    [81] => Array
+        (
+            [table_name] => informasipembayaranklaimpiutang_v
+            [column_name] => penjamin_id
+        )
+
+    [82] => Array
+        (
+            [table_name] => informasipembayaranklaimpiutang_v
+            [column_name] => penjamin_nama
+        )
+
+    [83] => Array
+        (
+            [table_name] => informasipembayarantagihannontunai_v
+            [column_name] => penjamin_id
+        )
+
+    [84] => Array
+        (
+            [table_name] => informasipembayarantagihannontunai_v
+            [column_name] => penjamin_nama
+        )
+
+    [85] => Array
+        (
+            [table_name] => informasipengajuanklaimpiutang_v
+            [column_name] => penjamin_id
+        )
+
+    [86] => Array
+        (
+            [table_name] => informasipengajuanklaimpiutang_v
+            [column_name] => penjamin_nama
+        )
+
+    [87] => Array
+        (
+            [table_name] => informasipenjualanapotik_v
+            [column_name] => penjamin_id
+        )
+
+    [88] => Array
+        (
+            [table_name] => informasipenjualanapotik_v
+            [column_name] => penjamin_nama
+        )
+
+    [89] => Array
+        (
+            [table_name] => informasipenjualanresep_v
+            [column_name] => penjamin_id
+        )
+
+    [90] => Array
+        (
+            [table_name] => informasipenjualanresep_v
+            [column_name] => penjamin_nama
+        )
+
+    [91] => Array
+        (
+            [table_name] => informasipenjualanresepsatusehat_v
+            [column_name] => penjamin_id
+        )
+
+    [92] => Array
+        (
+            [table_name] => informasipenjualanresepsatusehat_v
+            [column_name] => penjamin_nama
+        )
+
+    [93] => Array
+        (
+            [table_name] => informasipiutangpenjamin_v
+            [column_name] => penjamin_id
+        )
+
+    [94] => Array
+        (
+            [table_name] => informasipiutangpenjamin_v
+            [column_name] => penjamin_nama
+        )
+
+    [95] => Array
+        (
+            [table_name] => informasireseptur_v
+            [column_name] => penjamin_id
+        )
+
+    [96] => Array
+        (
+            [table_name] => informasireseptur_v
+            [column_name] => penjamin_nama
+        )
+
+    [97] => Array
+        (
+            [table_name] => informasisep_v
+            [column_name] => penjamin_lakalantas
+        )
+
+    [98] => Array
+        (
+            [table_name] => informasisepinternal_v
+            [column_name] => penjamin_lakalantas
+        )
+
+    [99] => Array
+        (
+            [table_name] => informasisepinternal_v
+            [column_name] => penjamin_nama
+        )
+
+    [100] => Array
+        (
+            [table_name] => informasitarifakomodasi_v
+            [column_name] => penjamin_id
+        )
+
+    [101] => Array
+        (
+            [table_name] => informasitarifakomodasi_v
+            [column_name] => penjamin_nama
+        )
+
+    [102] => Array
+        (
+            [table_name] => informasiumurpiutangpenjamin_v
+            [column_name] => penjamin_id
+        )
+
+    [103] => Array
+        (
+            [table_name] => informasiumurpiutangpenjamin_v
+            [column_name] => penjamin_nama
+        )
+
+    [104] => Array
+        (
+            [table_name] => informasivisitedokter_v
+            [column_name] => penjamin_id
+        )
+
+    [105] => Array
+        (
+            [table_name] => informasivisitedokter_v
+            [column_name] => penjamin_nama
+        )
+
+    [106] => Array
+        (
+            [table_name] => infoumurpiutangpenjamin_v
+            [column_name] => penjamin_id
+        )
+
+    [107] => Array
+        (
+            [table_name] => infoumurpiutangpenjamin_v
+            [column_name] => penjamin_nama
+        )
+
+    [108] => Array
+        (
+            [table_name] => infoverifikasitagihan_v
+            [column_name] => penjamin_id
+        )
+
+    [109] => Array
+        (
+            [table_name] => infoverifikasitagihan_v
+            [column_name] => penjamin_nama
+        )
+
+    [110] => Array
+        (
+            [table_name] => infromasipasiensudahbayar_v
+            [column_name] => penjamin_nama
+        )
+
+    [111] => Array
+        (
+            [table_name] => jasafarmasi_m
+            [column_name] => penjamin_id
+        )
+
+    [112] => Array
+        (
+            [table_name] => jenistarifpenjamin_m
+            [column_name] => penjamin_id
+        )
+
+    [113] => Array
+        (
+            [table_name] => karcis_v
+            [column_name] => penjamin_id
+        )
+
+    [114] => Array
+        (
+            [table_name] => konfigsystem_k
+            [column_name] => tarif_penjamin_id
+        )
+
+    [115] => Array
+        (
+            [table_name] => laporanbiayapelayanan_v
+            [column_name] => penjamin_id
+        )
+
+    [116] => Array
+        (
+            [table_name] => laporanbiayapelayanan_v
+            [column_name] => penjamin_nama
+        )
+
+    [117] => Array
+        (
+            [table_name] => laporancaramasukpenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [118] => Array
+        (
+            [table_name] => laporancaramasukpenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [119] => Array
+        (
+            [table_name] => laporanjasainstalasi_v
+            [column_name] => penjamin_id
+        )
+
+    [120] => Array
+        (
+            [table_name] => laporanjasainstalasi_v
+            [column_name] => penjamin_nama
+        )
+
+    [121] => Array
+        (
+            [table_name] => laporanjumlahpemeriksaandokter_v
+            [column_name] => penjamin_id
+        )
+
+    [122] => Array
+        (
+            [table_name] => laporanjumlahpemeriksaandokter_v
+            [column_name] => penjamin_nama
+        )
+
+    [123] => Array
+        (
+            [table_name] => laporankarcispasien_v
+            [column_name] => penjamin_id
+        )
+
+    [124] => Array
+        (
+            [table_name] => laporankarcispasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [125] => Array
+        (
+            [table_name] => laporankartupiutang_v
+            [column_name] => penjamin_id
+        )
+
+    [126] => Array
+        (
+            [table_name] => laporankartupiutang_v
+            [column_name] => penjamin_nama
+        )
+
+    [127] => Array
+        (
+            [table_name] => laporankinerjapenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [128] => Array
+        (
+            [table_name] => laporankinerjapenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [129] => Array
+        (
+            [table_name] => laporankunjunganbydokter_v
+            [column_name] => penjamin_id
+        )
+
+    [130] => Array
+        (
+            [table_name] => laporankunjunganbydokter_v
+            [column_name] => penjamin_nama
+        )
+
+    [131] => Array
+        (
+            [table_name] => laporankunjunganmcu_v
+            [column_name] => penjamin_id
+        )
+
+    [132] => Array
+        (
+            [table_name] => laporankunjunganmcu_v
+            [column_name] => penjamin_nama
+        )
+
+    [133] => Array
+        (
+            [table_name] => laporankunjunganpersalinan_v
+            [column_name] => penjamin_id
+        )
+
+    [134] => Array
+        (
+            [table_name] => laporankunjunganpersalinan_v
+            [column_name] => penjamin_nama
+        )
+
+    [135] => Array
+        (
+            [table_name] => laporankunjunganrd_v
+            [column_name] => penjamin_id
+        )
+
+    [136] => Array
+        (
+            [table_name] => laporankunjunganrd_v
+            [column_name] => penjamin_nama
+        )
+
+    [137] => Array
+        (
+            [table_name] => laporankunjunganri_v
+            [column_name] => penjamin_id
+        )
+
+    [138] => Array
+        (
+            [table_name] => laporankunjunganri_v
+            [column_name] => penjamin_nama
+        )
+
+    [139] => Array
+        (
+            [table_name] => laporankunjunganrj_v
+            [column_name] => penjamin_id
+        )
+
+    [140] => Array
+        (
+            [table_name] => laporankunjunganrj_v
+            [column_name] => penjamin_nama
+        )
+
+    [141] => Array
+        (
+            [table_name] => laporankunjunganrs_v
+            [column_name] => penjamin_id
+        )
+
+    [142] => Array
+        (
+            [table_name] => laporankunjunganrs_v
+            [column_name] => penjamin_nama
+        )
+
+    [143] => Array
+        (
+            [table_name] => laporanlembarresep_v
+            [column_name] => penjamin_id
+        )
+
+    [144] => Array
+        (
+            [table_name] => laporanlembarresep_v
+            [column_name] => penjamin_nama
+        )
+
+    [145] => Array
+        (
+            [table_name] => laporanlembarresepluar_v
+            [column_name] => penjamin_id
+        )
+
+    [146] => Array
+        (
+            [table_name] => laporanlembarresepluar_v
+            [column_name] => penjamin_nama
+        )
+
+    [147] => Array
+        (
+            [table_name] => laporanpakaialatmedis_v
+            [column_name] => penjamin_id
+        )
+
+    [148] => Array
+        (
+            [table_name] => laporanpakaialatmedis_v
+            [column_name] => penjamin_nama
+        )
+
+    [149] => Array
+        (
+            [table_name] => laporanpasiendirujuk_v
+            [column_name] => penjamin_id
+        )
+
+    [150] => Array
+        (
+            [table_name] => laporanpasiendirujuk_v
+            [column_name] => penjamin_nama
+        )
+
+    [151] => Array
+        (
+            [table_name] => laporanpasienkecelakaan_v
+            [column_name] => penjamin_id
+        )
+
+    [152] => Array
+        (
+            [table_name] => laporanpasienkecelakaan_v
+            [column_name] => penjamin_nama
+        )
+
+    [153] => Array
+        (
+            [table_name] => laporanpasienmeninggal_v
+            [column_name] => penjamin_id
+        )
+
+    [154] => Array
+        (
+            [table_name] => laporanpasienmeninggal_v
+            [column_name] => penjamin_nama
+        )
+
+    [155] => Array
+        (
+            [table_name] => laporanpasienmeninggalri_v
+            [column_name] => penjamin_id
+        )
+
+    [156] => Array
+        (
+            [table_name] => laporanpasienmeninggalri_v
+            [column_name] => penjamin_nama
+        )
+
+    [157] => Array
+        (
+            [table_name] => laporanpasienpenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [158] => Array
+        (
+            [table_name] => laporanpasienpenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [159] => Array
+        (
+            [table_name] => laporanpejulanresepdokter_v
+            [column_name] => penjamin_id
+        )
+
+    [160] => Array
+        (
+            [table_name] => laporanpejulanresepdokter_v
+            [column_name] => penjamin_nama
+        )
+
+    [161] => Array
+        (
+            [table_name] => laporanpelayananmcu_v
+            [column_name] => penjamin_id
+        )
+
+    [162] => Array
+        (
+            [table_name] => laporanpemakaiobatalkes_v
+            [column_name] => penjamin_id
+        )
+
+    [163] => Array
+        (
+            [table_name] => laporanpemakaiobatalkes_v
+            [column_name] => penjamin_nama
+        )
+
+    [164] => Array
+        (
+            [table_name] => laporanpembayaranpelayanan_v
+            [column_name] => penjamin_id
+        )
+
+    [165] => Array
+        (
+            [table_name] => laporanpembayaranpelayanan_v
+            [column_name] => penjamin_nama
+        )
+
+    [166] => Array
+        (
+            [table_name] => laporanpemeriksaangroup_v
+            [column_name] => penjamin_id
+        )
+
+    [167] => Array
+        (
+            [table_name] => laporanpemeriksaangroup_v
+            [column_name] => penjamin_nama
+        )
+
+    [168] => Array
+        (
+            [table_name] => laporanpemeriksaanp3_v
+            [column_name] => penjamin_id
+        )
+
+    [169] => Array
+        (
+            [table_name] => laporanpemeriksaanp3_v
+            [column_name] => penjamin_nama
+        )
+
+    [170] => Array
+        (
+            [table_name] => laporanpemeriksaanrujukanrs_v
+            [column_name] => penjamin_id
+        )
+
+    [171] => Array
+        (
+            [table_name] => laporanpemeriksaanrujukanrs_v
+            [column_name] => penjamin_nama
+        )
+
+    [172] => Array
+        (
+            [table_name] => laporanpendapatanpenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [173] => Array
+        (
+            [table_name] => laporanpendapatanpenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [174] => Array
+        (
+            [table_name] => laporanpendapatanpenunjangkomponen_v
+            [column_name] => penjamin_id
+        )
+
+    [175] => Array
+        (
+            [table_name] => laporanpendapatanpenunjangkomponen_v
+            [column_name] => penjamin_nama
+        )
+
+    [176] => Array
+        (
+            [table_name] => laporanpendapatanruangan_v
+            [column_name] => penjamin_id
+        )
+
+    [177] => Array
+        (
+            [table_name] => laporanpendapatanruangan_v
+            [column_name] => penjamin_nama
+        )
+
+    [178] => Array
+        (
+            [table_name] => laporanpenjualanobat_v
+            [column_name] => penjamin_id
+        )
+
+    [179] => Array
+        (
+            [table_name] => laporanpenjualanobat_v
+            [column_name] => penjamin_nama
+        )
+
+    [180] => Array
+        (
+            [table_name] => laporanpenjualansosial_v
+            [column_name] => penjamin_id
+        )
+
+    [181] => Array
+        (
+            [table_name] => laporanpenjualansosial_v
+            [column_name] => penjamin_nama
+        )
+
+    [182] => Array
+        (
+            [table_name] => laporanregisterpermintaandarah_v
+            [column_name] => penjamin_id
+        )
+
+    [183] => Array
+        (
+            [table_name] => laporanregisterpermintaandarah_v
+            [column_name] => penjamin_nama
+        )
+
+    [184] => Array
+        (
+            [table_name] => laporanrekapjasadokter_v
+            [column_name] => penjamin_id
+        )
+
+    [185] => Array
+        (
+            [table_name] => laporanrekapjasadokter_v
+            [column_name] => penjamin_nama
+        )
+
+    [186] => Array
+        (
+            [table_name] => laporanrekappendapatan_v
+            [column_name] => penjamin_id
+        )
+
+    [187] => Array
+        (
+            [table_name] => laporanrekappendapatan_v
+            [column_name] => penjamin_nama
+        )
+
+    [188] => Array
+        (
+            [table_name] => laporanrekaptransaksi_v
+            [column_name] => penjamin_id
+        )
+
+    [189] => Array
+        (
+            [table_name] => laporanrekaptransaksi_v
+            [column_name] => penjamin_nama
+        )
+
+    [190] => Array
+        (
+            [table_name] => laporanreturobat_v
+            [column_name] => penjamin_id
+        )
+
+    [191] => Array
+        (
+            [table_name] => laporanreturobat_v
+            [column_name] => penjamin_nama
+        )
+
+    [192] => Array
+        (
+            [table_name] => laporanrujukankeluar_v
+            [column_name] => penjamin_id
+        )
+
+    [193] => Array
+        (
+            [table_name] => laporanrujukankeluar_v
+            [column_name] => penjamin_nama
+        )
+
+    [194] => Array
+        (
+            [table_name] => laporansensuharianmc_v
+            [column_name] => penjamin_id
+        )
+
+    [195] => Array
+        (
+            [table_name] => laporansensuharianmc_v
+            [column_name] => penjamin_nama
+        )
+
+    [196] => Array
+        (
+            [table_name] => laporansensuharianpersalinan_v
+            [column_name] => penjamin_id
+        )
+
+    [197] => Array
+        (
+            [table_name] => laporansensuharianpersalinan_v
+            [column_name] => penjamin_nama
+        )
+
+    [198] => Array
+        (
+            [table_name] => laporansensuharianrd_v
+            [column_name] => penjamin_id
+        )
+
+    [199] => Array
+        (
+            [table_name] => laporansensuharianrd_v
+            [column_name] => penjamin_nama
+        )
+
+    [200] => Array
+        (
+            [table_name] => laporansensuharianri_v
+            [column_name] => penjamin_id
+        )
+
+    [201] => Array
+        (
+            [table_name] => laporansensuharianri_v
+            [column_name] => penjamin_nama
+        )
+
+    [202] => Array
+        (
+            [table_name] => laporansensuharianrj_v
+            [column_name] => penjamin_id
+        )
+
+    [203] => Array
+        (
+            [table_name] => laporansensuharianrj_v
+            [column_name] => penjamin_nama
+        )
+
+    [204] => Array
+        (
+            [table_name] => laporansensusbedahsentral_v
+            [column_name] => penjamin_id
+        )
+
+    [205] => Array
+        (
+            [table_name] => laporansensusbedahsentral_v
+            [column_name] => penjamin_nama
+        )
+
+    [206] => Array
+        (
+            [table_name] => laporansensuslab_v
+            [column_name] => penjamin_id
+        )
+
+    [207] => Array
+        (
+            [table_name] => laporansensuslab_v
+            [column_name] => penjamin_nama
+        )
+
+    [208] => Array
+        (
+            [table_name] => laporansensuspenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [209] => Array
+        (
+            [table_name] => laporansensuspenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [210] => Array
+        (
+            [table_name] => laporansensusradiologi_v
+            [column_name] => penjamin_id
+        )
+
+    [211] => Array
+        (
+            [table_name] => laporansensusradiologi_v
+            [column_name] => penjamin_nama
+        )
+
+    [212] => Array
+        (
+            [table_name] => laporansetoranharian_v
+            [column_name] => penjamin_id
+        )
+
+    [213] => Array
+        (
+            [table_name] => laporansetoranharian_v
+            [column_name] => penjamin_nama
+        )
+
+    [214] => Array
+        (
+            [table_name] => laporantindakankomponen_v
+            [column_name] => penjamin_id
+        )
+
+    [215] => Array
+        (
+            [table_name] => laporantindakankomponen_v
+            [column_name] => penjamin_nama
+        )
+
+    [216] => Array
+        (
+            [table_name] => laporantriasepasien_v
+            [column_name] => penjamin_id
+        )
+
+    [217] => Array
+        (
+            [table_name] => laporantriasepasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [218] => Array
+        (
+            [table_name] => lappembayaranklaimpiutang_v
+            [column_name] => penjamin_id
+        )
+
+    [219] => Array
+        (
+            [table_name] => lappembayaranklaimpiutang_v
+            [column_name] => penjamin_nama
+        )
+
+    [220] => Array
+        (
+            [table_name] => lappengajuanklaimpiutang_v
+            [column_name] => penjamin_id
+        )
+
+    [221] => Array
+        (
+            [table_name] => lappengajuanklaimpiutang_v
+            [column_name] => penjamin_nama
+        )
+
+    [222] => Array
+        (
+            [table_name] => masukkamar_t
+            [column_name] => penjamin_id
+        )
+
+    [223] => Array
+        (
+            [table_name] => monitoringpenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [224] => Array
+        (
+            [table_name] => monitoringpenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [225] => Array
+        (
+            [table_name] => monitoringrawatdarurat_v
+            [column_name] => penjamin_id
+        )
+
+    [226] => Array
+        (
+            [table_name] => monitoringrawatdarurat_v
+            [column_name] => penjamin_nama
+        )
+
+    [227] => Array
+        (
+            [table_name] => monitoringrawatinap_v
+            [column_name] => penjamin_id
+        )
+
+    [228] => Array
+        (
+            [table_name] => monitoringrawatinap_v
+            [column_name] => penjamin_nama
+        )
+
+    [229] => Array
+        (
+            [table_name] => monitoringrawatjalan_v
+            [column_name] => penjamin_id
+        )
+
+    [230] => Array
+        (
+            [table_name] => monitoringrawatjalan_v
+            [column_name] => penjamin_nama
+        )
+
+    [231] => Array
+        (
+            [table_name] => obatalkespasien_t
+            [column_name] => penjamin_id
+        )
+
+    [232] => Array
+        (
+            [table_name] => obatalkespenjamin_m
+            [column_name] => obatalkespenjamin_id
+        )
+
+    [233] => Array
+        (
+            [table_name] => obatalkespenjamin_m
+            [column_name] => penjamin_id
+        )
+
+    [234] => Array
+        (
+            [table_name] => paketpelayanan_m
+            [column_name] => penjamin_id
+        )
+
+    [235] => Array
+        (
+            [table_name] => paketpelayanan_v
+            [column_name] => penjamin_id
+        )
+
+    [236] => Array
+        (
+            [table_name] => paketpelayanan_v
+            [column_name] => penjamin_nama
+        )
+
+    [237] => Array
+        (
+            [table_name] => pasienadmisi_t
+            [column_name] => penjamin_id
+        )
+
+    [238] => Array
+        (
+            [table_name] => pasienbatalperiksa_v
+            [column_name] => penjamin_id
+        )
+
+    [239] => Array
+        (
+            [table_name] => pasienbatalperiksa_v
+            [column_name] => penjamin_nama
+        )
+
+    [240] => Array
+        (
+            [table_name] => pasienberkunjungsmscenter_v
+            [column_name] => penjamin_id
+        )
+
+    [241] => Array
+        (
+            [table_name] => pasienberkunjungsmscenter_v
+            [column_name] => penjamin_nama
+        )
+
+    [242] => Array
+        (
+            [table_name] => pasienkirimkeunitlain_v
+            [column_name] => penjamin_id
+        )
+
+    [243] => Array
+        (
+            [table_name] => pasienkirimkeunitlain_v
+            [column_name] => penjamin_nama
+        )
+
+    [244] => Array
+        (
+            [table_name] => pasienkirimkeunitlaindetail_v
+            [column_name] => penjamin_id
+        )
+
+    [245] => Array
+        (
+            [table_name] => pasienkirimkeunitlaindetail_v
+            [column_name] => penjamin_nama
+        )
+
+    [246] => Array
+        (
+            [table_name] => pasienmasukpenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [247] => Array
+        (
+            [table_name] => pasienmasukpenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [248] => Array
+        (
+            [table_name] => pasienpelayanandokterrs_v
+            [column_name] => penjamin_id
+        )
+
+    [249] => Array
+        (
+            [table_name] => pasienpelayanandokterrs_v
+            [column_name] => penjamin_nama
+        )
+
+    [250] => Array
+        (
+            [table_name] => pasienpelayananmedisrs_v
+            [column_name] => penjamin_id
+        )
+
+    [251] => Array
+        (
+            [table_name] => pasienpelayananmedisrs_v
+            [column_name] => penjamin_nama
+        )
+
+    [252] => Array
+        (
+            [table_name] => pasienpulangrawatdarurat_v
+            [column_name] => penjamin_id
+        )
+
+    [253] => Array
+        (
+            [table_name] => pasienpulangrawatdarurat_v
+            [column_name] => penjamin_nama
+        )
+
+    [254] => Array
+        (
+            [table_name] => pasienpulangrddanri_v
+            [column_name] => penjamin_id
+        )
+
+    [255] => Array
+        (
+            [table_name] => pasienpulangrddanri_v
+            [column_name] => penjamin_nama
+        )
+
+    [256] => Array
+        (
+            [table_name] => pasienrawatdaruratkasir_v
+            [column_name] => penjamin_id
+        )
+
+    [257] => Array
+        (
+            [table_name] => pasienrawatdaruratkasir_v
+            [column_name] => penjamin_nama
+        )
+
+    [258] => Array
+        (
+            [table_name] => pasienrawatinap_v
+            [column_name] => penjamin_id
+        )
+
+    [259] => Array
+        (
+            [table_name] => pasienrawatinap_v
+            [column_name] => penjamin_nama
+        )
+
+    [260] => Array
+        (
+            [table_name] => pasienrawatinapkasir_v
+            [column_name] => penjamin_id
+        )
+
+    [261] => Array
+        (
+            [table_name] => pasienrawatinapkasir_v
+            [column_name] => penjamin_nama
+        )
+
+    [262] => Array
+        (
+            [table_name] => pasienrawatinapsmscenter_v
+            [column_name] => penjamin_id
+        )
+
+    [263] => Array
+        (
+            [table_name] => pasienrawatinapsmscenter_v
+            [column_name] => penjamin_nama
+        )
+
+    [264] => Array
+        (
+            [table_name] => pasienrawatjalankasir_v
+            [column_name] => penjamin_id
+        )
+
+    [265] => Array
+        (
+            [table_name] => pasienrawatjalankasir_v
+            [column_name] => penjamin_nama
+        )
+
+    [266] => Array
+        (
+            [table_name] => pasienridariruanganlain_v
+            [column_name] => penjamin_id
+        )
+
+    [267] => Array
+        (
+            [table_name] => pasienridariruanganlain_v
+            [column_name] => penjamin_nama
+        )
+
+    [268] => Array
+        (
+            [table_name] => pasienriyangpindah_v
+            [column_name] => penjamin_id
+        )
+
+    [269] => Array
+        (
+            [table_name] => pasienriyangpindah_v
+            [column_name] => penjamin_nama
+        )
+
+    [270] => Array
+        (
+            [table_name] => pasienrujukanluardokter_v
+            [column_name] => penjamin_id
+        )
+
+    [271] => Array
+        (
+            [table_name] => pasienrujukanluardokter_v
+            [column_name] => penjamin_nama
+        )
+
+    [272] => Array
+        (
+            [table_name] => pasientindaklanjutkeri_v
+            [column_name] => penjamin_id
+        )
+
+    [273] => Array
+        (
+            [table_name] => pasientindaklanjutkeri_v
+            [column_name] => penjamin_nama
+        )
+
+    [274] => Array
+        (
+            [table_name] => pasienygpulangri_v
+            [column_name] => penjamin_id
+        )
+
+    [275] => Array
+        (
+            [table_name] => pasienygpulangri_v
+            [column_name] => penjamin_nama
+        )
+
+    [276] => Array
+        (
+            [table_name] => pembayaranjasa_t
+            [column_name] => penjamin_id
+        )
+
+    [277] => Array
+        (
+            [table_name] => pembayaranpelayanan_r
+            [column_name] => penjamin_id
+        )
+
+    [278] => Array
+        (
+            [table_name] => pembayaranpelayanan_t
+            [column_name] => penjamin_id
+        )
+
+    [279] => Array
+        (
+            [table_name] => pembayaranppnkeluaran_v
+            [column_name] => penjamin_id
+        )
+
+    [280] => Array
+        (
+            [table_name] => pembayarklaim_t
+            [column_name] => penjamin_id
+        )
+
+    [281] => Array
+        (
+            [table_name] => pendaftaran_t
+            [column_name] => penjamin_id
+        )
+
+    [282] => Array
+        (
+            [table_name] => penerimaanumum_t
+            [column_name] => penjamin_id
+        )
+
+    [283] => Array
+        (
+            [table_name] => pengajuanapprovalsep_t
+            [column_name] => penjamin
+        )
+
+    [284] => Array
+        (
+            [table_name] => pengajuanklaimpiutang_t
+            [column_name] => penjamin_id
+        )
+
+    [285] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => bpjs_kodepenjamin
+        )
+
+    [286] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => bpjs_namapenjamin
+        )
+
+    [287] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => penjamin_aktif
+        )
+
+    [288] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => penjamin_cp
+        )
+
+    [289] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => penjamin_id
+        )
+
+    [290] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => penjamin_nama
+        )
+
+    [291] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => penjamin_namalainnya
+        )
+
+    [292] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => penjamin_nomobile
+        )
+
+    [293] => Array
+        (
+            [table_name] => penjaminpasien_m
+            [column_name] => penjaminpasien_m
+        )
+
+    [294] => Array
+        (
+            [table_name] => penjaminrek_m
+            [column_name] => penjamin_id
+        )
+
+    [295] => Array
+        (
+            [table_name] => penjaminrek_m
+            [column_name] => penjaminrek_id
+        )
+
+    [296] => Array
+        (
+            [table_name] => penjualanresep_t
+            [column_name] => penjamin_id
+        )
+
+    [297] => Array
+        (
+            [table_name] => pindahkamar_t
+            [column_name] => penjamin_id
+        )
+
+    [298] => Array
+        (
+            [table_name] => rekapitulasipasienpulang_v
+            [column_name] => penjamin_id
+        )
+
+    [299] => Array
+        (
+            [table_name] => rekapitulasipasienpulang_v
+            [column_name] => penjamin_nama
+        )
+
+    [300] => Array
+        (
+            [table_name] => rincianbayarkomponen_v
+            [column_name] => penjamin_id
+        )
+
+    [301] => Array
+        (
+            [table_name] => rincianbayarkomponen_v
+            [column_name] => penjamin_nama
+        )
+
+    [302] => Array
+        (
+            [table_name] => rincianbayarobatalkes_v
+            [column_name] => penjamin_id
+        )
+
+    [303] => Array
+        (
+            [table_name] => rincianbayarobatalkes_v
+            [column_name] => penjamin_nama
+        )
+
+    [304] => Array
+        (
+            [table_name] => rincianbayartindakan_v
+            [column_name] => penjamin_id
+        )
+
+    [305] => Array
+        (
+            [table_name] => rincianbayartindakan_v
+            [column_name] => penjamin_nama
+        )
+
+    [306] => Array
+        (
+            [table_name] => rincianbelumbayarrawatinap_v
+            [column_name] => penjamin_id
+        )
+
+    [307] => Array
+        (
+            [table_name] => rincianbelumbayarrawatinap_v
+            [column_name] => penjamin_nama
+        )
+
+    [308] => Array
+        (
+            [table_name] => rincianbelumbayarrd_v
+            [column_name] => penjamin_id
+        )
+
+    [309] => Array
+        (
+            [table_name] => rincianbelumbayarrd_v
+            [column_name] => penjamin_nama
+        )
+
+    [310] => Array
+        (
+            [table_name] => rincianbelumbayarrj_v
+            [column_name] => penjamin_id
+        )
+
+    [311] => Array
+        (
+            [table_name] => rincianbelumbayarrj_v
+            [column_name] => penjamin_nama
+        )
+
+    [312] => Array
+        (
+            [table_name] => rincianbiayafarmasirawatinap_v
+            [column_name] => penjamin_id
+        )
+
+    [313] => Array
+        (
+            [table_name] => rincianbiayafarmasirawatinap_v
+            [column_name] => penjamin_nama
+        )
+
+    [314] => Array
+        (
+            [table_name] => rincianbiayafarmasird_v
+            [column_name] => penjamin_id
+        )
+
+    [315] => Array
+        (
+            [table_name] => rincianbiayafarmasird_v
+            [column_name] => penjamin_nama
+        )
+
+    [316] => Array
+        (
+            [table_name] => rincianbiayafarmasirj_v
+            [column_name] => penjamin_id
+        )
+
+    [317] => Array
+        (
+            [table_name] => rincianbiayafarmasirj_v
+            [column_name] => penjamin_nama
+        )
+
+    [318] => Array
+        (
+            [table_name] => rinciankelompokbpjs_v
+            [column_name] => penjamin_id
+        )
+
+    [319] => Array
+        (
+            [table_name] => rinciankelompokbpjs_v
+            [column_name] => penjamin_nama
+        )
+
+    [320] => Array
+        (
+            [table_name] => rinciankelompokbpjstesting_v
+            [column_name] => penjamin_id
+        )
+
+    [321] => Array
+        (
+            [table_name] => rinciankelompokbpjstesting_v
+            [column_name] => penjamin_nama
+        )
+
+    [322] => Array
+        (
+            [table_name] => rincianpemeriksaanlabrad_v
+            [column_name] => penjamin_id
+        )
+
+    [323] => Array
+        (
+            [table_name] => rincianpemeriksaanlabrad_v
+            [column_name] => penjamin_nama
+        )
+
+    [324] => Array
+        (
+            [table_name] => rincianpiutangrekeningpasien_v
+            [column_name] => penjamin_id
+        )
+
+    [325] => Array
+        (
+            [table_name] => rincianpiutangrekeningpasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [326] => Array
+        (
+            [table_name] => rinciantagihankomponen_v
+            [column_name] => penjamin_id
+        )
+
+    [327] => Array
+        (
+            [table_name] => rinciantagihankomponen_v
+            [column_name] => penjamin_nama
+        )
+
+    [328] => Array
+        (
+            [table_name] => rinciantagihanobatalkes_v
+            [column_name] => penjamin_id
+        )
+
+    [329] => Array
+        (
+            [table_name] => rinciantagihanobatalkes_v
+            [column_name] => penjamin_nama
+        )
+
+    [330] => Array
+        (
+            [table_name] => rinciantagihanpasienbankdarah_v
+            [column_name] => penjamin_id
+        )
+
+    [331] => Array
+        (
+            [table_name] => rinciantagihanpasienbankdarah_v
+            [column_name] => penjamin_nama
+        )
+
+    [332] => Array
+        (
+            [table_name] => rinciantagihanpasienberhutang_v
+            [column_name] => namapenjamin_skj
+        )
+
+    [333] => Array
+        (
+            [table_name] => rinciantagihantindakan_v
+            [column_name] => penjamin_id
+        )
+
+    [334] => Array
+        (
+            [table_name] => rinciantagihantindakan_v
+            [column_name] => penjamin_nama
+        )
+
+    [335] => Array
+        (
+            [table_name] => rinciantagihapasien_v
+            [column_name] => penjamin_id
+        )
+
+    [336] => Array
+        (
+            [table_name] => rinciantagihapasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [337] => Array
+        (
+            [table_name] => rinciantagihapasienlab_v
+            [column_name] => penjamin_id
+        )
+
+    [338] => Array
+        (
+            [table_name] => rinciantagihapasienlab_v
+            [column_name] => penjamin_nama
+        )
+
+    [339] => Array
+        (
+            [table_name] => rinciantagihapasienlaboratorium_v
+            [column_name] => penjamin_id
+        )
+
+    [340] => Array
+        (
+            [table_name] => rinciantagihapasienlaboratorium_v
+            [column_name] => penjamin_nama
+        )
+
+    [341] => Array
+        (
+            [table_name] => rinciantagihapasienpenunjang_v
+            [column_name] => penjamin_id
+        )
+
+    [342] => Array
+        (
+            [table_name] => rinciantagihapasienpenunjang_v
+            [column_name] => penjamin_nama
+        )
+
+    [343] => Array
+        (
+            [table_name] => rinciantagihapasienri_v
+            [column_name] => penjamin_id
+        )
+
+    [344] => Array
+        (
+            [table_name] => rinciantagihapasienri_v
+            [column_name] => penjamin_nama
+        )
+
+    [345] => Array
+        (
+            [table_name] => rinciantagihapasiensudahbayar_v
+            [column_name] => penjamin_id
+        )
+
+    [346] => Array
+        (
+            [table_name] => rinciantagihapasiensudahbayar_v
+            [column_name] => penjamin_nama
+        )
+
+    [347] => Array
+        (
+            [table_name] => sep_get_t
+            [column_name] => penjamin_lakalantas
+        )
+
+    [348] => Array
+        (
+            [table_name] => sep_get_t
+            [column_name] => penjaminsep_kll
+        )
+
+    [349] => Array
+        (
+            [table_name] => sep_t
+            [column_name] => penjamin_lakalantas
+        )
+
+    [350] => Array
+        (
+            [table_name] => sep_t
+            [column_name] => penjaminsep_kll
+        )
+
+    [351] => Array
+        (
+            [table_name] => setoranclosingjasaruangan_v
+            [column_name] => penjamin_id
+        )
+
+    [352] => Array
+        (
+            [table_name] => skp_t
+            [column_name] => penjamin_lakalantas
+        )
+
+    [353] => Array
+        (
+            [table_name] => suratketjaminan_t
+            [column_name] => namapenjamin_skj
+        )
+
+    [354] => Array
+        (
+            [table_name] => tanggunganpenjamin_m
+            [column_name] => penjamin_id
+        )
+
+    [355] => Array
+        (
+            [table_name] => tanggunganpenjamin_m
+            [column_name] => tanggunganpenjamin_aktif
+        )
+
+    [356] => Array
+        (
+            [table_name] => tanggunganpenjamin_m
+            [column_name] => tanggunganpenjamin_id
+        )
+
+    [357] => Array
+        (
+            [table_name] => tarifambulans_m
+            [column_name] => penjamin_id
+        )
+
+    [358] => Array
+        (
+            [table_name] => tarifoperasiruangan_v
+            [column_name] => penjamin_id
+        )
+
+    [359] => Array
+        (
+            [table_name] => tarifoperasiruangan_v
+            [column_name] => penjamin_nama
+        )
+
+    [360] => Array
+        (
+            [table_name] => tarifpemeriksaanlabruangan_v
+            [column_name] => penjamin_id
+        )
+
+    [361] => Array
+        (
+            [table_name] => tarifpemeriksaanlabruangan_v
+            [column_name] => penjamin_nama
+        )
+
+    [362] => Array
+        (
+            [table_name] => tarifpemeriksaanradruangan_v
+            [column_name] => penjamin_id
+        )
+
+    [363] => Array
+        (
+            [table_name] => tarifpemeriksaanradruangan_v
+            [column_name] => penjamin_nama
+        )
+
+    [364] => Array
+        (
+            [table_name] => tarifpemeriksaanrmruangan_v
+            [column_name] => penjamin_id
+        )
+
+    [365] => Array
+        (
+            [table_name] => tarifpemeriksaanrmruangan_v
+            [column_name] => penjamin_nama
+        )
+
+    [366] => Array
+        (
+            [table_name] => tariftindakanperda_v
+            [column_name] => penjamin_id
+        )
+
+    [367] => Array
+        (
+            [table_name] => tariftindakanperda_v
+            [column_name] => penjamin_nama
+        )
+
+    [368] => Array
+        (
+            [table_name] => tariftindakanperdaruangan_v
+            [column_name] => penjamin_id
+        )
+
+    [369] => Array
+        (
+            [table_name] => tariftindakanperdaruangan_v
+            [column_name] => penjamin_nama
+        )
+
+    [370] => Array
+        (
+            [table_name] => tariftindakanperdatotal_v
+            [column_name] => penjamin_id
+        )
+
+    [371] => Array
+        (
+            [table_name] => tariftindakanperdatotal_v
+            [column_name] => penjamin_nama
+        )
+
+    [372] => Array
+        (
+            [table_name] => tindakandanoasudahbayar_v
+            [column_name] => penjamin_id
+        )
+
+    [373] => Array
+        (
+            [table_name] => tindakankomponenclosing_v
+            [column_name] => penjamin_id
+        )
+
+    [374] => Array
+        (
+            [table_name] => tindakanpelayanan_t
+            [column_name] => penjamin_id
+        )
+
+    [375] => Array
+        (
+            [table_name] => tipepaket_m
+            [column_name] => penjamin_id
+        )
+
+    [376] => Array
+        (
+            [table_name] => ubahcarabayar_r
+            [column_name] => penjamin_id
+        )
+
+    [377] => Array
+        (
+            [table_name] => umurpiutangpasien_v
+            [column_name] => penjamin_id
+        )
+
+    [378] => Array
+        (
+            [table_name] => umurpiutangpasien_v
+            [column_name] => penjamin_nama
+        )
+
+    [379] => Array
+        (
+            [table_name] => verifikasitagihantindakan_r
+            [column_name] => penjamin_id
+        )
+
+)

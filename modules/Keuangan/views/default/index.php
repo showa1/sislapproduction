@@ -220,6 +220,14 @@ $dokterJs = json_encode($tagihanDokter);
             <span class="badge-info"><i class="bi bi-hdd-stack text-purple"></i> <?= Html::encode($summaries['buku_besar']) ?></span>
         </div>
     </a>
+
+    <a href="<?= Url::to(['/keuangan/jasa-dokter-penunjang/index']) ?>" class="finance-card">
+        <div class="icon-box" style="color:#002D72; background:rgba(0, 45, 114, 0.1);"><i class="bi bi-clipboard2-pulse"></i></div>
+        <div class="card-content">
+            <h3 class="menu-name">Jasa Dokter Penunjang</h3>
+            <span class="badge-info text-primary"><i class="bi bi-file-earmark-medical"></i> <?= Html::encode($summaries['jasa_dokter']) ?></span>
+        </div>
+    </a>
     
     <div class="empty-state" id="emptyState">
         <i class="bi bi-search" style="font-size: 2rem; opacity: 0.5;"></i>

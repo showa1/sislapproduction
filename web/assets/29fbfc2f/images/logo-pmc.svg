@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="120" height="120">
+  <!--
+    PMC Logo - 4 leaf petals (slim teardrop/leaf shape)
+    Petal pointing UP: narrow at base, wider in middle, rounded rounded tip
+    Key: control points NOT pulled too far out (was 26/74, now 33/67) → slimmer petal
+    Base sits slightly above center (y=58), tip at top (y=7)
+  -->
+
+  <!-- Upper-left GREEN petal (rotate -45°) -->
+  <path d="M 47,57 C 33,50 32,16 50,7 C 68,16 67,50 53,57 Z"
+        fill="#6DC536" transform="rotate(-45, 50, 50)"/>
+
+  <!-- Upper-right GREEN petal (rotate +45°) -->
+  <path d="M 47,57 C 33,50 32,16 50,7 C 68,16 67,50 53,57 Z"
+        fill="#6DC536" transform="rotate(45, 50, 50)"/>
+
+  <!-- Lower-right BLUE petal (rotate 135°) -->
+  <path d="M 47,57 C 33,50 32,16 50,7 C 68,16 67,50 53,57 Z"
+        fill="#29ABE2" transform="rotate(135, 50, 50)"/>
+
+  <!-- Lower-left BLUE petal (rotate -135°) -->
+  <path d="M 47,57 C 33,50 32,16 50,7 C 68,16 67,50 53,57 Z"
+        fill="#29ABE2" transform="rotate(-135, 50, 50)"/>
+
+  <!-- White cross / plus sign -->
+  <rect x="45" y="33" width="10" height="34" rx="2.5" fill="white"/>
+  <rect x="33" y="45" width="34" height="10" rx="2.5" fill="white"/>
+</svg>

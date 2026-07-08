@@ -1,0 +1,516 @@
+=== TABEL RELEVAN ===
+  [pasien_m] => 36326 rows
+  [pendaftaran_t] => 99587 rows
+  [pasienmasukpenunjang_t] => 71464 rows
+  [tindakanpelayanan_t] => 693535 rows
+  [hasilpemeriksaanlab_t] => 48447 rows
+  [detailhasilpemeriksaanlab_t] => 409438 rows
+  [penjamin_m] => ERROR: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "penjamin_m" does not exist
+LINE 1: SELECT COUNT(*) FROM penjamin_m
+                             ^
+The SQL being executed was: SELECT COUNT(*) FROM penjamin_m
+  [carabayar_m] => 4 rows
+  [rujukan_m] => ERROR: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "rujukan_m" does not exist
+LINE 1: SELECT COUNT(*) FROM rujukan_m
+                             ^
+The SQL being executed was: SELECT COUNT(*) FROM rujukan_m
+  [instalasi_m] => 48 rows
+  [ruangan_m] => 242 rows
+  [asuransipasien_t] => ERROR: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "asuransipasien_t" does not exist
+LINE 1: SELECT COUNT(*) FROM asuransipasien_t
+                             ^
+The SQL being executed was: SELECT COUNT(*) FROM asuransipasien_t
+
+=== SAMPLE: pasien_m ===
+Array
+(
+    [pasien_id] => 828
+    [kelompokumur_id] => 3
+    [kecamatan_id] => 1342
+    [pendidikan_id] => 
+    [profilrs_id] => 
+    [kelurahan_id] => 12718
+    [loginpemakai_id] => 
+    [suku_id] => 
+    [pekerjaan_id] => 
+    [kabupaten_id] => 123
+    [propinsi_id] => 10
+    [dokrekammedis_id] => 
+    [no_rekam_medik] => AM000001
+    [tgl_rekam_medik] => 2019-11-30
+    [jenisidentitas] => 
+    [no_identitas_pasien] => 
+    [namadepan] => 
+    [nama_pasien] => UMUM
+    [nama_bin] => 
+    [jeniskelamin] => -
+    [tempat_lahir] => 
+    [tanggal_lahir] => 1991-10-01
+    [alamat_pasien] => -
+    [rt] => 
+    [rw] => 
+    [statusperkawinan] => 
+    [agama] => -
+    [golongandarah] => 
+    [rhesus] => 
+    [anakke] => 
+    [jumlah_bersaudara] => 
+    [no_telepon_pasien] => 
+    [no_mobile_pasien] => 
+    [warga_negara] => -
+    [photopasien] => 
+    [alamatemail] => 
+    [statusrekammedis] => AKTIF
+    [create_time] => 2019-11-30
+    [update_time] => 
+    [create_loginpemakai_id] => 1
+    [update_loginpemakai_id] => 
+    [tgl_meninggal] => 
+    [ispasienluar] => 1
+    [create_ruangan] => 
+    [nama_ibu] => 
+    [nama_ayah] => 
+    [norm_lama] => 
+    [pegawai_id] => 
+    [garis_latitude] => 
+    [garis_longitude] => 
+    [no_jamkespa] => 
+    [nofingerprint] => 
+    [fingerprint_data] => 
+    [nama_perusahaan_bekerja] => 
+    [pasien_ibu_id] => 
+    [no_rekam_medik_ibu] => 
+    [satusehat_id] => 
+)
+
+=== SAMPLE: pendaftaran_t ===
+Array
+(
+    [pendaftaran_id] => 96853
+    [pasienpulang_id] => 
+    [pasienbatalperiksa_id] => 
+    [penanggungjawab_id] => 
+    [penjamin_id] => 398
+    [shift_id] => 41
+    [pasien_id] => 36689
+    [persalinan_id] => 
+    [pegawai_id] => 2263
+    [instalasi_id] => 2
+    [caramasuk_id] => 
+    [pengirimanrm_id] => 
+    [peminjamanrm_id] => 
+    [jeniskasuspenyakit_id] => 45
+    [pembayaranpelayanan_id] => 91161
+    [kelaspelayanan_id] => 6
+    [carabayar_id] => 1
+    [pasienadmisi_id] => 
+    [kelompokumur_id] => 3
+    [golonganumur_id] => 3
+    [rujukan_id] => 
+    [antrian_id] => 
+    [karcis_id] => 660
+    [ruangan_id] => 436
+    [no_pendaftaran] => RJ2602120054
+    [tgl_pendaftaran] => 2026-02-12 15:37:41
+    [no_urutantri] => 002
+    [transportasi] => 
+    [keadaanmasuk] => 
+    [statusperiksa] => SUDAH PULANG
+    [statuspasien] => PENGUNJUNG LAMA
+    [kunjungan] => KUNJUNGAN LAMA
+    [alihstatus] => 
+    [byphone] => 
+    [kunjunganrumah] => 
+    [statusmasuk] => NON RUJUKAN
+    [umur] => 32 Thn 03 Bln 10 Hr
+    [tglselesaiperiksa] => 2026-02-12 16:16:05
+    [keterangan_reg] => 
+    [create_time] => 2026-02-12 15:37:52
+    [update_time] => 
+    [create_loginpemakai_id] => 673
+    [update_loginpemakai_id] => 
+    [create_ruangan] => 2
+    [nopendaftaran_aktif] => 1
+    [status_konfirmasi] => 
+    [tgl_konfirmasi] => 
+    [tglrenkontrol] => 
+    [statusfarmasi] => 
+    [panggilantrian] => 
+    [asuransipasien_id] => 
+    [tglakandilayani] => 2026-02-12 15:47:41
+    [keterangan_pendaftaran] => 
+    [statusdokrm] => 
+    [sep_id] => 
+    [ruangankontrol_id] => 
+    [isumumkebpjs] => 
+    [waktuverifikasipasien] => 
+    [jml_panggil] => 
+    [panggilperiksa] => 
+    [waktuselesaiperiksa] => 
+    [waktuspanggilpasien] => 
+    [waktumulaiperiksa] => 
+    [tat_pelayanan_pasien] => 
+    [istraveling] => 
+    [kamarruangan_id] => 
+    [jenis_rujukan] => 
+    [jadwalhemodialisa_id] => 
+    [ppjp_id] => 
+    [isbacahakpasien] => 
+    [isbacaedukasitransfusi] => 
+    [statuskirim_wsbpjs] => 
+    [respons_wsbpjs] => data kodepoli  belum sesuai.
+    [doktertujuankontrol_id] => 
+    [sep_get_id] => 
+    [buatjanjipoli_id] => 
+    [respons_antrol] => {"typeantrian":"create","kodebooking":"JP2602090012","jenispasien":"NON JKN","nomorkartu":"","nik":"1208104211930001","nohp":"082133593203","kodepoli":"","namapoli":"KLINIK EKSEKUTIF 06 KANDUNGAN + FERTILITAS","pasienbaru":0,"norm":"029018","tanggalperiksa":"2026-02-12","kodedokter":"4394","namadokter":"NONO RASINO","jampraktek":"16:00-17:00","jeniskunjungan":1,"nomorreferensi":"","nomorantrean":"2","angkaantrean":"2","estimasidilayani":1770886061000,"sisakuotajkn":100,"kuotajkn":100,"sisakuotanonjkn":100,"kuotanonjkn":100,"keterangan":"Peserta harap 30 menit lebih awal guna pencatatan administrasi."}
+    [clinicalpatway_id] => 
+    [satusehat_id] => e65e3916-1605-42b8-94d2-41c270e26185
+    [request] => {"resourceType":"Encounter","identifier":[{"system":"http://sys-ids.kemkes.go.id/encounter/100026861","value":"RJ2602120054"}],"status":"arrived","class":{"system":"http://terminology.hl7.org/CodeSystem/v3-ActCode","code":"AMB","display":"ambulatory"},"subject":{"reference":"Patient/P01719571706","display":"AGNES NOVA ASTRIDA PURBA"},"participant":[{"type":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType","code":"ATND","display":"attender"}]}],"individual":{"reference":"Practitioner/10002977281","display":"NONO RASINO"}}],"period":{"start":"2026-02-12T15:37:41+07:00"},"location":[{"location":{"reference":"Location/f2ff75c2-6897-40f9-a165-30663d2e5733","display":"KLINIK EKSEKUTIF 06 KANDUNGAN + FERTILITAS Lantai Loby Priscilla Medical Center"},"extension":[{"url":"https://fhir.kemkes.go.id/r4/StructureDefinition/ServiceClass","extension":[{"url":"value","valueCodeableConcept":{"coding":[{"system":"http://terminology.kemkes.go.id/CodeSystem/locationServiceClass-Outpatient","code":"reguler","display":"Kelas Reguler"}]}}]}]}],"statusHistory":[{"status":"arrived","period":{"start":"2026-02-12T15:37:41+07:00"}}],"serviceProvider":{"reference":"Organization/100026861"}}
+    [response] => "{\"class\":{\"code\":\"AMB\",\"display\":\"ambulatory\",\"system\":\"http:\/\/terminology.hl7.org\/CodeSystem\/v3-ActCode\"},\"id\":\"e65e3916-1605-42b8-94d2-41c270e26185\",\"identifier\":[{\"system\":\"http:\/\/sys-ids.kemkes.go.id\/encounter\/100026861\",\"value\":\"RJ2602120054\"}],\"location\":[{\"extension\":[{\"extension\":[{\"url\":\"value\",\"valueCodeableConcept\":{\"coding\":[{\"code\":\"reguler\",\"display\":\"Kelas Reguler\",\"system\":\"http:\/\/terminology.kemkes.go.id\/CodeSystem\/locationServiceClass-Outpatient\"}]}}],\"url\":\"https:\/\/fhir.kemkes.go.id\/r4\/StructureDefinition\/ServiceClass\"}],\"location\":{\"display\":\"KLINIK EKSEKUTIF 06 KANDUNGAN + FERTILITAS Lantai Loby Priscilla Medical Center\",\"reference\":\"Location\/f2ff75c2-6897-40f9-a165-30663d2e5733\"}}],\"meta\":{\"lastUpdated\":\"2026-02-12T08:40:17.408414+00:00\",\"versionId\":\"MTc3MDg4NTYxNzQwODQxNDAwMA\"},\"participant\":[{\"individual\":{\"display\":\"NONO RASINO\",\"reference\":\"Practitioner\/10002977281\"},\"type\":[{\"coding\":[{\"code\":\"ATND\",\"display\":\"attender\",\"system\":\"http:\/\/terminology.hl7.org\/CodeSystem\/v3-ParticipationType\"}]}]}],\"period\":{\"start\":\"2026-02-12T15:37:41+07:00\"},\"resourceType\":\"Encounter\",\"serviceProvider\":{\"reference\":\"Organization\/100026861\"},\"status\":\"arrived\",\"statusHistory\":[{\"period\":{\"start\":\"2026-02-12T15:37:41+07:00\"},\"status\":\"arrived\"}],\"subject\":{\"display\":\"AGNES NOVA ASTRIDA PURBA\",\"reference\":\"Patient\/P01719571706\"}}"
+    [diagnosasatusehat_id] => 
+    [is_eklaim] => 
+)
+
+=== SAMPLE: pasienmasukpenunjang_t ===
+Array
+(
+    [pasienmasukpenunjang_id] => 1123
+    [pasienkirimkeunitlain_id] => 18764
+    [kelaspelayanan_id] => 6
+    [jeniskasuspenyakit_id] => 36
+    [pasienadmisi_id] => 
+    [pegawai_id] => 1854
+    [ruangan_id] => 53
+    [pasien_id] => 817
+    [pendaftaran_id] => 1134
+    [no_masukpenunjang] => LB001
+    [tglmasukpenunjang] => 2019-11-12 11:57:11
+    [no_urutperiksa] => 001
+    [kunjungan] => KUNJUNGAN BARU
+    [statusperiksa] => SUDAH DI PERIKSA
+    [ruanganasal_id] => 23
+    [create_time] => 2019-11-12 11:57:10
+    [update_time] => 2019-11-12 12:50:21
+    [create_loginpemakai_id] => 341
+    [update_loginpemakai_id] => 341
+    [create_ruangan] => 53
+    [panggilantrian] => 1
+    [jml_panggil] => 
+    [waktumulaiperiksa] => 
+    [nama_perujuk] => 
+)
+
+=== SAMPLE: hasilpemeriksaanlab_t ===
+Array
+(
+    [hasilpemeriksaanlab_id] => 9540
+    [pasien_id] => 816
+    [pasienmasukpenunjang_id] => 1148
+    [pasienadmisi_id] => 
+    [pendaftaran_id] => 1152
+    [nohasilperiksalab] => 191204002
+    [tglhasilpemeriksaanlab] => 2019-12-04 15:59:34
+    [tglpengambilanhasil] => 2019-12-04 15:59:34
+    [hasil_kelompokumur] => 3
+    [hasil_jeniskelamin] => LAKI-LAKI
+    [statusperiksahasil] => SUDAH
+    [catatanlabklinik] => 
+    [printhasillab] => 
+    [create_time] => 2019-12-04 15:50:13
+    [update_time] => 2019-12-04 15:59:33
+    [create_loginpemakai_id] => 1
+    [update_loginpemakai_id] => 1
+    [create_ruangan] => 53
+    [kesimpulan] => 
+    [dokterpj_luarrs] => 
+    [diagnosaket_klinik] => 
+    [namapenerimahasil] => 
+    [notelppenerimahasil] => 
+    [namaygmenyerahkan] => 
+    [ketpenyerahan] => 
+    [jenisidentitas] => 
+    [no_identitas] => 
+    [alamat] => 
+    [statushasilpemeriksaan] => 
+    [ttd_dokter] => 
+    [ttd_perawat] => 
+    [statuskirim] => 
+    [kirimwa_id] => 
+)
+
+=== SAMPLE: tindakanpelayanan_t (lab) ===
+instalasi_id laboratorium: 5
+Array
+(
+    [tindakanpelayanan_id] => 5517
+    [detailhasilpemeriksaanlab_id] => 
+    [shift_id] => 57
+    [kelaspelayanan_id] => 6
+    [pasien_id] => 816
+    [rencanaoperasi_id] => 
+    [instalasi_id] => 5
+    [daftartindakan_id] => 829
+    [alatmedis_id] => 
+    [tipepaket_id] => 1
+    [tindakansudahbayar_id] => 2767
+    [karcis_id] => 
+    [carabayar_id] => 1
+    [pendaftaran_id] => 1133
+    [hasilpemeriksaanrad_id] => 
+    [jeniskasuspenyakit_id] => 36
+    [hasilpemeriksaanrm_id] => 
+    [ruangan_id] => 53
+    [konsulpoli_id] => 
+    [pasienmasukpenunjang_id] => 1124
+    [hasilpemeriksaanpa_id] => 
+    [penjamin_id] => 398
+    [pasienadmisi_id] => 
+    [tgl_tindakan] => 2019-11-12 12:00:44
+    [tarif_rsakomodasi] => 0
+    [tarif_medis] => 0
+    [tarif_paramedis] => 0
+    [tarif_bhp] => 0
+    [tarif_satuan] => 6600
+    [tarif_tindakan] => 6600
+    [satuantindakan] => KALI
+    [qty_tindakan] => 1
+    [cyto_tindakan] => 
+    [tarifcyto_tindakan] => 0
+    [dokterpemeriksa1_id] => 1854
+    [dokterpemeriksa2_id] => 
+    [dokterpendamping_id] => 
+    [dokteranastesi_id] => 
+    [dokterdelegasi_id] => 
+    [bidan_id] => 
+    [suster_id] => 
+    [perawat_id] => 1949
+    [kelastanggungan_id] => 
+    [discount_tindakan] => 0
+    [pembebasan_tindakan] => 0
+    [subsidiasuransi_tindakan] => 0
+    [subsidipemerintah_tindakan] => 0
+    [subsisidirumahsakit_tindakan] => 0
+    [iurbiaya_tindakan] => 6600
+    [tm] => TM
+    [create_time] => 2019-11-12 12:00:44
+    [update_time] => 2019-11-12 12:00:44
+    [create_loginpemakai_id] => 341
+    [update_loginpemakai_id] => 341
+    [create_ruangan] => 53
+    [verifikasitagihan_id] => 
+    [jurnalrekening_id] => 1544
+    [keterangantindakan] => 
+    [rencanatindakan_id] => 
+    [masukkamar_id] => 
+    [perawat2_id] => 
+    [supir_id] => 
+    [bidan2_id] => 
+    [perawat3_id] => 
+    [bidan3_id] => 
+    [pemeriksaanrad_id] => 
+    [jenistarif_id] => 
+    [total_tarifakhir] => 
+)
+
+=== SAMPLE: penjamin_m ===
+SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "penjamin_m" does not exist
+LINE 1: SELECT * FROM penjamin_m LIMIT 5
+                      ^
+The SQL being executed was: SELECT * FROM penjamin_m LIMIT 5
+=== SAMPLE: carabayar_m ===
+Array
+(
+    [0] => Array
+        (
+            [carabayar_id] => 1
+            [carabayar_nama] => PRIBADI
+            [carabayar_namalainnya] => PRIBADI
+            [metode_pembayaran] => Tunai
+            [carabayar_loket] => UMUM
+            [carabayar_singkatan] => M
+            [carabayar_nourut] => 1
+            [issubsidiasuransi] => 
+            [issubsidipemerintah] => 
+            [issubsidirs] => 
+            [carabayar_aktif] => 1
+        )
+
+    [1] => Array
+        (
+            [carabayar_id] => 3
+            [carabayar_nama] => ASURANSI
+            [carabayar_namalainnya] => ASURANSI
+            [metode_pembayaran] => Piutang
+            [carabayar_loket] => ASURANSI
+            [carabayar_singkatan] => A
+            [carabayar_nourut] => 3
+            [issubsidiasuransi] => 1
+            [issubsidipemerintah] => 
+            [issubsidirs] => 
+            [carabayar_aktif] => 1
+        )
+
+    [2] => Array
+        (
+            [carabayar_id] => 2
+            [carabayar_nama] => BPJS Kesehatan
+            [carabayar_namalainnya] => BPJS KESEHATAN
+            [metode_pembayaran] => Piutang
+            [carabayar_loket] => BPJS
+            [carabayar_singkatan] => B
+            [carabayar_nourut] => 2
+            [issubsidiasuransi] => 1
+            [issubsidipemerintah] => 
+            [issubsidirs] => 
+            [carabayar_aktif] => 1
+        )
+
+    [3] => Array
+        (
+            [carabayar_id] => 20
+            [carabayar_nama] => BPJS Ketenagakerjaan
+            [carabayar_namalainnya] => BPJS KETENAGAKERJAAN
+            [metode_pembayaran] => Piutang
+            [carabayar_loket] => ASURANSI
+            [carabayar_singkatan] => K
+            [carabayar_nourut] => 4
+            [issubsidiasuransi] => 1
+            [issubsidipemerintah] => 
+            [issubsidirs] => 
+            [carabayar_aktif] => 1
+        )
+
+)
+
+=== SAMPLE: rujukan_m ===
+SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "rujukan_m" does not exist
+LINE 1: SELECT * FROM rujukan_m LIMIT 3
+                      ^
+The SQL being executed was: SELECT * FROM rujukan_m LIMIT 3
+
+=== SAMPLE: rujukan_t ===
+Array
+(
+    [rujukan_id] => 14
+    [asalrujukan_id] => 3
+    [no_rujukan] => 33058974563212578624
+    [nama_perujuk] => 
+    [tanggal_rujukan] => 
+    [diagnosa_rujukan] => 
+    [aktif_rujukan] => 1
+    [rujukandari_id] => 
+    [kddiagnosa_rujukan] => 
+    [keluhan_rujukan] => 
+)
+
+=== MAIN QUERY: Lab + Pasien + Penjamin + Rujukan ===
+ERROR main query: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "penjamin_m" does not exist
+LINE 51: LEFT JOIN penjamin_m pj
+                   ^
+The SQL being executed was: 
+SELECT
+    -- Data Pasien
+    p.pasien_id,
+    p.norm               AS no_rekam_medis,
+    p.pasien_nama        AS nama_pasien,
+    p.tgllahir           AS tgl_lahir,
+    p.jeniskelamin       AS jenis_kelamin,
+    p.alamat             AS alamat_pasien,
+
+    -- Data Pendaftaran / Kunjungan
+    pd.pendaftaran_id,
+    pd.no_pendaftaran,
+    pd.tgl_pendaftaran,
+    pd.statusperiksa,
+    pd.jenis_rujukan,
+
+    -- Penjamin (Cara Bayar / Asuransi)
+    cb.carabayar_nama    AS cara_bayar,
+    pj.penjamin_nama     AS nama_penjamin,
+
+    -- Asal Rujukan
+    r.rujukan_id,
+    r.asal_rujukan       AS faskes_perujuk,
+    r.no_surat_rujukan,
+    r.tgl_rujukan,
+
+    -- Data Pemeriksaan Lab (via tindakan)
+    tp.tindakanpelayanan_id,
+    tp.tgl_tindakan,
+    dt.daftartindakan_nama AS nama_pemeriksaan,
+    tp.qty_tindakan,
+    tp.tarif_satuan        AS tarif_pemeriksaan,
+    tp.total_tarifakhir    AS total_tarif,
+
+    -- Instalasi / Ruangan
+    ins.instalasi_nama,
+    ru.ruangan_nama        AS ruang_periksa
+
+FROM tindakanpelayanan_t tp
+
+JOIN pendaftaran_t pd
+    ON pd.pendaftaran_id = tp.pendaftaran_id
+
+JOIN pasien_m p
+    ON p.pasien_id = pd.pasien_id
+
+LEFT JOIN carabayar_m cb
+    ON cb.carabayar_id = tp.carabayar_id
+
+LEFT JOIN penjamin_m pj
+    ON pj.penjamin_id = tp.penjamin_id
+
+LEFT JOIN rujukan_t r
+    ON r.rujukan_id = pd.rujukan_id
+
+LEFT JOIN daftartindakan_m dt
+    ON dt.daftartindakan_id = tp.daftartindakan_id
+
+LEFT JOIN instalasi_m ins
+    ON ins.instalasi_id = tp.instalasi_id
+
+LEFT JOIN ruangan_m ru
+    ON ru.ruangan_id = tp.ruangan_id
+
+WHERE
+    ins.instalasi_nama ILIKE '%laborat%'
+    AND EXTRACT(MONTH FROM tp.tgl_tindakan) = '07'
+    AND EXTRACT(YEAR  FROM tp.tgl_tindakan) = '2026'
+
+ORDER BY tp.tgl_tindakan DESC
+LIMIT 10
+
+
+--- Fallback via pasienmasukpenunjang_t ---
+ERROR fallback: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "penjamin_m" does not exist
+LINE 22:     LEFT JOIN penjamin_m pj ON pj.penjamin_id = pd.penjamin_...
+                       ^
+The SQL being executed was: 
+    SELECT
+        pm.pasienmasukpenunjang_id,
+        pm.pendaftaran_id,
+        pm.tgl_masuk,
+        pm.statusperiksa,
+        p.norm             AS no_rekam_medis,
+        p.pasien_nama      AS nama_pasien,
+        p.tgllahir,
+        p.jeniskelamin,
+        pd.no_pendaftaran,
+        pd.tgl_pendaftaran,
+        cb.carabayar_nama  AS cara_bayar,
+        pj.penjamin_nama   AS nama_penjamin,
+        r.asal_rujukan     AS faskes_perujuk,
+        r.no_surat_rujukan,
+        ins.instalasi_nama
+    FROM pasienmasukpenunjang_t pm
+    JOIN pendaftaran_t pd ON pd.pendaftaran_id = pm.pendaftaran_id
+    JOIN pasien_m p ON p.pasien_id = pd.pasien_id
+    LEFT JOIN carabayar_m cb ON cb.carabayar_id = pd.carabayar_id
+    LEFT JOIN penjamin_m pj ON pj.penjamin_id = pd.penjamin_id
+    LEFT JOIN rujukan_t r ON r.rujukan_id = pd.rujukan_id
+    LEFT JOIN instalasi_m ins ON ins.instalasi_id = pm.instalasi_id
+    WHERE ins.instalasi_nama ILIKE '%laborat%'
+    AND EXTRACT(MONTH FROM pm.tgl_masuk) = '07'
+    AND EXTRACT(YEAR  FROM pm.tgl_masuk) = '2026'
+    LIMIT 10
+    

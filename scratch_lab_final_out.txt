@@ -1,0 +1,145 @@
+=== QUERY DETAIL (per-item pemeriksaan) ===
+Filter: Bulan 07 / 2026
+
+Total rows: 797
+
+-- Sample row pertama --
+Array
+(
+    [pasien_id] => 39886
+    [no_rekam_medis] => 032001
+    [nama_pasien] => KARINA PUSPITA SARI
+    [jenis_kelamin] => PEREMPUAN
+    [tanggal_lahir] => 2001-09-10
+    [umur] => 24 Thn 09 Bln 27 Hr
+    [alamat_pasien] => KP PONDOK RANGON RT 03/05 JATITANGON JATISAMPURNA KOTA BEKASI JAWA BARAT DOMISILI JL GAJAH RT 03/09 AYAMALAS KROYA CILACAP
+    [agama] => ISLAM
+    [statusperkawinan] => BELUM KAWIN
+    [no_telepon_pasien] => 
+    [no_identitas_pasien] => 3301065009010001
+    [jenisidentitas] => KTP
+    [warga_negara] => WNI
+    [pendaftaran_id] => 108386
+    [no_pendaftaran] => MC2607070002
+    [tgl_pendaftaran] => 2026-07-07 10:21:55
+    [kunjungan] => KUNJUNGAN BARU
+    [status_periksa] => ANTRIAN
+    [carabayar_id] => 1
+    [cara_bayar] => PRIBADI
+    [penjamin_id] => 398
+    [penjamin_nama] => Umum
+    [kelas_pelayanan] => Tanpa Kelas
+    [no_asuransi] => 
+    [namapemilik_asuransi] => 
+    [nama_perusahaan_asuransi] => 
+    [no_order_lab] => 53003
+    [rujukan_id] => 
+    [no_surat_rujukan] => 
+    [tgl_surat_rujukan] => 
+    [nama_perujuk] => 
+    [diagnosa_rujukan] => 
+    [asal_rujukan] => 
+    [jenis_institusi_perujuk] => 
+    [jenis_rujukan] => 
+    [pasienmasukpenunjang_id] => 76461
+    [tgl_masuk_lab] => 2026-07-07 10:21:55
+    [tindakanpelayanan_id] => 776797
+    [tgl_tindakan] => 2026-07-07 10:21:55
+    [kode_pemeriksaan] => TM-5680
+    [nama_pemeriksaan] => Napza Ampetamina
+    [jenis_pemeriksaan] => LAIN-LAIN
+    [kode_item_lab] => Npz
+    [nama_item_lab] => Napza Ampetamina
+    [qty_tindakan] => 1
+    [tarif_satuan] => 78000
+    [tarif_tindakan] => 78000
+    [iur_biaya] => 0
+    [subsidi_asuransi] => 0
+    [instalasi_nama] => Laboratorium
+    [ruangan_nama] => Laboratorium
+    [dokter_pemeriksa] => dr. BAYU SAPUTRO ISMAIL 
+)
+
+
+=== QUERY RINGKASAN (per-kunjungan lab) ===
+Filter: Bulan 07 / 2026
+
+ERROR Ringkasan: SQLSTATE[42803]: Grouping error: 7 ERROR:  column "v.cara_bayar" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 18:     v.cara_bayar,
+             ^
+The SQL being executed was: 
+SELECT
+    -- Data Pasien
+    v.no_rekam_medik                                AS no_rekam_medis,
+    v.nama_pasien,
+    v.jeniskelamin                                  AS jenis_kelamin,
+    v.umur,
+
+    -- Kunjungan
+    v.no_pendaftaran,
+    v.tgl_pendaftaran,
+    v.no_masukpenunjang                             AS no_order_lab,
+    v.tglmasukpenunjang                             AS tgl_masuk_lab,
+    v.kunjungan,
+    v.statusperiksa                                 AS status_periksa,
+
+    -- Penjamin
+    v.cara_bayar,
+    v.penjamin_nama,
+    v.kelas_pelayanan,
+    v.no_asuransi,
+
+    -- Asal Rujukan
+    r.no_rujukan                                    AS no_surat_rujukan,
+    ar.asalrujukan_nama                             AS asal_rujukan,
+    pd.jenis_rujukan,
+
+    -- Dokter
+    CONCAT(v.gelardepan, ' ', v.nama_pegawai, ' ', v.gelarbelakang_nama) AS dokter_pemeriksa,
+
+    -- Agregat Pemeriksaan
+    COUNT(DISTINCT v.tindakanpelayanan_id)          AS jumlah_item_pemeriksaan,
+    STRING_AGG(DISTINCT v.daftartindakan_nama, ', ' ORDER BY v.daftartindakan_nama) AS daftar_pemeriksaan,
+    SUM(v.tarif_tindakan)                           AS total_tarif,
+    SUM(v.iurbiaya_tindakan)                        AS total_iur_biaya,
+    SUM(v.subsidiasuransi_tindakan)                 AS total_subsidi_asuransi
+
+FROM (
+    SELECT
+        v.*,
+        v.carabayar_nama AS cara_bayar,
+        v.kelaspelayanan_nama AS kelas_pelayanan
+    FROM rincianpemeriksaanlabrad_v v
+    WHERE v.instalasi_nama ILIKE '%laborat%'
+) v
+
+JOIN pendaftaran_t pd ON pd.pendaftaran_id = v.pendaftaran_id
+
+LEFT JOIN rujukan_t r ON r.rujukan_id = pd.rujukan_id
+
+LEFT JOIN asalrujukan_m ar ON ar.asalrujukan_id = r.asalrujukan_id
+
+WHERE
+    EXTRACT(MONTH FROM v.tglmasukpenunjang) = '07'
+    AND EXTRACT(YEAR  FROM v.tglmasukpenunjang) = '2026'
+
+GROUP BY
+    v.pasien_id, v.no_rekam_medik, v.nama_pasien, v.jeniskelamin, v.umur,
+    v.pendaftaran_id, v.no_pendaftaran, v.tgl_pendaftaran,
+    v.no_masukpenunjang, v.tglmasukpenunjang, v.kunjungan, v.statusperiksa,
+    v.carabayar_nama, v.penjamin_nama, v.kelaspelayanan_nama, v.no_asuransi,
+    r.no_rujukan, ar.asalrujukan_nama, pd.jenis_rujukan, pd.rujukan_id,
+    v.gelardepan, v.nama_pegawai, v.gelarbelakang_nama
+
+ORDER BY v.tglmasukpenunjang DESC
+
+
+
+=== STATISTIK: Distribusi Asal Rujukan Lab ===
+Asal Rujukan              Jenis Rujukan   Cara Bayar                 Kunjungan         Item     Total Tarif
+----------------------------------------------------------------------------------------------------
+Tanpa Rujukan             -               BPJS Kesehatan                    74          139     118,452,800
+Rumah Sakit               -               BPJS Kesehatan                     5           13       6,327,000
+Tanpa Rujukan             -               PRIBADI                            5           14       7,772,500
+Klinik                    -               BPJS Kesehatan                     4            5       4,920,000
+Instansi Lain             -               BPJS Kesehatan                     1            2         231,000

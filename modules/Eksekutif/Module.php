@@ -7,6 +7,7 @@ use yii\base\Module as BaseModule;
 class Module extends BaseModule
 {
     public $controllerNamespace = 'app\modules\eksekutif\controllers';
+    public $defaultRoute = 'dashboard';
 
     public $menu = [
         ['label' => 'Kunjungan Rawat Jalan Detail', 'url' => '/eksekutif/pendapatan/index', 'icon' => 'bi bi-person-lines-fill'],
