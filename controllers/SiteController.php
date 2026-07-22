@@ -168,10 +168,9 @@ class SiteController extends Controller
             ],
             'Rawat Inap' => [
                 'label' => 'RAWAT INAP',
-                'url' => 'rawat-jalan/BaseMenu',
+                'url' => 'rawatinap/dashboard/index',
                 'icon' => 'bi bi-heart-pulse',
                 'colorClass' => 'pmc-blue',
-                'comingSoon' => true,
             ],
             'Rawat Darurat' => [
                 'label' => 'RAWAT DARURAT',
@@ -208,10 +207,9 @@ class SiteController extends Controller
             ],
             'Pendaftaran dan Penjadwalan' => [
                 'label' => 'PENDAFTARAN & PENJADWALAN',
-                'url' => 'rawat-jalan/BaseMenu',
+                'url' => 'pendaftaran/dashboard/index',
                 'icon' => 'bi bi-calendar-check',
                 'colorClass' => 'pmc-blue',
-                'comingSoon' => true,
             ],
             'Farmasi' => [
                 'label' => 'FARMASI / APOTEK',

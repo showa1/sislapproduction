@@ -86,6 +86,12 @@ $config = [
         'laboratorium' => [
             'class' => 'app\modules\laboratorium\Module',
         ],
+        'pendaftaran' => [
+            'class' => 'app\modules\Pendaftaran\Module',
+        ],
+        'rawatinap' => [
+            'class' => 'app\modules\RawatInap\Module',
+        ],
     ],
     'as access' => [
     'class' => 'yii\filters\AccessControl',

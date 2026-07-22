@@ -298,6 +298,19 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                     </li>
                     <?php endif; ?>
 
+                    <?php if (isset(Yii::$app->controller->module) && Yii::$app->controller->module->id === 'pendaftaran'): ?>
+                    <li class="nav-item nav-category">
+                        <span class="nav-link">Pendaftaran & Penjadwalan</span>
+                    </li>
+
+                    <li class="nav-item menu-item-searchable <?= ($currentRoute == '/pendaftaran/dashboard/index') ? 'active' : '' ?>">
+                        <a class="nav-link <?= ($currentRoute == '/pendaftaran/dashboard/index') ? 'active' : '' ?>" href="<?= Url::to(['/pendaftaran/dashboard/index']) ?>">
+                            <i class="bi bi-speedometer2"></i>
+                            <span class="menu-title">Dashboard Pendaftaran</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
+
                     <li class="nav-item nav-category">
                         <span class="nav-link">Laporan</span>
                     </li>
@@ -326,6 +339,14 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                 $('#sidebar-menu-list .menu-item-searchable').filter(function() {
                     $(this).toggle($(this).find('.menu-title').text().toLowerCase().indexOf(value) > -1)
                 });
+            });
+
+            // Global shortcut for search (Ctrl+K or /)
+            $(document).on('keydown', function(e) {
+                if ((e.ctrlKey && e.key === 'k') || (e.key === '/' && !$(e.target).is('input, textarea'))) {
+                    e.preventDefault();
+                    $('#menu-search').focus();
+                }
             });
         ");
             ?>
