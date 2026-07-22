@@ -14,6 +14,8 @@ class InformasiHariRawatController extends BaseController
         $caraBayar = Yii::$app->request->get('cara_bayar', '');
         $diagnosaFilter = Yii::$app->request->get('diagnosa', '');
 
+        $export = Yii::$app->request->get('export', '0');
+
         $sql = "
             SELECT
                 pt.tgl_pendaftaran,
@@ -94,6 +96,70 @@ class InformasiHariRawatController extends BaseController
         $sql .= " ORDER BY pat.tgladmisi ";
 
         $data = Yii::$app->db->createCommand($sql, $params)->queryAll();
+
+        if ($export === '1') {
+            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            
+            $sheet->setCellValue('A1', 'Rumah Sakit Priscilla Medical Center');
+            $sheet->setCellValue('A2', 'Laporan Informasi Hari Rawat');
+            $sheet->setCellValue('A3', 'Periode: ' . $dateFrom . ' s/d ' . $dateTo);
+            $sheet->getStyle('A1:A3')->getFont()->setBold(true);
+
+            $headers = ['No', 'No. RM', 'Nama Pasien', 'Tgl Pendaftaran', 'No Pendaftaran', 'Cara Bayar', 'Diagnosa', 'Riwayat Kamar', 'Tgl Menginap', 'Lama Dirawat'];
+            $col = 'A';
+            foreach ($headers as $h) {
+                $sheet->setCellValue($col . '5', $h);
+                $col++;
+            }
+            $sheet->getStyle('A5:J5')->getFont()->setBold(true);
+
+            $rowIdx = 6;
+            $i = 1;
+            foreach ($data as $r) {
+                $lama = $r['lama_dirawat'];
+                $lamaStr = '';
+                if (preg_match('/(\d+)\s+days?/', $lama, $matches)) {
+                    $lamaStr = $matches[1] . ' Hari';
+                } else if (strpos($lama, ':') !== false) {
+                    $lamaStr = 'Hari ini';
+                } else {
+                    $lamaStr = $lama;
+                }
+
+                $sheet->setCellValue('A' . $rowIdx, $i);
+                $sheet->setCellValue('B' . $rowIdx, $r['no_rekam_medik']);
+                $sheet->setCellValue('C' . $rowIdx, $r['nama_pasien']);
+                $sheet->setCellValue('D' . $rowIdx, $r['tgl_pendaftaran'] ? date('d/m/Y H:i', strtotime($r['tgl_pendaftaran'])) : '-');
+                $sheet->setCellValue('E' . $rowIdx, $r['no_pendaftaran']);
+                $sheet->setCellValue('F' . $rowIdx, $r['carabayar_nama']);
+                $sheet->setCellValue('G' . $rowIdx, str_replace("\n", ", ", $r['diagnosa'] ?? '-'));
+                $sheet->setCellValue('H' . $rowIdx, $r['riwayat_kamar'] ?? '-');
+                $sheet->setCellValue('I' . $rowIdx, $r['tgl_nginap'] ? date('d/m/Y H:i', strtotime($r['tgl_nginap'])) : '-');
+                $sheet->setCellValue('J' . $rowIdx, $lamaStr);
+                $rowIdx++;
+                $i++;
+            }
+
+            $sheet->getStyle('A5:J'.($rowIdx - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            
+            foreach (range('A', 'J') as $columnID) {
+                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
+
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+            $fileName = 'Laporan_Hari_Rawat.xlsx';
+            $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+            $writer->save($tempFile);
+
+            return Yii::$app->response->sendFile($tempFile, $fileName)->on(
+                \yii\web\Response::EVENT_AFTER_SEND,
+                function ($event) {
+                    unlink($event->data);
+                },
+                $tempFile
+            );
+        }
 
         // Get options for Cara Bayar dropdown
         $optCaraBayar = Yii::$app->db->createCommand("

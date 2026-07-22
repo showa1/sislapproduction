@@ -50,9 +50,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         <button type="submit" class="btn btn-primary px-3 w-100"><i class="bi bi-filter"></i> Terapkan</button>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-12 text-end">
-                        <a href="<?= Url::to(['index']) ?>" class="btn btn-sm btn-link text-muted text-decoration-none"><i class="bi bi-arrow-clockwise"></i> Reset Filter</a>
+                <div class="row mt-3 align-items-center">
+                    <div class="col-6">
+                        <a href="<?= Url::to(['index', 'date_from' => $dateFrom, 'date_to' => $dateTo, 'cara_bayar' => $caraBayar, 'diagnosa' => $diagnosaFilter ?? '', 'export' => 1]) ?>" class="btn btn-sm btn-success" data-pjax="0" target="_blank">
+                            <i class="bi bi-file-earmark-excel"></i> Download Excel
+                        </a>
+                    </div>
+                    <div class="col-6 text-end">
+                        <a href="<?= Url::to(['index']) ?>" class="btn btn-sm btn-light border text-muted"><i class="bi bi-arrow-clockwise"></i> Reset Filter</a>
                     </div>
                 </div>
             </form>
@@ -61,9 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <!-- Main Table Card -->
     <div class="card shadow-sm border-0 rounded-4 mb-4">
-        <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
             <div>
-                <h4 class="mb-0 fw-bold text-primary"><i class="bi bi-info-square me-2"></i> <?= Html::encode($this->title) ?></h4>
+                <h4 class="mb-0 fw-bold text-primary" style="color: #0dcaf0 !important;"><i class="bi bi-info-square me-2"></i> <?= Html::encode($this->title) ?></h4>
                 <p class="text-muted small mt-1 mb-0">Daftar pasien rawat inap yang belum pulang beserta lama hari rawat.</p>
             </div>
         </div>
