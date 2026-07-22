@@ -73,20 +73,53 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         
+<?php
+$customCss = "
+/* Custom CSS untuk Header Soft Accent */
+#tableInformasiHariRawat thead th {
+    background-color: #e6f4f1 !important;
+    color: #0f4c5c !important;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #00a896 !important;
+    padding: 12px 35px 12px 15px !important; /* Padding kanan yang lebih lebar (35px) khusus untuk tempat panah sortir */
+    position: relative !important;
+    white-space: nowrap !important;
+}
+
+/* Gelapkan ikon panah sorting DataTables */
+table.dataTable thead > tr > th.sorting:before,
+table.dataTable thead > tr > th.sorting:after,
+table.dataTable thead > tr > th.sorting_asc:before,
+table.dataTable thead > tr > th.sorting_asc:after,
+table.dataTable thead > tr > th.sorting_desc:before,
+table.dataTable thead > tr > th.sorting_desc:after {
+    opacity: 0.6;
+    color: #64748B;
+}
+table.dataTable thead > tr > th.sorting_asc:before,
+table.dataTable thead > tr > th.sorting_desc:after {
+    opacity: 1;
+    color: #0f4c5c;
+}
+";
+$this->registerCss($customCss);
+?>
         <div class="card-body px-4 py-4">
             <div class="table-responsive">
                 <table class="table table-hover table-bordered align-middle" id="tableInformasiHariRawat">
-                    <thead class="table-light text-center">
+                    <thead>
                         <tr>
-                            <th width="5%">No</th>
-                            <th>No Rekam Medik</th>
-                            <th>Nama Pasien</th>
-                            <th>Cara Bayar</th>
-                            <th>Diagnosa</th>
-                            <th>Riwayat Kamar</th>
-                            <th>Tgl Menginap</th>
-                            <th>Lama Dirawat</th>
-                            <th>Aksi</th>
+                            <th class="text-center" width="5%">No</th>
+                            <th class="text-start">No Rekam Medik</th>
+                            <th class="text-start">Nama Pasien</th>
+                            <th class="text-center">Cara Bayar</th>
+                            <th class="text-start">Diagnosa</th>
+                            <th class="text-start">Riwayat Kamar</th>
+                            <th class="text-start">Tgl Menginap</th>
+                            <th class="text-center">Lama Dirawat</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
