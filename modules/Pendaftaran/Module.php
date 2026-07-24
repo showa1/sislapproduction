@@ -14,6 +14,7 @@ class Module extends \yii\base\Module
     public $defaultRoute = 'dashboard';
 
     public $menu = [
+        ['label' => 'Cara Daftar', 'url' => '/pendaftaran/cara-daftar/index', 'icon' => 'bi bi-phone'],
         ['label' => 'Data Pasien Meninggal', 'url' => '/pendaftaran/pasien-meninggal/index', 'icon' => 'bi bi-heartbreak'],
     ];
 
