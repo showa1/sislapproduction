@@ -222,6 +222,12 @@ class SiteController extends Controller
                 'url'   => 'laboratorium/dashboard/index',
                 'icon'  => 'bi bi-droplet-half',
                 'colorClass' => 'pmc-blue'
+            ],
+            'Gizi' => [
+                'label' => 'GIZI',
+                'url'   => 'gizi/dashboard/index',
+                'icon'  => 'bi bi-cup-hot',
+                'colorClass' => 'pmc-green'
             ]
         ];
     }

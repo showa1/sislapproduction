@@ -92,6 +92,9 @@ $config = [
         'rawatinap' => [
             'class' => 'app\modules\RawatInap\Module',
         ],
+        'gizi' => [
+            'class' => 'app\modules\Gizi\Module',
+        ],
     ],
     'as access' => [
     'class' => 'yii\filters\AccessControl',

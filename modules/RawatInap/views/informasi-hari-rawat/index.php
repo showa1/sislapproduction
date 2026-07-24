@@ -112,20 +112,23 @@ $this->registerCss($customCss);
                     <thead>
                         <tr>
                             <th class="text-center" width="5%">No</th>
+                            <th class="text-start">Tgl Pendaftaran</th>
+                            <th class="text-start">No Pendaftaran</th>
+                            <th class="text-center">Cara Bayar</th>
                             <th class="text-start">No Rekam Medik</th>
                             <th class="text-start">Nama Pasien</th>
-                            <th class="text-center">Cara Bayar</th>
                             <th class="text-start">Diagnosa</th>
-                            <th class="text-start">Riwayat Kamar</th>
                             <th class="text-start">Tgl Menginap</th>
-                            <th class="text-center">Lama Dirawat</th>
+                            <th class="text-start">Tgl Pulang</th>
+                            <th class="text-start">Riwayat Kamar</th>
+                            <th class="text-center">Lama Menginap</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($data)): ?>
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-4">
+                                <td colspan="12" class="text-center text-muted py-4">
                                     <i class="bi bi-folder2-open fs-2 d-block mb-2 text-black-50"></i>
                                     Tidak ada data pasien rawat inap.
                                 </td>
@@ -134,11 +137,8 @@ $this->registerCss($customCss);
                             <?php foreach ($data as $index => $row): ?>
                                 <tr>
                                     <td class="text-center"><?= $index + 1 ?></td>
-                                    <td>
-                                        <div class="fw-bold text-dark fs-6"><?= Html::encode($row['no_rekam_medik']) ?></div>
-                                        <div class="small text-muted">Reg: <?= Html::encode($row['no_pendaftaran']) ?></div>
-                                    </td>
-                                    <td class="fw-medium text-dark"><?= Html::encode($row['nama_pasien']) ?></td>
+                                    <td><?= Html::encode($row['tgl_pendaftaran'] ? date('d/m/Y H:i', strtotime($row['tgl_pendaftaran'])) : '-') ?></td>
+                                    <td><?= Html::encode($row['no_pendaftaran']) ?></td>
                                     <td class="text-center">
                                         <?php 
                                             $cbText = $row['carabayar_nama'];
@@ -148,30 +148,37 @@ $this->registerCss($customCss);
                                             <?= Html::encode($cbText) ?>
                                         </span>
                                     </td>
+                                    <td class="fw-bold text-dark"><?= Html::encode($row['no_rekam_medik']) ?></td>
+                                    <td class="fw-medium text-dark"><?= Html::encode($row['nama_pasien']) ?></td>
                                     <td>
                                         <?php
-                                            $diagnosaList = array_filter(explode("\n", $row['diagnosa'] ?? ''));
-                                            if (empty($diagnosaList)) {
+                                            $rawDiagnosa = $row['diagnosa'] ?? '';
+                                            if (empty(trim($rawDiagnosa))) {
                                                 echo '-';
                                             } else {
-                                                $visibleCount = min(2, count($diagnosaList));
-                                                echo "<ul class='list-unstyled mb-0' style='font-size: 0.85rem;'>";
-                                                for ($i = 0; $i < $visibleCount; $i++) {
-                                                    $parts = explode(' - ', $diagnosaList[$i], 2);
-                                                    if (count($parts) == 2) {
-                                                        echo "<li><strong class='text-dark'>{$parts[0]}</strong> - {$parts[1]}</li>";
-                                                    } else {
-                                                        echo "<li>{$diagnosaList[$i]}</li>";
+                                                $diagnosaList = array_filter(array_map('trim', explode("\n", $rawDiagnosa)));
+                                                $uniqueDiagnosa = array_values(array_unique($diagnosaList));
+                                                
+                                                if (count($uniqueDiagnosa) > 0) {
+                                                    echo "<div class='small text-wrap' style='max-width: 250px;'>" . Html::encode($uniqueDiagnosa[0]) . "</div>";
+                                                    
+                                                    if (count($uniqueDiagnosa) > 1) {
+                                                        $more = count($uniqueDiagnosa) - 1;
+                                                        $fullText = implode('<br>', array_map('yii\helpers\Html::encode', $uniqueDiagnosa));
+                                                        $safeTitle = str_replace(["'", '"'], ['&#39;', '&quot;'], $fullText);
+                                                        echo "<span class='badge bg-light text-secondary border mt-1' style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-html='true' title='{$safeTitle}'>+{$more} lainnya</span>";
                                                     }
-                                                }
-                                                echo "</ul>";
-                                                if (count($diagnosaList) > 2) {
-                                                    $more = count($diagnosaList) - 2;
-                                                    $fullText = implode("<br>", $diagnosaList);
-                                                    echo "<span class='badge bg-light text-secondary mt-1' style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-html='true' title='{$fullText}'>+{$more} lainnya</span>";
+                                                } else {
+                                                    echo '-';
                                                 }
                                             }
                                         ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?= Html::encode($row['tgl_nginap'] ? date('d/m/Y H:i', strtotime($row['tgl_nginap'])) : '-') ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?= Html::encode($row['tglpulang'] ? date('d/m/Y H:i', strtotime($row['tglpulang'])) : '-') ?>
                                     </td>
                                     <td>
                                         <div class="small text-muted text-wrap" style="max-width: 200px;">
@@ -179,29 +186,7 @@ $this->registerCss($customCss);
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <div><?= date('d M Y', strtotime($row['tgl_nginap'])) ?></div>
-                                        <div class="small text-muted"><?= date('H:i', strtotime($row['tgl_nginap'])) ?></div>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php 
-                                            $lama = $row['lama_dirawat'];
-                                            if (preg_match('/(\d+)\s+days?/', $lama, $matches)) {
-                                                $hari = (int)$matches[1];
-                                                if ($hari > 7) {
-                                                    echo "<span class='badge bg-danger px-3 py-2 fs-6 shadow-sm border border-danger'>{$hari} Hari</span>";
-                                                } else if ($hari > 3) {
-                                                    echo "<span class='badge bg-warning text-dark px-3 py-2 fs-6 shadow-sm border border-warning'>{$hari} Hari</span>";
-                                                } else {
-                                                    echo "<span class='badge bg-info text-dark px-3 py-2 fs-6 border border-info'>{$hari} Hari</span>";
-                                                }
-                                            } else {
-                                                if (strpos($lama, ':') !== false) {
-                                                    echo "<span class='badge bg-light text-secondary px-3 py-2 fs-6 border'>Hari ini</span>";
-                                                } else {
-                                                    echo Html::encode($lama);
-                                                }
-                                            }
-                                        ?>
+                                        <?= Html::encode(round((float)($row['lama_menginap'] ?? 0), 1)) ?>
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-1">

@@ -24,53 +24,40 @@ class InformasiHariRawatController extends BaseController
                 pm.no_rekam_medik,
                 pm.nama_pasien,
 
-                STRING_AGG(
-                    DISTINCT dm.diagnosa_kode || ' - ' || dm.diagnosa_nama,
-                    E'\n'
-                ) AS diagnosa,
+                STRING_AGG(dm.diagnosa_kode || ' - ' || dm.diagnosa_nama, E'\n') AS diagnosa,
 
+                pat.tgladmisi AS tgl_nginap,
+                pat.tglpulang,
                 STRING_AGG(
                     DISTINCT kr.kamarruangan_nokamar,
                     ' -> '
                     ORDER BY kr.kamarruangan_nokamar
                 ) AS riwayat_kamar,
+                EXTRACT(EPOCH FROM (pat.tglpulang - pat.tgladmisi)) / 3600 AS lama_menginap
 
-                pat.tgladmisi AS tgl_nginap,
-                NOW() AS sampai_hari_ini,
-                (NOW() - pat.tgladmisi) AS lama_dirawat
-
-            FROM pendaftaran_t pt
-
-            JOIN pasienadmisi_t pat
-                ON pat.pasienadmisi_id = pt.pasienadmisi_id
-
+            FROM pasienadmisi_t pat
+            JOIN pendaftaran_t pt
+                ON pt.pendaftaran_id = pat.pendaftaran_id
             JOIN pasien_m pm
-                ON pm.pasien_id = pt.pasien_id
-
+                ON pm.pasien_id = pat.pasien_id
             JOIN carabayar_m cm
-                ON cm.carabayar_id = pt.carabayar_id
-
+                ON cm.carabayar_id = pat.carabayar_id
             LEFT JOIN pasienmorbiditas_t pst
                 ON pst.pendaftaran_id = pt.pendaftaran_id
-
             LEFT JOIN diagnosa_m dm
                 ON dm.diagnosa_id = pst.diagnosa_id
-
             LEFT JOIN masukkamar_t mk
                 ON mk.pasienadmisi_id = pat.pasienadmisi_id
-
             LEFT JOIN kamarruangan_m kr
                 ON kr.kamarruangan_id = mk.kamarruangan_id
-
-            WHERE pat.tglpulang IS NULL
+            WHERE DATE(pat.tglpulang) >= :df
+              AND DATE(pat.tglpulang) <= :dt
               AND pt.pasienbatalperiksa_id IS NULL
-              AND pat.tgladmisi >= :df
-              AND pat.tgladmisi <= :dt
         ";
 
         $params = [
-            ':df' => $dateFrom . ' 00:00:00',
-            ':dt' => $dateTo . ' 23:59:59'
+            ':df' => $dateFrom,
+            ':dt' => $dateTo
         ];
 
         if (!empty($caraBayar)) {
@@ -85,15 +72,16 @@ class InformasiHariRawatController extends BaseController
                 cm.carabayar_nama,
                 pm.no_rekam_medik,
                 pm.nama_pasien,
-                pat.tgladmisi
+                pat.tgladmisi,
+                pat.tglpulang
         ";
 
         if (!empty($diagnosaFilter)) {
-            $sql .= " HAVING STRING_AGG(DISTINCT dm.diagnosa_kode || ' - ' || dm.diagnosa_nama, E'\n') ILIKE :diag ";
+            $sql .= " HAVING STRING_AGG(dm.diagnosa_kode || ' - ' || dm.diagnosa_nama, E'\n') ILIKE :diag ";
             $params[':diag'] = '%' . $diagnosaFilter . '%';
         }
 
-        $sql .= " ORDER BY pat.tgladmisi ";
+        $sql .= " ORDER BY lama_menginap DESC ";
 
         $data = Yii::$app->db->createCommand($sql, $params)->queryAll();
 
@@ -106,25 +94,23 @@ class InformasiHariRawatController extends BaseController
             $sheet->setCellValue('A3', 'Periode: ' . $dateFrom . ' s/d ' . $dateTo);
             $sheet->getStyle('A1:A3')->getFont()->setBold(true);
 
-            $headers = ['No', 'No. RM', 'Nama Pasien', 'Tgl Pendaftaran', 'No Pendaftaran', 'Cara Bayar', 'Diagnosa', 'Riwayat Kamar', 'Tgl Menginap', 'Lama Dirawat'];
+            $headers = ['No', 'No. RM', 'Nama Pasien', 'Tgl Pendaftaran', 'No Pendaftaran', 'Cara Bayar', 'Diagnosa', 'Riwayat Kamar', 'Tgl Menginap', 'Tgl Pulang', 'Lama Dirawat'];
             $col = 'A';
             foreach ($headers as $h) {
                 $sheet->setCellValue($col . '5', $h);
                 $col++;
             }
-            $sheet->getStyle('A5:J5')->getFont()->setBold(true);
+            $sheet->getStyle('A5:K5')->getFont()->setBold(true);
 
             $rowIdx = 6;
             $i = 1;
             foreach ($data as $r) {
-                $lama = $r['lama_dirawat'];
-                $lamaStr = '';
-                if (preg_match('/(\d+)\s+days?/', $lama, $matches)) {
-                    $lamaStr = $matches[1] . ' Hari';
-                } else if (strpos($lama, ':') !== false) {
-                    $lamaStr = 'Hari ini';
+                $lamaJam = $r['lama_menginap'] ?? 0;
+                $hari = floor($lamaJam / 24);
+                if ($hari > 0) {
+                    $lamaStr = $hari . ' Hari';
                 } else {
-                    $lamaStr = $lama;
+                    $lamaStr = 'Hari ini';
                 }
 
                 $sheet->setCellValue('A' . $rowIdx, $i);
@@ -136,7 +122,8 @@ class InformasiHariRawatController extends BaseController
                 $sheet->setCellValue('G' . $rowIdx, str_replace("\n", ", ", $r['diagnosa'] ?? '-'));
                 $sheet->setCellValue('H' . $rowIdx, $r['riwayat_kamar'] ?? '-');
                 $sheet->setCellValue('I' . $rowIdx, $r['tgl_nginap'] ? date('d/m/Y H:i', strtotime($r['tgl_nginap'])) : '-');
-                $sheet->setCellValue('J' . $rowIdx, $lamaStr);
+                $sheet->setCellValue('J' . $rowIdx, $r['tglpulang'] ? date('d/m/Y H:i', strtotime($r['tglpulang'])) : '-');
+                $sheet->setCellValue('K' . $rowIdx, $lamaStr);
                 $rowIdx++;
                 $i++;
             }
