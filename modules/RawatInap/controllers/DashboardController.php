@@ -12,7 +12,8 @@ class DashboardController extends BaseController
         $year = Yii::$app->request->get('year', date('Y'));
         $month = Yii::$app->request->get('month', ($year == date('Y')) ? date('n') : 12);
         $caraBayar = Yii::$app->request->get('cara_bayar', 'Semua');
-        $ruangan = Yii::$app->request->get('ruangan', 'Semua');
+        $ruangan = Yii::$app->request->get('ruangan', []);
+        $ruangan_m = Yii::$app->request->get('ruangan_m', []);
 
         // Month to act as "Bulan Ini"
         $currentMonth = (int) $month;
@@ -30,11 +31,36 @@ class DashboardController extends BaseController
 
         $joinRuangan = "";
         $whereRuangan = "";
-        if ($ruangan !== 'Semua') {
-            $joinRuangan = "JOIN masukkamar_t mk ON mk.pasienadmisi_id = pat.pasienadmisi_id
-                            JOIN kamarruangan_m kr ON kr.kamarruangan_id = mk.kamarruangan_id";
-            $whereRuangan = "AND kr.kamarruangan_nokamar = :rg";
-            $params[':rg'] = $ruangan;
+        
+        $ruangan_selected = (array)$ruangan;
+        $filter_instalasi = !empty($ruangan_selected) && !in_array('Semua', $ruangan_selected);
+        
+        $ruangan_m_selected = (array)$ruangan_m;
+        $filter_ruangan = !empty($ruangan_m_selected) && !in_array('Semua', $ruangan_m_selected);
+
+        if ($filter_instalasi || $filter_ruangan) {
+            $joinRuangan = "JOIN ruangan_m rm ON rm.ruangan_id = pat.ruangan_id ";
+            
+            if ($filter_instalasi) {
+                $joinRuangan .= "JOIN instalasi_m im ON im.instalasi_id = rm.instalasi_id ";
+                $placeholders = [];
+                foreach ($ruangan_selected as $index => $r_val) {
+                    $p = ':inst' . $index;
+                    $placeholders[] = $p;
+                    $params[$p] = $r_val;
+                }
+                $whereRuangan .= "AND im.instalasi_nama IN (" . implode(',', $placeholders) . ") ";
+            }
+
+            if ($filter_ruangan) {
+                $placeholders = [];
+                foreach ($ruangan_m_selected as $index => $r_val) {
+                    $p = ':rm' . $index;
+                    $placeholders[] = $p;
+                    $params[$p] = $r_val;
+                }
+                $whereRuangan .= "AND rm.ruangan_nama IN (" . implode(',', $placeholders) . ") ";
+            }
         }
 
         // 1. Trend Bulanan (Jan - Des) - Tetap dalam 1 tahun
@@ -77,8 +103,16 @@ class DashboardController extends BaseController
         ";
         // Do not use $params here directly because it might contain :cb which is not used in this query
         $paramBd = [':year' => $year, ':month' => $currentMonth];
-        if ($ruangan !== 'Semua')
-            $paramBd[':rg'] = $ruangan;
+        if ($filter_instalasi) {
+            foreach ($ruangan_selected as $index => $r_val) {
+                $paramBd[':inst' . $index] = $r_val;
+            }
+        }
+        if ($filter_ruangan) {
+            foreach ($ruangan_m_selected as $index => $r_val) {
+                $paramBd[':rm' . $index] = $r_val;
+            }
+        }
         $dataBreakdown = Yii::$app->db->createCommand($sqlBreakdown, $paramBd)->queryAll();
 
         // Rumus LOS
@@ -115,14 +149,39 @@ class DashboardController extends BaseController
 
         // Opt dropdowns
         $optCaraBayar = Yii::$app->db->createCommand("SELECT DISTINCT carabayar_nama FROM carabayar_m ORDER BY carabayar_nama")->queryColumn();
-        $optRuangan = Yii::$app->db->createCommand("SELECT DISTINCT kamarruangan_nokamar FROM kamarruangan_m ORDER BY kamarruangan_nokamar")->queryColumn();
+        $optRuangan = ['Rawat Inap', 'Perawatan Intensif'];
+        
+        $sqlOptRm = "SELECT DISTINCT rm.ruangan_nama FROM ruangan_m rm ";
+        $paramOptRm = [];
+        if ($filter_instalasi) {
+            $sqlOptRm .= "JOIN instalasi_m im ON im.instalasi_id = rm.instalasi_id WHERE im.instalasi_nama IN (";
+            $phs = [];
+            foreach ($ruangan_selected as $index => $r_val) {
+                $p = ':i' . $index;
+                $phs[] = $p;
+                $paramOptRm[$p] = $r_val;
+            }
+            $sqlOptRm .= implode(',', $phs) . ") ";
+        }
+        $sqlOptRm .= "ORDER BY rm.ruangan_nama";
+        $optRuanganM = Yii::$app->db->createCommand($sqlOptRm, $paramOptRm)->queryColumn();
+
+        $rawRooms = Yii::$app->db->createCommand("
+            SELECT DISTINCT rm.ruangan_nama, im.instalasi_nama 
+            FROM ruangan_m rm 
+            JOIN instalasi_m im ON im.instalasi_id = rm.instalasi_id 
+            ORDER BY rm.ruangan_nama
+        ")->queryAll();
 
         return $this->render('index', [
             'year' => $year,
             'caraBayar' => $caraBayar,
             'ruangan' => $ruangan,
+            'ruangan_m' => $ruangan_m,
             'optCaraBayar' => $optCaraBayar,
             'optRuangan' => $optRuangan,
+            'optRuanganM' => $optRuanganM,
+            'rawRooms' => $rawRooms,
             'currentMonth' => $currentMonth,
             'trendByMonth' => $trendByMonth,
             'currData' => $currData,

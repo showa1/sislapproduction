@@ -9,6 +9,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $this->registerJsFile('https://cdn.jsdelivr.net/npm/chart.js', ['position' => \yii\web\View::POS_HEAD]);
 
+$this->registerCss("
+    .btn-pill-filter {
+        color: #6c757d;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        transition: all 0.2s ease;
+    }
+    .btn-pill-filter:hover {
+        background-color: #e9ecef;
+    }
+    .btn-check:checked + .btn-pill-filter {
+        color: #fff;
+        background-color: #6f42c1; /* Purple/Primary style */
+        border-color: #6f42c1;
+    }
+");
+
 // Calculate percentages for vs last month
 $calcDiff = function($curr, $prev) {
     if ($prev == 0) return $curr > 0 ? 100 : 0;
@@ -90,15 +107,40 @@ $formatDiffBadge = function($diff, $isLos = true) {
                     </div>
                 </div>
                 <div class="col-auto">
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-end-0 text-muted">RUANGAN</span>
-                        <select name="ruangan" class="form-select border-start-0 shadow-none">
-                            <option value="Semua">Semua</option>
-                            <?php foreach($optRuangan as $opt): ?>
-                                <option value="<?= Html::encode($opt) ?>" <?= $ruangan == $opt ? 'selected' : '' ?>><?= Html::encode($opt) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="d-flex align-items-center gap-1 flex-wrap">
+                        <span class="text-muted small fw-bold me-2">INSTALASI:</span>
+                        <?php foreach($optRuangan as $opt): ?>
+                            <?php 
+                            $isChecked = in_array($opt, (array)$ruangan); 
+                            $id = 'inst_' . preg_replace('/[^a-zA-Z0-9]/', '', $opt);
+                            ?>
+                            <input type="checkbox" class="btn-check" name="ruangan[]" id="<?= $id ?>" value="<?= Html::encode($opt) ?>" <?= $isChecked ? 'checked' : '' ?> autocomplete="off">
+                            <label class="btn btn-sm btn-pill-filter rounded-pill px-3 mb-0" for="<?= $id ?>"><?= Html::encode($opt) ?></label>
+                        <?php endforeach; ?>
                     </div>
+                </div>
+                <div class="col-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle rounded-pill px-3 shadow-none" type="button" id="ruanganDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            RUANGAN <span class="badge bg-primary ms-1 rounded-pill" id="ruanganCount">Semua</span>
+                        </button>
+                        <div class="dropdown-menu p-0 shadow" aria-labelledby="ruanganDropdown" style="width: 280px; font-size: 0.85rem;">
+                            <div class="p-2 border-bottom bg-light">
+                                <input type="text" class="form-control form-control-sm shadow-none" id="searchRuangan" placeholder="Ketik untuk menelusuri...">
+                            </div>
+                            <div class="p-2 border-bottom">
+                                <div class="d-flex align-items-center mb-0">
+                                    <input type="checkbox" id="checkAllRuangan" class="me-2 cursor-pointer" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <label class="fw-bold mb-0" style="cursor: pointer;" for="checkAllRuangan">Semua</label>
+                                </div>
+                            </div>
+                            <div class="p-2" id="ruanganList" style="max-height: 250px; overflow-y: auto;">
+                                <!-- Checkboxes injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hidden select for form submission -->
+                    <select name="ruangan_m[]" id="hiddenRuanganSelect" multiple style="display: none;"></select>
                 </div>
                 <div class="col-auto ms-auto text-end">
                     <span class="text-muted small d-none d-md-inline me-3">Data per: <?= $lblBulanIni ?></span>
@@ -255,7 +297,148 @@ $formatDiffBadge = function($diff, $isLos = true) {
 $rawAvgJam = round($currData['rata_rata_los']);
 $valHari = round($currData['rata_rata_los'] / 24, 1);
 
+$rawRoomsJson = json_encode($rawRooms);
+$ruanganSelectedJson = json_encode(empty($ruangan_m) ? ['Semua'] : (array)$ruangan_m);
+
 $this->registerJs("
+    // Dynamic Ruangan Dropdown (Custom UI)
+    const rawRooms = {$rawRoomsJson};
+    const ruanganSelected = {$ruanganSelectedJson};
+    
+    const hiddenSelect = document.getElementById('hiddenRuanganSelect');
+    const ruanganList = document.getElementById('ruanganList');
+    const checkAllBtn = document.getElementById('checkAllRuangan');
+    const searchInput = document.getElementById('searchRuangan');
+    const ruanganCount = document.getElementById('ruanganCount');
+    
+    const instalasiCheckboxes = document.querySelectorAll('input[name=\"ruangan[]\"]');
+
+    function updateRuanganOptions() {
+        if (!hiddenSelect) return;
+        
+        const previouslyChecked = Array.from(ruanganList.querySelectorAll('.room-checkbox:checked')).map(cb => cb.value);
+        const isFirstLoad = ruanganList.innerHTML === '';
+        
+        const activeSelections = isFirstLoad ? ruanganSelected : previouslyChecked;
+        const isSemuaActive = isFirstLoad ? ruanganSelected.includes('Semua') : checkAllBtn.checked;
+        
+        const selectedInstalasi = Array.from(instalasiCheckboxes)
+                                    .filter(cb => cb.checked)
+                                    .map(cb => cb.value);
+
+        let filteredRooms = rawRooms;
+        if (selectedInstalasi.length > 0) {
+            filteredRooms = rawRooms.filter(r => selectedInstalasi.includes(r.instalasi_nama));
+        }
+
+        const uniqueRooms = [...new Set(filteredRooms.map(r => r.ruangan_nama))].sort();
+        
+        ruanganList.innerHTML = '';
+        hiddenSelect.innerHTML = '';
+
+        const optSemua = document.createElement('option');
+        optSemua.value = 'Semua';
+        optSemua.selected = isSemuaActive;
+        hiddenSelect.appendChild(optSemua);
+        
+        let checkedCount = 0;
+
+        uniqueRooms.forEach(room => {
+            const option = document.createElement('option');
+            option.value = room;
+            option.textContent = room;
+            const isSelected = isSemuaActive || activeSelections.includes(room);
+            option.selected = isSelected;
+            hiddenSelect.appendChild(option);
+            
+            if (isSelected) checkedCount++;
+
+            const div = document.createElement('div');
+            div.className = 'd-flex align-items-start mb-2 room-item';
+            
+            const chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.className = 'room-checkbox me-2 mt-1';
+            chk.style.width = '16px';
+            chk.style.height = '16px';
+            chk.style.cursor = 'pointer';
+            chk.value = room;
+            chk.id = 'room_' + room.replace(/[^a-zA-Z0-9]/g, '');
+            chk.checked = isSelected;
+            
+            const lbl = document.createElement('label');
+            lbl.className = 'w-100 text-truncate mb-0';
+            lbl.style.cursor = 'pointer';
+            lbl.htmlFor = chk.id;
+            lbl.textContent = room;
+            
+            div.appendChild(chk);
+            div.appendChild(lbl);
+            ruanganList.appendChild(div);
+            
+            chk.addEventListener('change', function() {
+                option.selected = this.checked;
+                if (!this.checked) {
+                    optSemua.selected = false;
+                    checkAllBtn.checked = false;
+                }
+                updateCount();
+            });
+        });
+        
+        checkAllBtn.checked = isSemuaActive || (checkedCount > 0 && checkedCount === uniqueRooms.length);
+        updateCount();
+    }
+    
+    function updateCount() {
+        const total = ruanganList.querySelectorAll('.room-checkbox').length;
+        const checked = ruanganList.querySelectorAll('.room-checkbox:checked').length;
+        const isSemua = checkAllBtn.checked || checked === 0 || checked === total;
+        
+        if (isSemua) {
+            ruanganCount.textContent = 'Semua';
+            hiddenSelect.querySelector('option[value=\"Semua\"]').selected = true;
+        } else {
+            ruanganCount.textContent = checked;
+            hiddenSelect.querySelector('option[value=\"Semua\"]').selected = false;
+        }
+    }
+
+    checkAllBtn.addEventListener('change', function() {
+        const isChecked = this.checked;
+        hiddenSelect.querySelector('option[value=\"Semua\"]').selected = isChecked;
+        const checkboxes = ruanganList.querySelectorAll('.room-checkbox');
+        checkboxes.forEach(chk => {
+            // Only check visible ones if we want search filtering logic, but standard is all
+            if (chk.closest('.room-item').style.display !== 'none') {
+                chk.checked = isChecked;
+                const opt = hiddenSelect.querySelector('option[value=\"' + chk.value + '\"]');
+                if (opt) opt.selected = isChecked;
+            }
+        });
+        updateCount();
+    });
+
+    searchInput.addEventListener('input', function() {
+        const term = this.value.toLowerCase();
+        const items = ruanganList.querySelectorAll('.room-item');
+        items.forEach(item => {
+            const lbl = item.querySelector('label').textContent.toLowerCase();
+            if (lbl.includes(term)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+
+    instalasiCheckboxes.forEach(cb => {
+        cb.addEventListener('change', updateRuanganOptions);
+    });
+
+    // Run on initial load to sync state
+    updateRuanganOptions();
+
     // Toggle Logic
     let showingHours = false;
     const valHours = '{$rawAvgJam}';
