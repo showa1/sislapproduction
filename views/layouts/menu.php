@@ -49,7 +49,7 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                 <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Welcome</h5>
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item">
-                        <a href="/sislap/web/index.php?r=site/logout" class="nav-link">
+                        <a href="<?= Url::to(['/site/logout']) ?>" class="nav-link">
                             <i class="dropdown-item-icon icon-power text-primary"></i> Sign Out
                         </a>
                     </li>
