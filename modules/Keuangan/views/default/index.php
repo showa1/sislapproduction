@@ -181,6 +181,14 @@ $dokterJs = json_encode($tagihanDokter);
 <h4 class="menu-section-title">Akses Laporan Keuangan</h4>
 <div class="finance-grid" id="financeMenuGrid">
     
+    <a href="<?= Url::to(['/keuangan/dashboard-pendapatan/index']) ?>" class="finance-card">
+        <div class="icon-box" style="color:#00C853; background:rgba(0, 200, 83, 0.1);"><i class="bi bi-wallet2"></i></div>
+        <div class="card-content">
+            <h3 class="menu-name">Trend Pendapatan Eksekutif</h3>
+            <span class="badge-info"><i class="bi bi-graph-up-arrow text-success"></i> Dashboard</span>
+        </div>
+    </a>
+    
     <a href="<?= Url::to(['/keuangan/pendapatan-pasien/index']) ?>" class="finance-card">
         <div class="icon-box"><i class="bi bi-cash-stack"></i></div>
         <div class="card-content">

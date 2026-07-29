@@ -96,8 +96,49 @@ class DashboardController extends BaseController
 
         $kunjunganGrowth  = $kunjunganPrev > 0 ? round((($kunjunganCurr - $kunjunganPrev) / $kunjunganPrev) * 100, 1) : 0;
         $itemGrowth       = $itemPrev > 0      ? round((($itemCurr - $itemPrev) / $itemPrev) * 100, 1) : 0;
-        $pendapatanGrowth = $pendapatanPrev > 0 ? round((($pendapatanCurr - $pendapatanPrev) / $pendapatanPrev) * 100, 1) : 0;
         $pasienBaruPct    = $kunjunganCurr > 0  ? round(($pasienBaru / $kunjunganCurr) * 100, 1) : 0;
+
+        // ============================================================
+        // QUERY: Rerata Respontime
+        // ============================================================
+        $rerataRow = $db->createCommand("
+            SELECT
+                AVG(CASE WHEN DATE(hpt.tglhasilpemeriksaanlab) >= :df AND DATE(hpt.tglhasilpemeriksaanlab) <= :dt 
+                         THEN EXTRACT(EPOCH FROM (pmt.tglmasukpenunjang - pkt.tgl_kirimpasien)) ELSE NULL END) / 60 AS rerata_curr,
+                AVG(CASE WHEN DATE(hpt.tglhasilpemeriksaanlab) >= :pdf AND DATE(hpt.tglhasilpemeriksaanlab) <= :pdt 
+                         THEN EXTRACT(EPOCH FROM (pmt.tglmasukpenunjang - pkt.tgl_kirimpasien)) ELSE NULL END) / 60 AS rerata_prev
+            FROM pasienkirimkeunitlain_t pkt
+            JOIN pasienmasukpenunjang_t pmt ON pmt.pasienmasukpenunjang_id = pkt.pasienmasukpenunjang_id
+            JOIN hasilpemeriksaanlab_t hpt ON pmt.pasienmasukpenunjang_id = hpt.pasienmasukpenunjang_id
+            WHERE (DATE(hpt.tglhasilpemeriksaanlab) BETWEEN :pdf AND :dt)
+        ")->bindValues([
+            ':df'   => $dateFrom,
+            ':dt'   => $dateTo,
+            ':pdf'  => $prevFrom,
+            ':pdt'  => $prevTo,
+        ])->queryOne();
+
+        $rerataCurr = (float)($rerataRow['rerata_curr'] ?? 0);
+        $rerataPrev = (float)($rerataRow['rerata_prev'] ?? 0);
+
+        // Calculate growth (lower is better, so if curr < prev, it's a negative growth which is good)
+        $rerataGrowth = $rerataPrev > 0 ? round((($rerataCurr - $rerataPrev) / $rerataPrev) * 100, 1) : 0;
+
+        // Format to string
+        $formatRerata = function($mins) {
+            if ($mins <= 0) return '0 mnt';
+            $h = floor($mins / 60);
+            $m = floor($mins) % 60;
+            $s = round(($mins - floor($mins)) * 60);
+            $parts = [];
+            if ($h > 0) $parts[] = "{$h}j";
+            if ($m > 0 || empty($parts)) $parts[] = "{$m}m";
+            if ($s > 0 && $h == 0) $parts[] = "{$s}s"; // only show seconds if < 1h
+            return implode(' ', $parts);
+        };
+
+        $rerataCurrStr = $formatRerata($rerataCurr);
+        $rerataPrevStr = $formatRerata($rerataPrev);
 
         // ============================================================
         // QUERY 2: Top pemeriksaan terbanyak
@@ -177,8 +218,8 @@ class DashboardController extends BaseController
                 cb.carabayar_nama AS cara_bayar,
                 COUNT(DISTINCT pp.pasienmasukpenunjang_id) AS jumlah_kunjungan,
                 COUNT(DISTINCT tp.tindakanpelayanan_id) AS jumlah_item,
-                SUM(tp.tarif_tindakan) AS total_tarif
-            $base
+                AVG(EXTRACT(EPOCH FROM (pp.tglmasukpenunjang - pkt.tgl_kirimpasien)) / 60) AS rerata_waktu
+            " . str_replace('WHERE', 'LEFT JOIN pasienkirimkeunitlain_t pkt ON pkt.pasienmasukpenunjang_id = pp.pasienmasukpenunjang_id WHERE', $base) . "
             AND pp.tglmasukpenunjang >= :df AND pp.tglmasukpenunjang <= :dt
             GROUP BY ar.asalrujukan_nama, cb.carabayar_nama
             ORDER BY jumlah_kunjungan DESC
@@ -193,12 +234,12 @@ class DashboardController extends BaseController
             'itemCurr'            => $itemCurr,
             'itemPrev'            => $itemPrev,
             'itemGrowth'          => $itemGrowth,
-            'pendapatanCurr'      => $pendapatanCurr,
-            'pendapatanPrev'      => $pendapatanPrev,
-            'pendapatanGrowth'    => $pendapatanGrowth,
-            'topPemeriksaan'      => $topPemeriksaan,
             'pasienBaru'          => $pasienBaru,
             'pasienBaruPct'       => $pasienBaruPct,
+            'rerataCurrStr'       => $rerataCurrStr,
+            'rerataPrevStr'       => $rerataPrevStr,
+            'rerataGrowth'        => $rerataGrowth,
+            'topPemeriksaan'      => $topPemeriksaan,
             'rujukanDist'         => $rujukanDist,
             'penjaminDist'        => $penjaminDist,
             'trendHarian'         => $trendHarian,

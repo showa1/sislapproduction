@@ -91,6 +91,11 @@ function labGrowth($v) {
     if ($v < 0) return "<span class='trend-badge down'><i class='bi bi-arrow-down'></i> {$v}%</span>";
     return "<span class='trend-badge neutral'><i class='bi bi-dash'></i> 0%</span>";
 }
+function labGrowthTime($v) {
+    if ($v > 0) return "<span class='trend-badge down'><i class='bi bi-arrow-up'></i> +{$v}%</span>"; // higher time = worse (red)
+    if ($v < 0) return "<span class='trend-badge up'><i class='bi bi-arrow-down'></i> {$v}%</span>"; // lower time = better (green)
+    return "<span class='trend-badge neutral'><i class='bi bi-dash'></i> 0%</span>";
+}
 function fmtRp($n) {
     if ($n >= 1_000_000_000) return 'Rp ' . number_format($n/1_000_000_000, 2, '.', ',') . ' M';
     return 'Rp ' . number_format($n/1_000_000, 0, ',', '.') . ' jt';
@@ -162,16 +167,16 @@ function fmtNum($n) { return number_format((int)$n, 0, ',', '.'); }
                 <div class="kpi-sub mt-1">Rata-rata <?= $kunjunganCurr > 0 ? round($itemCurr/$kunjunganCurr, 1) : 0 ?> item/kunjungan</div>
             </div>
         </div>
-        <!-- Pendapatan -->
+        <!-- Rerata Respontime -->
         <div class="col-lg-3 col-md-6 mb-3">
             <div class="kpi-card kpi-green">
                 <div class="d-flex justify-content-between align-items-start mb-1">
-                    <span class="kpi-label">Pendapatan Laboratorium</span>
-                    <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+                    <span class="kpi-label">Rerata Respontime Layanan</span>
+                    <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
                 </div>
-                <div class="kpi-value sm"><?= fmtRp($pendapatanCurr) ?></div>
-                <div><?= labGrowth($pendapatanGrowth) ?> <span class="kpi-sub">vs bln lalu</span></div>
-                <div class="kpi-sub mt-1">Rata-rata <?= $kunjunganCurr > 0 ? fmtRp($pendapatanCurr/$kunjunganCurr) : 'Rp 0' ?>/kunjungan</div>
+                <div class="kpi-value sm" style="font-size: 1.6rem; margin-top: 8px;"><?= $rerataCurrStr ?></div>
+                <div style="margin-top: 5px;"><?= labGrowthTime($rerataGrowth) ?> <span class="kpi-sub">vs bln lalu</span></div>
+                <div class="kpi-sub mt-1">Bulan lalu: <?= $rerataPrevStr ?></div>
             </div>
         </div>
         <!-- Top Pemeriksaan -->
@@ -276,7 +281,7 @@ function fmtNum($n) { return number_format((int)$n, 0, ',', '.'); }
                         <th>Cara Bayar / Penjamin</th>
                         <th class="text-right">Kunjungan</th>
                         <th class="text-right">Item Periksa</th>
-                        <th class="text-right">Total Tarif</th>
+                        <th class="text-right">Rerata Respontime</th>
                         <th style="min-width:100px;">% Kunjungan</th>
                     </tr>
                 </thead>
@@ -298,7 +303,19 @@ function fmtNum($n) { return number_format((int)$n, 0, ',', '.'); }
                         </td>
                         <td class="text-right font-weight-bold"><?= fmtNum($s['jumlah_kunjungan']) ?></td>
                         <td class="text-right"><?= fmtNum($s['jumlah_item']) ?></td>
-                        <td class="text-right" style="color:#10B981;font-weight:600;"><?= fmtRp($s['total_tarif']) ?></td>
+                        <td class="text-right" style="color:#10B981;font-weight:600;">
+                            <?php
+                            if ($s['rerata_waktu'] !== null) {
+                                $totalSeconds = round($s['rerata_waktu'] * 60);
+                                $hours = floor($totalSeconds / 3600);
+                                $minutes = floor(($totalSeconds % 3600) / 60);
+                                $seconds = $totalSeconds % 60;
+                                echo sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                            } else {
+                                echo '-';
+                            }
+                            ?>
+                        </td>
                         <td>
                             <div style="display:flex;align-items:center;gap:8px;">
                                 <div style="flex:1;height:6px;background:#E2E8F0;border-radius:9px;">
