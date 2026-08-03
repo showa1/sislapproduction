@@ -161,7 +161,10 @@ $js = <<<JS
         let date_from = document.getElementsByName("date_from")[0].value;
         let date_to = document.getElementsByName("date_to")[0].value;
 
-        let url = "$urlExport" + "?cari=aktif&ruangan=" + ruangan;
+        let url = "$urlExport";
+        let separator = url.indexOf('?') === -1 ? '?' : '&';
+        
+        url += separator + "cari=aktif&ruangan=" + encodeURIComponent(ruangan);
         if(kategori) url += "&kategori=" + encodeURIComponent(kategori);
         if(kronis) url += "&kronis=" + encodeURIComponent(kronis);
         if(date_from) url += "&date_from=" + encodeURIComponent(date_from);
