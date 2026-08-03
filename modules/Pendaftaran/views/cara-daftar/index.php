@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Filter Toolbar -->
     <div class="card shadow-sm border-0 rounded-4 mb-4">
         <div class="card-body px-4 py-3">
-            <form id="filterForm" method="GET" action="<?= Url::to(['index']) ?>" data-pjax="1">
+            <?= Html::beginForm(['index'], 'get', ['id' => 'filterForm', 'data-pjax' => '1']) ?>
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
                         <label class="form-label text-muted small fw-bold">Dari Tanggal</label>
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <a href="<?= Url::to(['index']) ?>" class="btn btn-sm btn-light border text-muted"><i class="bi bi-arrow-clockwise"></i> Reset Filter</a>
                     </div>
                 </div>
-            </form>
+            <?= Html::endForm() ?>
         </div>
     </div>
 

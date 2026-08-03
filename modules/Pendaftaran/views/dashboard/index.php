@@ -17,7 +17,7 @@ $this->registerJsFile('https://cdn.jsdelivr.net/npm/chart.js', ['position' => \y
         <!-- Filter Range Tanggal -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body px-4 py-3">
-                <form id="filterForm" method="GET" action="<?= Url::to(['index']) ?>">
+                <?= Html::beginForm(['index'], 'get', ['id' => 'filterForm']) ?>
                     <div class="row g-3 align-items-end">
                         <div class="col-md-3">
                             <label class="form-label text-muted small fw-bold">Dari Tanggal</label>
@@ -34,7 +34,7 @@ $this->registerJsFile('https://cdn.jsdelivr.net/npm/chart.js', ['position' => \y
                             <a href="<?= Url::to(['index']) ?>" class="btn btn-light border text-muted w-100"><i class="bi bi-arrow-clockwise"></i> Reset</a>
                         </div>
                     </div>
-                </form>
+                <?= Html::endForm() ?>
             </div>
         </div>
 
