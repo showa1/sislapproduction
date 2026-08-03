@@ -15,6 +15,7 @@ class Module extends \yii\base\Module
 
     public $menu = [
         ['label' => 'Cara Daftar', 'url' => '/pendaftaran/cara-daftar/index', 'icon' => 'bi bi-phone'],
+        ['label' => 'Monitoring Pasien', 'url' => '/pendaftaran/monitoring-pasien/index', 'icon' => 'bi bi-display'],
         ['label' => 'Data Pasien Meninggal', 'url' => '/pendaftaran/pasien-meninggal/index', 'icon' => 'bi bi-heartbreak'],
     ];
 

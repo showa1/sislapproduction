@@ -31,18 +31,36 @@
             <div class="d-md-flex row m-0 quick-action-btns">
                 <?= Html::beginForm(['/farmasi/minimal-stok/index'], 'get') ?>
                 <?= Html::hiddenInput('cari', 'aktif'); ?>
-                <div class="row">
-                    <div class="col-sm-6 p-5">
-                        <label class="form-label mb-4 fs-5">Ruangan</label>
-                        <div class="row dropdown">
-                            <?php echo Html::dropDownList('ruangan', $dropdownselect['ruangan'], $listruangan, [
-                                'class' => 'col-sm-6 btn btn border dropdown-toggle text-start fs-6',
-                                'sytle' => 'border: 1px solid black;',
-                                'prompt' => 'Pilih Ruangan',
-                                'required' => true,
-                            ]); ?>
-                        </div>
-                        
+                <div class="row px-4 pt-3">
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label fw-bold">Ruangan</label>
+                        <?php echo Html::dropDownList('ruangan', $dropdownselect['ruangan'], $listruangan, [
+                            'class' => 'form-select',
+                            'prompt' => 'Pilih Ruangan',
+                            'required' => true,
+                        ]); ?>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label fw-bold">Kategori Obat Alkes</label>
+                        <input type="text" class="form-control" name="kategori" value="<?= Html::encode(Yii::$app->request->get('kategori')) ?>" placeholder="Cari Kategori (mis. Generic)">
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label fw-bold">Kronis / Non Kronis</label>
+                        <?php echo Html::dropDownList('kronis', Yii::$app->request->get('kronis'), [
+                            'Kronis' => 'Kronis',
+                            'Non Kronis' => 'Non Kronis',
+                        ], [
+                            'class' => 'form-select',
+                            'prompt' => 'Semua',
+                        ]); ?>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label fw-bold">Kadaluarsa Dari</label>
+                        <input type="date" class="form-control" name="date_from" value="<?= Html::encode(Yii::$app->request->get('date_from') ? explode(' ', Yii::$app->request->get('date_from'))[0] : '') ?>">
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label fw-bold">Kadaluarsa Sampai</label>
+                        <input type="date" class="form-control" name="date_to" value="<?= Html::encode(Yii::$app->request->get('date_to') ? explode(' ', Yii::$app->request->get('date_to'))[0] : '') ?>">
                     </div>
                 </div>
                 <div class="row">
@@ -138,8 +156,18 @@ $js = <<<JS
 
     $('#export-button').on('click', function() {
         let ruangan = document.getElementsByName("ruangan")[0].value;
+        let kategori = document.getElementsByName("kategori")[0].value;
+        let kronis = document.getElementsByName("kronis")[0].value;
+        let date_from = document.getElementsByName("date_from")[0].value;
+        let date_to = document.getElementsByName("date_to")[0].value;
 
-        window.location.href = "$urlExport" + "&cari=aktif" + "&ruangan=" + ruangan;
+        let url = "$urlExport" + "?cari=aktif&ruangan=" + ruangan;
+        if(kategori) url += "&kategori=" + encodeURIComponent(kategori);
+        if(kronis) url += "&kronis=" + encodeURIComponent(kronis);
+        if(date_from) url += "&date_from=" + encodeURIComponent(date_from);
+        if(date_to) url += "&date_to=" + encodeURIComponent(date_to);
+
+        window.location.href = url;
     });
 JS;
 $this->registerJs($js);

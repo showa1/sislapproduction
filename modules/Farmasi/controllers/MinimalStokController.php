@@ -20,6 +20,7 @@ class MinimalStokController extends BaseController
     public $params = [];
 
     public $ruangan, $statuscari, $ruanganSelect;
+    public $kategori, $kronis;
 
     /**
      * Displays homepage.
@@ -74,14 +75,25 @@ class MinimalStokController extends BaseController
     {
         $this->dateFrom = Yii::$app->request->get('date_from');
         $this->dateTo = Yii::$app->request->get('date_to');
+        $this->kategori = Yii::$app->request->get('kategori');
+        $this->kronis = Yii::$app->request->get('kronis');
         $this->setupRuangan();
         
         if (!empty($this->dateFrom)) {
-            $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d') . " 00:00:00";
+            // handle both Y-m-d and d-m-Y
+            if (strpos($this->dateFrom, '-') !== false && strlen(explode('-', $this->dateFrom)[0]) == 2) {
+                $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d') . " 00:00:00";
+            } else {
+                $this->dateFrom = $this->dateFrom . " 00:00:00";
+            }
         }
         
         if (!empty($this->dateTo)) {
-            $this->dateTo = DateTime::createFromFormat('d-m-Y', $this->dateTo)->format('Y-m-d') . " 23:59:59";
+            if (strpos($this->dateTo, '-') !== false && strlen(explode('-', $this->dateTo)[0]) == 2) {
+                $this->dateTo = DateTime::createFromFormat('d-m-Y', $this->dateTo)->format('Y-m-d') . " 23:59:59";
+            } else {
+                $this->dateTo = $this->dateTo . " 23:59:59";
+            }
         }
 
         $cari = Yii::$app->request->get('cari');
@@ -212,15 +224,29 @@ class MinimalStokController extends BaseController
 
     public function queryFilter($query)
     {
-        $query .= "
-            WHERE stm.ruangan_id = :ruangan AND om.obatalkes_aktif = true
-            GROUP BY om.obatalkes_kategori, om.obatalkes_kode, om.obatalkes_nama, stm.jmlminimalstok, om.tglkadaluarsa, rm.ruangan_nama, rm.ruangan_id, om.obatalkes_kronis
-            ORDER BY om.obatalkes_nama 
-        ";
+        $where = " WHERE stm.ruangan_id = :ruangan AND om.obatalkes_aktif = true ";
+        
+        $this->params[':ruangan'] = $this->ruangan;
 
-        $this->params = array_merge($this->params, [
-            ':ruangan' => $this->ruangan,
-        ]);
+        if (!empty($this->dateFrom) && !empty($this->dateTo)) {
+            $where .= " AND om.tglkadaluarsa BETWEEN :dateFrom AND :dateTo ";
+            $this->params[':dateFrom'] = $this->dateFrom;
+            $this->params[':dateTo'] = $this->dateTo;
+        }
+
+        if (!empty($this->kategori)) {
+            $where .= " AND LOWER(om.obatalkes_kategori) LIKE LOWER(:kategori) ";
+            $this->params[':kategori'] = '%' . $this->kategori . '%';
+        }
+
+        if (!empty($this->kronis)) {
+            $where .= " AND LOWER(om.obatalkes_kronis) LIKE LOWER(:kronis) ";
+            $this->params[':kronis'] = '%' . $this->kronis . '%';
+        }
+
+        $query .= $where;
+        $query .= " GROUP BY om.obatalkes_kategori, om.obatalkes_kode, om.obatalkes_nama, stm.jmlminimalstok, om.tglkadaluarsa, rm.ruangan_nama, rm.ruangan_id, om.obatalkes_kronis
+            ORDER BY om.obatalkes_nama ";
 
         return $query;
     }
@@ -242,7 +268,9 @@ class MinimalStokController extends BaseController
         $query .= ") as sub_total";
 
         $command = Yii::$app->db->createCommand($query);
-        $command->bindValue(':ruangan', $this->ruangan);
+        foreach ($this->params as $name => $value) {
+            $command->bindValue($name, $value);
+        }
         
         return $command->queryScalar();
     }
