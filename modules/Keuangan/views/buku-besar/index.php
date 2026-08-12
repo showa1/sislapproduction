@@ -50,8 +50,8 @@
                 <?= Html::beginForm(['/keuangan/buku-besar/index'], 'get', ['id' => 'buku-besar-form']) ?>
                 <?= Html::hiddenInput('cari', 'aktif'); ?>
                 <div class="row">
-                    <div class="col-sm-6 p-5">
-                        <label class="form-label mb-4 fs-5">Tanggal</label>
+                    <div class="col-md-6 col-sm-12 p-3">
+                        <label class="form-label mb-2 fs-5">Tanggal</label>
                         <?= DatePicker::widget([
                             'type' => DatePicker::TYPE_RANGE,
                             'name' => 'date_from',
@@ -81,6 +81,15 @@
                                 'orientation' => 'bottom auto',
                             ],
                         ]); ?>  
+                    </div>
+                    <div class="col-md-6 col-sm-12 p-3">
+                        <label class="form-label mb-2 fs-5">No. Referensi</label>
+                        <?= Html::textInput('no_referensi', $dropdownselect['no_referensi'] ?? '', [
+                            'class' => 'form-control fs-6',
+                            'style' => 'border: 1px solid grey; height: 38px;',
+                            'placeholder' => 'No. Referensi',
+                            'autocomplete' => 'off',
+                        ]) ?>
                     </div>
                 </div>
                 <div class="row">
@@ -224,8 +233,8 @@ $urlExport = \yii\helpers\Url::to(['buku-besar/export']);
 $js = <<<JS
     
     document.getElementById('buku-besar-form').addEventListener('submit', function(e) {
-        const startDate = document.querySelector('input[name=\"date_from\"]').value;
-        const endDate = document.querySelector('input[name=\"date_to\"]').value;
+        const startDate = document.querySelector('input[name="date_from"]').value;
+        const endDate = document.querySelector('input[name="date_to"]').value;
 
         if (startDate && endDate) {
             const start = new Date(startDate.split('-').reverse().join('-'));
@@ -241,14 +250,6 @@ $js = <<<JS
                     text: 'Tanggal akhir tidak boleh lebih kecil dari tanggal awal.'
                 });
                 return;
-            } else if (diffDays > 31) {
-                // e.preventDefault();
-                // Swal.fire({
-                //     icon: 'error',
-                //     title: 'Rentang Tanggal Terlalu Panjang',
-                //     text: 'Rentang tanggal tidak boleh lebih dari 1 bulan.'
-                // });
-                // return;
             }
         }
 
@@ -265,6 +266,7 @@ $js = <<<JS
     $('#export-button').on('click', function() {
         let date_from = document.getElementsByName("date_from")[0].value;
         let date_to = document.getElementsByName("date_to")[0].value;
+        let no_referensi = document.getElementsByName("no_referensi")[0] ? document.getElementsByName("no_referensi")[0].value : '';
 
         Swal.fire({
             title: 'Mohon Tunggu',
@@ -278,7 +280,7 @@ $js = <<<JS
         $.ajax({
             url: "$urlExport",
             type: "GET",
-            data: { date_from: date_from, date_to: date_to, cari: 'aktif' },
+            data: { date_from: date_from, date_to: date_to, no_referensi: no_referensi, cari: 'aktif' },
             xhrFields: {
                 responseType: 'blob'
             },
@@ -305,4 +307,3 @@ $js = <<<JS
 JS;
 $this->registerJs($js);
 ?>
-

@@ -18,6 +18,7 @@ class BukuBesarController extends BaseController
     public $params, $dataRekening, $dataBukuBesar, $res= [];
 
     public $statuscari;
+    public $noReferensi;
 
     /**
      * Displays homepage.
@@ -38,6 +39,7 @@ class BukuBesarController extends BaseController
         $dropdownselect = [
             'start' =>  Yii::$app->request->get('date_from'),
             'to' =>  Yii::$app->request->get('date_to'),
+            'no_referensi' => Yii::$app->request->get('no_referensi'),
         ];
 
         return $this->render('index', [
@@ -131,6 +133,15 @@ class BukuBesarController extends BaseController
             $res[$kd]['data'][$key]['saldokredit'] += $item['saldokredit'];
         }
 
+        // Filter out accounts without data if no_referensi filter is specified
+        if (!empty($this->noReferensi)) {
+            foreach ($res as $kd => $val) {
+                if (empty($val['data'])) {
+                    unset($res[$kd]);
+                }
+            }
+        }
+
         ksort($res);
 
         $this->res = $res;
@@ -138,6 +149,21 @@ class BukuBesarController extends BaseController
 
     public function setDataBukuBesar()
     {
+        $whereRef1 = "";
+        $whereRef2 = "";
+        $whereRef3 = "";
+        $queryParams = [
+            ':startDate' => $this->dateFrom,
+            ':endDate'   => $this->dateTo,
+        ];
+
+        if (!empty($this->noReferensi)) {
+            $whereRef1 = " AND jr.noreferensi ILIKE :noReferensi ";
+            $whereRef2 = " AND 1 = 0 ";
+            $whereRef3 = " AND jr.noreferensi ILIKE :noReferensi ";
+            $queryParams[':noReferensi'] = '%' . trim($this->noReferensi) . '%';
+        }
+
         $sql = <<<SQL
         SELECT 
             r5.rekening5_id,
@@ -167,6 +193,7 @@ class BukuBesarController extends BaseController
         JOIN jenisjurnal_m jj ON jj.jenisjurnal_id = jr.jenisjurnal_id
         WHERE bb.saldoawal_id IS NULL
         AND bb.tglbukubesar BETWEEN :startDate AND :endDate
+        {$whereRef1}
 
         UNION ALL
 
@@ -194,6 +221,7 @@ class BukuBesarController extends BaseController
         JOIN periodeposting_m pp ON pp.periodeposting_id = bb.periodeposting_id
         WHERE r5.rekening5_id IN (336, 337)
         AND bb.tglbukubesar BETWEEN :startDate AND :endDate
+        {$whereRef2}
 
         UNION ALL
 
@@ -225,13 +253,16 @@ class BukuBesarController extends BaseController
         LEFT JOIN jenisjurnal_m ON jenisjurnal_m.jenisjurnal_id = jr.jenisjurnal_id 
         WHERE bb.saldoawal_id IS NOT NULL
         AND bb.tglbukubesar BETWEEN :startDate AND :endDate
+        {$whereRef3}
         SQL;
 
+        $cmd = Yii::$app->db->createCommand($sql);
+        foreach ($queryParams as $key => $val) {
+            $cmd->bindValue($key, $val);
+        }
+
         $this->dataBukuBesar = array_column(
-            Yii::$app->db->createCommand($sql)
-                ->bindValue(':startDate', $this->dateFrom)
-                ->bindValue(':endDate', $this->dateTo)
-                ->queryAll(),
+            $cmd->queryAll(),
             null,
             'bukubesar_id'
         );
@@ -335,6 +366,7 @@ class BukuBesarController extends BaseController
     {
         $this->dateFrom = Yii::$app->request->get('date_from');
         $this->dateTo = Yii::$app->request->get('date_to');
+        $this->noReferensi = Yii::$app->request->get('no_referensi');
         if (!empty($this->dateFrom)) {
             $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d') . ' 00:00:00';
         }
