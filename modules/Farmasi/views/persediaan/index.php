@@ -31,9 +31,9 @@
             <div class="d-md-flex row m-0 quick-action-btns">
                 <?= Html::beginForm(['/farmasi/persediaan/index'], 'get') ?>
                 <?= Html::hiddenInput('cari', 'aktif'); ?>
-                <div class="row">
-                    <div class="col-sm-6 p-5">
-                        <label class="form-label mb-4 fs-5">Tanggal</label>
+                <div class="row align-items-end">
+                    <div class="col-md-4 col-sm-6 p-3">
+                        <label class="form-label mb-2 fs-5">Tanggal</label>
                         <?= DatePicker::widget([
                             'type' => DatePicker::TYPE_RANGE,
                             'name' => 'date_from',
@@ -64,17 +64,25 @@
                             ],
                         ]); ?>  
                     </div>
-                    <div class="col-sm-6 p-5">
-                        <label class="form-label mb-4 fs-5">Ruangan</label>
-                        <div class="row dropdown">
+                    <div class="col-md-4 col-sm-6 p-3">
+                        <label class="form-label mb-2 fs-5">Ruangan</label>
+                        <div>
                             <?php echo Html::dropDownList('ruangan', $dropdownselect['ruangan'], $listruangan, [
-                                'class' => 'col-sm-6 btn btn border dropdown-toggle text-start fs-6',
-                                'sytle' => 'border: 1px solid black;',
+                                'class' => 'form-select fs-6',
+                                'style' => 'border: 1px solid grey;',
                                 'prompt' => 'Pilih Ruangan',
                                 'required' => true,
                             ]); ?>
                         </div>
-                        
+                    </div>
+                    <div class="col-md-4 col-sm-12 p-3">
+                        <label class="form-label mb-2 fs-5">Nama Obat / BMHP</label>
+                        <?= Html::textInput('nama_obatalkes', $dropdownselect['nama_obatalkes'] ?? '', [
+                            'class' => 'form-control fs-6',
+                            'placeholder' => 'Cari nama / kode obat...',
+                            'style' => 'border: 1px solid grey;',
+                            'autocomplete' => 'off',
+                        ]); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -278,14 +286,24 @@ $urlExport = \yii\helpers\Url::to(['persediaan/export']);
 
 $js = <<<JS
 
-    $('#export-button').on('click', function() {
-        let date_from = document.getElementsByName("date_from")[0].value;
-        let date_to = document.getElementsByName("date_to")[0].value;
-        let ruangan = document.getElementsByName("ruangan")[0].value;
+    $('#export-button').on('click', function(e) {
+        e.preventDefault();
+        let date_from = document.getElementsByName("date_from")[0] ? document.getElementsByName("date_from")[0].value : '';
+        let date_to = document.getElementsByName("date_to")[0] ? document.getElementsByName("date_to")[0].value : '';
+        let ruangan = document.getElementsByName("ruangan")[0] ? document.getElementsByName("ruangan")[0].value : '';
+        let nama_obatalkes = document.getElementsByName("nama_obatalkes")[0] ? document.getElementsByName("nama_obatalkes")[0].value : '';
 
-        window.location.href = "$urlExport" + "&date_from=" + date_from + "&date_to=" + date_to +"&cari=aktif" + "&ruangan=" + ruangan;
+        let separator = "$urlExport".indexOf('?') !== -1 ? "&" : "?";
+        let url = "$urlExport" + separator + 
+                  "date_from=" + encodeURIComponent(date_from) + 
+                  "&date_to=" + encodeURIComponent(date_to) + 
+                  "&cari=aktif" + 
+                  "&ruangan=" + encodeURIComponent(ruangan) + 
+                  "&nama_obatalkes=" + encodeURIComponent(nama_obatalkes);
+        window.location.href = url;
     });
 JS;
 $this->registerJs($js);
 ?>
+
 

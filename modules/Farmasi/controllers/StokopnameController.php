@@ -18,7 +18,7 @@ class StokopnameController extends BaseController
 
     public $params = [];
 
-    public $ruangan, $statuscari, $ruanganSelect;
+    public $ruangan, $statuscari, $ruanganSelect, $namaObatAlkes;
 
     /**
      * Displays homepage.
@@ -33,6 +33,7 @@ class StokopnameController extends BaseController
             'start' =>  Yii::$app->request->get('date_from'),
             'to' =>  Yii::$app->request->get('date_to'),
             'ruangan' =>  $this->ruanganSelect,
+            'nama_obatalkes' => $this->namaObatAlkes,
         ];
 
         return $this->render('index', [
@@ -81,6 +82,7 @@ class StokopnameController extends BaseController
     {
         $this->dateFrom = Yii::$app->request->get('date_from');
         $this->dateTo = Yii::$app->request->get('date_to');
+        $this->namaObatAlkes = trim(Yii::$app->request->get('nama_obatalkes', ''));
         $this->setupRuangan();
         
         if (!empty($this->dateFrom)) {
@@ -106,9 +108,6 @@ class StokopnameController extends BaseController
                 'pageSize' => 10,
             ],
         ]);
-
-        // $command = Yii::$app->db->createCommand($a->sql, $a->params);
-        // echo "SQL Query: " . $command->getRawSql(); die;
     }
 
     public function actionExport()
@@ -131,24 +130,23 @@ class StokopnameController extends BaseController
         $sheet->getStyle('A2')->getFont()->setBold(true)->setSize(14);
         
         $sheet->setCellValue('A4', 'No');
-        $sheet->setCellValue('B4', 'Ruangan ID');
-        $sheet->setCellValue('C4', 'Ruangan');
-        $sheet->setCellValue('D4', 'No Stok Opname');
-        $sheet->setCellValue('E4', 'Tanggal Stok Opname');
-        $sheet->setCellValue('F4', 'Kode Obat Alkes');
-        $sheet->setCellValue('G4', 'Jenis Obat Alkes');
-        $sheet->setCellValue('H4', 'Nama Obat Alkes');
-        $sheet->setCellValue('I4', 'Harga Netto');
-        $sheet->setCellValue('J4', 'Discount');
-        $sheet->setCellValue('K4', 'PPN Persen');
-        $sheet->setCellValue('L4', 'Harga Jual');
-        $sheet->setCellValue('M4', 'Volume Sistem');
-        $sheet->setCellValue('N4', 'Volume Fisik');
-        $sheet->setCellValue('O4', 'Jumlah Selisih Stok');
-        $sheet->setCellValue('P4', 'Petugas 1');
-        $sheet->setCellValue('Q4', 'Petugas 2');
-        $sheet->setCellValue('R4', 'Pegawai Mengetahui');
-        $sheet->setCellValue('S4', 'Keterangan Opname');
+        $sheet->setCellValue('B4', 'Ruangan');
+        $sheet->setCellValue('C4', 'No Stok Opname');
+        $sheet->setCellValue('D4', 'Tanggal Stok Opname');
+        $sheet->setCellValue('E4', 'Kode Obat Alkes');
+        $sheet->setCellValue('F4', 'Jenis');
+        $sheet->setCellValue('G4', 'Nama Obat Alkes');
+        $sheet->setCellValue('H4', 'Harga Netto');
+        $sheet->setCellValue('I4', 'Discount');
+        $sheet->setCellValue('J4', 'PPN Persen');
+        $sheet->setCellValue('K4', 'Harga Jual');
+        $sheet->setCellValue('L4', 'Volume Sistem');
+        $sheet->setCellValue('M4', 'Volume Fisik');
+        $sheet->setCellValue('N4', 'Jml Selisih Stok');
+        $sheet->setCellValue('O4', 'Petugas 1');
+        $sheet->setCellValue('P4', 'Petugas 2');
+        $sheet->setCellValue('Q4', 'Pegawai Mengetahui');
+        $sheet->setCellValue('R4', 'Keterangan Opname');
 
         // Isi Data
         $row = 5; // Mulai dari baris kedua
@@ -156,35 +154,34 @@ class StokopnameController extends BaseController
       
         foreach ($models as $model) {
             $sheet->setCellValue('A' . $row, $i);
-            $sheet->setCellValue('B' . $row, $model['ruangan_id']);
-            $sheet->setCellValue('C' . $row, $model['ruangan_nama']);
-            $sheet->setCellValue('D' . $row, $model['nostokopname']);
-            $sheet->setCellValue('E' . $row, $model['tglstokopname']);
-            $sheet->setCellValue('F' . $row, $model['obatalkes_kode']);
-            $sheet->setCellValue('G' . $row, $model['jenisobatalkes_nama']);
-            $sheet->setCellValue('H' . $row, $model['obatalkes_nama']);
-            $sheet->setCellValue('I' . $row, isset($model['harganetto']) ? (float) $model['harganetto'] : '');
-            $sheet->setCellValue('J' . $row, isset($model['discount']) ? (float) $model['discount'] : '');
-            $sheet->setCellValue('K' . $row, isset($model['ppn_persen']) ? (float) $model['ppn_persen'] : '');
-            $sheet->setCellValue('L' . $row, isset($model['hargajual']) ? (float) $model['hargajual'] : '');
-            $sheet->setCellValue('M' . $row, isset($model['volume_sistem']) ? (float) $model['volume_sistem'] : '');
-            $sheet->setCellValue('N' . $row, isset($model['volume_fisik']) ? (float) $model['volume_fisik'] : '');
-            $sheet->setCellValue('O' . $row, isset($model['jmlselisihstok']) ? (float) $model['jmlselisihstok'] : '');
-            $sheet->setCellValue('P' . $row, !empty($model['petugas_1']) ? $model['petugas_1'] : '');
-            $sheet->setCellValue('Q' . $row, !empty($model['petugas_2']) ? $model['petugas_2'] : '');
-            $sheet->setCellValue('R' . $row, !empty($model['pegawai_mengetahui']) ? $model['pegawai_mengetahui'] : '');
-            $sheet->setCellValue('S' . $row, $model['keterangan_opname']);
+            $sheet->setCellValue('B' . $row, $model['ruangan_nama']);
+            $sheet->setCellValue('C' . $row, $model['nostokopname']);
+            $sheet->setCellValue('D' . $row, $model['tglstokopname']);
+            $sheet->setCellValue('E' . $row, $model['obatalkes_kode']);
+            $sheet->setCellValue('F' . $row, $model['jenisobatalkes_nama']);
+            $sheet->setCellValue('G' . $row, $model['obatalkes_nama']);
+            $sheet->setCellValue('H' . $row, isset($model['harganetto']) ? (float) $model['harganetto'] : '');
+            $sheet->setCellValue('I' . $row, isset($model['discount']) ? (float) $model['discount'] : '');
+            $sheet->setCellValue('J' . $row, isset($model['ppn_persen']) ? (float) $model['ppn_persen'] : '');
+            $sheet->setCellValue('K' . $row, isset($model['hargajual']) ? (float) $model['hargajual'] : '');
+            $sheet->setCellValue('L' . $row, isset($model['volume_sistem']) ? (float) $model['volume_sistem'] : '');
+            $sheet->setCellValue('M' . $row, isset($model['volume_fisik']) ? (float) $model['volume_fisik'] : '');
+            $sheet->setCellValue('N' . $row, isset($model['jmlselisihstok']) ? (float) $model['jmlselisihstok'] : '');
+            $sheet->setCellValue('O' . $row, $model['petugas_1']);
+            $sheet->setCellValue('P' . $row, $model['petugas_2']);
+            $sheet->setCellValue('Q' . $row, $model['pegawai_mengetahui']);
+            $sheet->setCellValue('R' . $row, $model['keterangan_opname']);
             
             $row++;
             $i++;
         }
 
-        $sheet->getStyle('I5:O' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
+        $sheet->getStyle('H5:N' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
 
-        $sheet->getStyle('A4:S'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('A4:R'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-        $fileName = 'laporan-stokopname.xlsx';
+        $fileName = 'laporan-stok-opname.xlsx';
         $tempFile = tempnam(sys_get_temp_dir(), $fileName);
         $writer->save($tempFile);
 
@@ -234,8 +231,6 @@ class StokopnameController extends BaseController
             left join pegawai_m pg on stkt.mengetahui_id = pg.pegawai_id 
             left join pegawai_m pg1 on stkt.petugas1_id = pg1.pegawai_id 
             left join pegawai_m pg2 on stkt.petugas2_id = pg2.pegawai_id 
-            
-
         ";
 
         return $this->queryFilter($query);
@@ -249,10 +244,16 @@ class StokopnameController extends BaseController
             $combine = 'not in (58, 59) ';
         }
 
+        $whereNama = "";
+        if (!empty($this->namaObatAlkes)) {
+            $whereNama = " AND (om.obatalkes_nama ILIKE :nama_obatalkes OR om.obatalkes_kode ILIKE :nama_obatalkes) ";
+        }
+
         $query .= "
             WHERE 
                 date (stkt.tglstokopname) between :datefrom and :dateto
                 and stkt.ruangan_id " .$combine. "
+                " . $whereNama . "
             GROUP BY 
                 stkt.tglstokopname, rm.ruangan_id, stkt.nostokopname, om.obatalkes_kode, jm.jenisobatalkes_nama,
                 om.obatalkes_nama, om.harganetto, om.discount, om.ppn_persen, om.hargajual, stot.volume_sistem,
@@ -273,15 +274,30 @@ class StokopnameController extends BaseController
             ]);
         }
 
+        if (!empty($this->namaObatAlkes)) {
+            $this->params[':nama_obatalkes'] = '%' . $this->namaObatAlkes . '%';
+        }
+
         return $query;
     }
 
     public function countQuery()
     {
+        $combine = '= :ruangan';
+        if ($this->ruangan == 'unit lain') {
+            $combine = 'not in (58, 59) ';
+        }
+
+        $whereNama = "";
+        if (!empty($this->namaObatAlkes)) {
+            $whereNama = " AND (om.obatalkes_nama ILIKE :nama_obatalkes OR om.obatalkes_kode ILIKE :nama_obatalkes) ";
+        }
+
         $query = "
             select count(*) as total from (
                 select count(1)
-                from stokopnamedet_t stot 
+                from 
+                    stokopnamedet_t stot 
                 inner join obatalkes_m om on om.obatalkes_id = stot.obatalkes_id 
                 inner join stokopname_t stkt on stkt.stokopname_id = stot.stokopname_id 
                 inner join jenisobatalkes_m jm on jm.jenisobatalkes_id = om.jenisobatalkes_id 
@@ -289,12 +305,17 @@ class StokopnameController extends BaseController
                 left join pegawai_m pg on stkt.mengetahui_id = pg.pegawai_id 
                 left join pegawai_m pg1 on stkt.petugas1_id = pg1.pegawai_id 
                 left join pegawai_m pg2 on stkt.petugas2_id = pg2.pegawai_id 
-                
+                WHERE 
+                    date (stkt.tglstokopname) between :datefrom and :dateto
+                    and stkt.ruangan_id " .$combine. "
+                    " . $whereNama . "
+                GROUP BY 
+                    stkt.tglstokopname, rm.ruangan_id, stkt.nostokopname, om.obatalkes_kode, jm.jenisobatalkes_nama,
+                    om.obatalkes_nama, om.harganetto, om.discount, om.ppn_persen, om.hargajual, stot.volume_sistem,
+                    stot.volume_fisik, stot.jmlselisihstok, pg1.nama_pegawai, pg2.nama_pegawai, pg.nama_pegawai,
+                    stkt.keterangan_opname
+            ) as t
         ";
-
-        $query = $this->queryFilter($query);
-
-        $query .= ") as sub_total";
 
         $command = Yii::$app->db->createCommand($query);
         $command->bindValue(':datefrom', $this->dateFrom);
@@ -302,6 +323,10 @@ class StokopnameController extends BaseController
         
         if ($this->ruangan !== 'unit lain') {
             $command->bindValue(':ruangan', $this->ruangan);
+        }
+
+        if (!empty($this->namaObatAlkes)) {
+            $command->bindValue(':nama_obatalkes', '%' . $this->namaObatAlkes . '%');
         }
         
         return $command->queryScalar();

@@ -18,7 +18,7 @@ class PersediaanController extends BaseController
 
     public $params = [];
 
-    public $ruangan, $statuscari, $ruanganSelect;
+    public $ruangan, $statuscari, $ruanganSelect, $namaObatAlkes;
 
     /**
      * Displays homepage.
@@ -33,6 +33,7 @@ class PersediaanController extends BaseController
             'start' =>  Yii::$app->request->get('date_from'),
             'to' =>  Yii::$app->request->get('date_to'),
             'ruangan' =>  $this->ruanganSelect,
+            'nama_obatalkes' => $this->namaObatAlkes,
         ];
 
         return $this->render('index', [
@@ -90,6 +91,7 @@ class PersediaanController extends BaseController
         $this->dateMinSatu = Yii::$app->request->get('date_from');
         $this->dateTo = Yii::$app->request->get('date_to');
         $this->datePlusSatu = Yii::$app->request->get('date_to');
+        $this->namaObatAlkes = trim(Yii::$app->request->get('nama_obatalkes', ''));
         $this->setupRuangan();
         
         if (!empty($this->dateFrom)) {
@@ -270,8 +272,23 @@ class PersediaanController extends BaseController
             )";
     }
 
+    public function getWhereCondition()
+    {
+        $where = [];
+        if (!empty($this->namaObatAlkes)) {
+            $where[] = "(om.obatalkes_nama ILIKE :nama_obatalkes OR om.obatalkes_kode ILIKE :nama_obatalkes)";
+        }
+        
+        if (!empty($where)) {
+            return " WHERE " . implode(" AND ", $where);
+        }
+        return "";
+    }
+
     public function baseQuery()
     {
+        $whereSql = $this->getWhereCondition();
+
         $query =  $this->cte() . "
             SELECT 
                 om.obatalkes_aktif,
@@ -306,7 +323,8 @@ class PersediaanController extends BaseController
             LEFT JOIN satuankecil_m sm ON sm.satuankecil_id = om.satuankecil_id
             LEFT JOIN satuankecil_m st ON st.satuankecil_id = om.satuanterkecil_id
             LEFT JOIN zataktif_aggregated za ON za.obatalkes_id = om.obatalkes_id
-            ORDER BY obatalkes_kode
+            {$whereSql}
+            ORDER BY om.obatalkes_kode
         ";
 
         return $this->queryFilter($query);
@@ -328,11 +346,17 @@ class PersediaanController extends BaseController
             ]);
         }
 
+        if (!empty($this->namaObatAlkes)) {
+            $this->params[':nama_obatalkes'] = '%' . $this->namaObatAlkes . '%';
+        }
+
         return $query;
     }
 
     public function countQuery()
     {
+        $whereSql = $this->getWhereCondition();
+
         $query = $this->cte() . "
                 select count(1)
                 FROM obatalkes_m om
@@ -341,7 +365,7 @@ class PersediaanController extends BaseController
                 LEFT JOIN satuankecil_m sm ON sm.satuankecil_id = om.satuankecil_id
                 LEFT JOIN satuankecil_m st ON st.satuankecil_id = om.satuanterkecil_id
                 LEFT JOIN zataktif_aggregated za ON za.obatalkes_id = om.obatalkes_id
-                
+                {$whereSql}
         ";
 
         $query = $this->queryFilter($query);
@@ -354,6 +378,10 @@ class PersediaanController extends BaseController
 
         if (in_array($this->ruangan, ['58', '59'])) {
             $command->bindValue(':ruangan', $this->ruangan);
+        }
+
+        if (!empty($this->namaObatAlkes)) {
+            $command->bindValue(':nama_obatalkes', '%' . $this->namaObatAlkes . '%');
         }
         
         return $command->queryScalar();

@@ -31,9 +31,9 @@
             <div class="d-md-flex row m-0 quick-action-btns">
                 <?= Html::beginForm(['/farmasi/stokopname/index'], 'get') ?>
                 <?= Html::hiddenInput('cari', 'aktif'); ?>
-                <div class="row">
-                    <div class="col-sm-6 p-5">
-                        <label class="form-label mb-4 fs-5">Tanggal</label>
+                <div class="row align-items-end">
+                    <div class="col-md-4 col-sm-6 p-3">
+                        <label class="form-label mb-2 fs-5">Tanggal</label>
                         <?= DatePicker::widget([
                             'type' => DatePicker::TYPE_RANGE,
                             'name' => 'date_from',
@@ -64,17 +64,25 @@
                             ],
                         ]); ?>  
                     </div>
-                    <div class="col-sm-6 p-5">
-                        <label class="form-label mb-4 fs-5">Ruangan</label>
-                        <div class="row dropdown">
+                    <div class="col-md-4 col-sm-6 p-3">
+                        <label class="form-label mb-2 fs-5">Ruangan</label>
+                        <div>
                             <?php echo Html::dropDownList('ruangan', $dropdownselect['ruangan'], $listruangan, [
-                                'class' => 'col-sm-6 btn btn border dropdown-toggle text-start fs-6',
-                                'sytle' => 'border: 1px solid black;',
+                                'class' => 'form-select fs-6',
+                                'style' => 'border: 1px solid grey;',
                                 'prompt' => 'Pilih Ruangan',
                                 'required' => true,
                             ]); ?>
                         </div>
-                        
+                    </div>
+                    <div class="col-md-4 col-sm-12 p-3">
+                        <label class="form-label mb-2 fs-5">Nama Obat / BMHP</label>
+                        <?= Html::textInput('nama_obatalkes', $dropdownselect['nama_obatalkes'] ?? '', [
+                            'class' => 'form-control fs-6',
+                            'placeholder' => 'Cari nama / kode obat...',
+                            'style' => 'border: 1px solid grey;',
+                            'autocomplete' => 'off',
+                        ]); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -97,20 +105,16 @@
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                 [
-                                    'attribute' => 'ruangan_id',
-                                    'label' => 'Ruangan ID'
-                                ],
-                                [
                                     'attribute' => 'ruangan_nama',
                                     'label' => 'Ruangan'
                                 ],
                                 [
                                     'attribute' => 'nostokopname',
-                                    'label' => 'No Stok opname'
+                                    'label' => 'No Stok Opname'
                                 ],
                                 [
                                     'attribute' => 'tglstokopname',
-                                    'label' => 'Tanggal Stok opname'
+                                    'label' => 'Tanggal Stok Opname'
                                 ],
                                 [
                                     'attribute' => 'obatalkes_kode',
@@ -118,7 +122,7 @@
                                 ],
                                 [
                                     'attribute' => 'jenisobatalkes_nama',
-                                    'label' => 'Jenis Obat Alkes'
+                                    'label' => 'Jenis'
                                 ],
                                 [
                                     'attribute' => 'obatalkes_nama',
@@ -140,7 +144,7 @@
                                 ],
                                 [
                                     'attribute' => 'ppn_persen',
-                                    'label' => 'PPN Persen',
+                                    'label' => 'PPN persen',
                                     'value' => function ($model) {
                                         return isset($model['ppn_persen']) ? number_format($model['ppn_persen'], 2, ',', '.') : '';
                                     }
@@ -168,31 +172,22 @@
                                 ],
                                 [
                                     'attribute' => 'jmlselisihstok',
-                                    'label' => 'Jumlah Selisih Stok',
+                                    'label' => 'Jml Selisih Stok',
                                     'value' => function ($model) {
                                         return isset($model['jmlselisihstok']) ? number_format($model['jmlselisihstok'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
                                     'attribute' => 'petugas_1',
-                                    'label' => 'Petugas 1',
-                                    'value' => function ($model) {
-                                        return !empty($model['petugas_1']) ? $model['petugas_1'] : '';
-                                    }
+                                    'label' => 'Petugas 1'
                                 ],
                                 [
                                     'attribute' => 'petugas_2',
-                                    'label' => 'Petugas 2',
-                                    'value' => function ($model) {
-                                        return !empty($model['petugas_2']) ? $model['petugas_2'] : '';
-                                    }
+                                    'label' => 'Petugas 2'
                                 ],
                                 [
                                     'attribute' => 'pegawai_mengetahui',
-                                    'label' => 'Pegawai Mengetahui',
-                                    'value' => function ($model) {
-                                        return !empty($model['pegawai_mengetahui']) ? $model['pegawai_mengetahui'] : '';
-                                    }
+                                    'label' => 'Pegawai Mengetahui'
                                 ],
                                 [
                                     'attribute' => 'keterangan_opname',
@@ -204,14 +199,13 @@
                                         <div class='col-md-6'>{pager}</div>
                                         <div class='col-md-6 text-end' style='margin-top: 20px'>{summary}</div>
                                     </div>",
-                            'summary' => 'Menampilkan {begin} - {end} dari {totalCount} data.', 
+                            'summary' => 'Menampilkan {begin} - {end} dari {totalCount} item.',
                             'pager' => [
                                 'options' => ['class' => 'pagination', 'style' => 'margin-top: 20px;'],
                                 'linkOptions' => ['class' => 'page-link'],
                                 'prevPageLabel' => '&laquo;', 
                                 'nextPageLabel' => '&raquo;',
                             ],
-                            'summary' => 'Menampilkan {begin} - {end} dari {totalCount} item.',
                         ]); ?>
                     </div>
                 </div>
@@ -225,14 +219,22 @@ $urlExport = \yii\helpers\Url::to(['stokopname/export']);
 
 $js = <<<JS
 
-    $('#export-button').on('click', function() {
-        let date_from = document.getElementsByName("date_from")[0].value;
-        let date_to = document.getElementsByName("date_to")[0].value;
-        let ruangan = document.getElementsByName("ruangan")[0].value;
+    $('#export-button').on('click', function(e) {
+        e.preventDefault();
+        let date_from = document.getElementsByName("date_from")[0] ? document.getElementsByName("date_from")[0].value : '';
+        let date_to = document.getElementsByName("date_to")[0] ? document.getElementsByName("date_to")[0].value : '';
+        let ruangan = document.getElementsByName("ruangan")[0] ? document.getElementsByName("ruangan")[0].value : '';
+        let nama_obatalkes = document.getElementsByName("nama_obatalkes")[0] ? document.getElementsByName("nama_obatalkes")[0].value : '';
 
-        window.location.href = "$urlExport" + "&date_from=" + date_from + "&date_to=" + date_to +"&cari=aktif" + "&ruangan=" + ruangan;
+        let separator = "$urlExport".indexOf('?') !== -1 ? "&" : "?";
+        let url = "$urlExport" + separator + 
+                  "date_from=" + encodeURIComponent(date_from) + 
+                  "&date_to=" + encodeURIComponent(date_to) + 
+                  "&cari=aktif" + 
+                  "&ruangan=" + encodeURIComponent(ruangan) + 
+                  "&nama_obatalkes=" + encodeURIComponent(nama_obatalkes);
+        window.location.href = url;
     });
 JS;
 $this->registerJs($js);
 ?>
-

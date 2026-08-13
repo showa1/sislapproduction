@@ -120,11 +120,14 @@ $resetUrl = Url::to(['pasien-meninggal/index']);
 $urlExport = Url::to(['pasien-meninggal/export']);
 
 $js = <<<JS
-    $('#export-button').on('click', function() {
+    $('#export-button').on('click', function(e) {
+        e.preventDefault();
         let date_from = document.getElementsByName("date_from")[0].value;
         let date_to = document.getElementsByName("date_to")[0].value;
-        window.location.href = "$urlExport" + "&date_from=" + date_from + "&date_to=" + date_to;
+        let separator = "$urlExport".indexOf('?') !== -1 ? "&" : "?";
+        window.location.href = "$urlExport" + separator + "date_from=" + encodeURIComponent(date_from) + "&date_to=" + encodeURIComponent(date_to);
     });
 JS;
 $this->registerJs($js);
 ?>
+
