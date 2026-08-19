@@ -190,31 +190,38 @@
                                     }
                                 ],
                                 [
-                                    'attribute' => 'stok_bulan_lalu',
-                                    'label' => 'Stok Bulan Lalu',
+                                    'attribute' => 'stok_awal',
+                                    'label' => 'Stok Awal',
                                     'value' => function ($model) {
-                                        return isset($model['stok_bulan_lalu']) ? number_format($model['stok_bulan_lalu'], 2, ',', '.') : '';
+                                        return isset($model['stok_awal']) ? number_format($model['stok_awal'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
-                                    'attribute' => 'masuk_so',
-                                    'label' => 'Masuk SO',
+                                    'attribute' => 'penerimaan_pbf',
+                                    'label' => 'Penerimaan PBF',
                                     'value' => function ($model) {
-                                        return isset($model['masuk_so']) ? number_format($model['masuk_so'], 2, ',', '.') : '';
+                                        return isset($model['penerimaan_pbf']) ? number_format($model['penerimaan_pbf'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
-                                    'attribute' => 'masuk_unit',
-                                    'label' => 'Masuk Unit',
+                                    'attribute' => 'mutasi_ruangan_masuk',
+                                    'label' => 'Mutasi Ruangan Masuk',
                                     'value' => function ($model) {
-                                        return isset($model['masuk_unit']) ? number_format($model['masuk_unit'], 2, ',', '.') : '';
+                                        return isset($model['mutasi_ruangan_masuk']) ? number_format($model['mutasi_ruangan_masuk'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
-                                    'attribute' => 'masuk_po',
-                                    'label' => 'Masuk PO',
+                                    'attribute' => 'retur_resep',
+                                    'label' => 'Retur Resep',
                                     'value' => function ($model) {
-                                        return isset($model['masuk_po']) ? number_format($model['masuk_po'], 2, ',', '.') : '';
+                                        return isset($model['retur_resep']) ? number_format($model['retur_resep'], 2, ',', '.') : '';
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'adjustman_plus',
+                                    'label' => 'Adjustment Plus',
+                                    'value' => function ($model) {
+                                        return isset($model['adjustman_plus']) ? number_format($model['adjustman_plus'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
@@ -225,10 +232,10 @@
                                     }
                                 ],
                                 [
-                                    'attribute' => 'keluar_so',
-                                    'label' => 'Keluar SO',
+                                    'attribute' => 'adjustman_minus',
+                                    'label' => 'Adjustment Minus',
                                     'value' => function ($model) {
-                                        return isset($model['keluar_so']) ? number_format($model['keluar_so'], 2, ',', '.') : '';
+                                        return isset($model['adjustman_minus']) ? number_format($model['adjustman_minus'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
@@ -239,17 +246,31 @@
                                     }
                                 ],
                                 [
-                                    'attribute' => 'keluar_unit',
-                                    'label' => 'Keluar Unit',
+                                    'attribute' => 'mutasi_ruangan_keluar',
+                                    'label' => 'Mutasi Ruangan Keluar',
                                     'value' => function ($model) {
-                                        return isset($model['keluar_unit']) ? number_format($model['keluar_unit'], 2, ',', '.') : '';
+                                        return isset($model['mutasi_ruangan_keluar']) ? number_format($model['mutasi_ruangan_keluar'], 2, ',', '.') : '';
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'pemakaian_ruangan',
+                                    'label' => 'Pemakaian Ruangan',
+                                    'value' => function ($model) {
+                                        return isset($model['pemakaian_ruangan']) ? number_format($model['pemakaian_ruangan'], 2, ',', '.') : '';
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'retur_pbf',
+                                    'label' => 'Retur PBF',
+                                    'value' => function ($model) {
+                                        return isset($model['retur_pbf']) ? number_format($model['retur_pbf'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
                                     'attribute' => 'keluar',
                                     'label' => 'Keluar',
                                     'value' => function ($model) {
-                                        return isset($model['keluar']) ?number_format($model['keluar'], 2, ',', '.') : '';
+                                        return isset($model['keluar']) ? number_format($model['keluar'], 2, ',', '.') : '';
                                     }
                                 ],
                                 [
