@@ -162,6 +162,33 @@ class DefaultController extends BaseController
               AND tglkadaluarsa <= NOW() + INTERVAL '90 days'
             ORDER BY tglkadaluarsa ASC LIMIT 20")->queryAll();
 
+        // 17. Detail Dead Stock (untuk modal)
+        $deadstockDetail = $db->createCommand("
+            SELECT om.obatalkes_nama, om.obatalkes_kategori,
+                   SUM(st.qtystok_in - st.qtystok_out) AS stok,
+                   MAX(st.create_time) AS last_trx,
+                   ROUND(EXTRACT(DAY FROM (NOW() - MAX(st.create_time)))) AS hari_tidak_bergerak
+            FROM stokobatalkes_t st
+            JOIN obatalkes_m om ON om.obatalkes_id = st.obatalkes_id
+            WHERE st.obatalkes_id NOT IN (
+                SELECT DISTINCT obatalkes_id FROM stokobatalkes_t
+                WHERE create_time >= NOW() - INTERVAL '180 days'
+            )
+            GROUP BY om.obatalkes_id, om.obatalkes_nama, om.obatalkes_kategori
+            ORDER BY last_trx ASC LIMIT 50")->queryAll();
+
+        // 18. Detail Stock Out (untuk modal)
+        $stockoutDetail = $db->createCommand("
+            SELECT om.obatalkes_nama, om.obatalkes_kategori,
+                   COALESCE(SUM(st.qtystok_in - st.qtystok_out), 0) AS stok,
+                   MAX(st.create_time) AS last_trx
+            FROM obatalkes_m om
+            LEFT JOIN stokobatalkes_t st ON st.obatalkes_id = om.obatalkes_id
+            WHERE om.obatalkes_aktif = true
+            GROUP BY om.obatalkes_id, om.obatalkes_nama, om.obatalkes_kategori
+            HAVING COALESCE(SUM(st.qtystok_in - st.qtystok_out), 0) = 0
+            ORDER BY last_trx DESC LIMIT 50")->queryAll();
+
         return $this->render('index', [
             'resep_curr' => $resep_curr,
             'resep_growth' => $resep_growth,
@@ -182,6 +209,8 @@ class DefaultController extends BaseController
             'topObat' => $topObat,
             'stokMenipis' => $stokMenipis,
             'expiredDetail' => $expiredDetail,
+            'deadstockDetail' => $deadstockDetail,
+            'stockoutDetail' => $stockoutDetail,
             'tahunIni' => $tahunIni,
             'bulanIni' => $bulanIni,
         ]);

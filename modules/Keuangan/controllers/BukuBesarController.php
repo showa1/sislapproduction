@@ -19,6 +19,7 @@ class BukuBesarController extends BaseController
 
     public $statuscari;
     public $noReferensi;
+    public $kdRekening5;
 
     /**
      * Displays homepage.
@@ -40,13 +41,29 @@ class BukuBesarController extends BaseController
             'start' =>  Yii::$app->request->get('date_from'),
             'to' =>  Yii::$app->request->get('date_to'),
             'no_referensi' => Yii::$app->request->get('no_referensi'),
+            'kdrekening5' => Yii::$app->request->get('kdrekening5'),
         ];
 
         return $this->render('index', [
             'data' => $this->res,
-            'dropdownselect' => $dropdownselect
+            'dropdownselect' => $dropdownselect,
+            'listRekening' => $this->getOptRekening5(),
         ]);
 
+    }
+
+    public function getOptRekening5()
+    {
+        $sql = "SELECT kdrekening5, nmrekening5 
+                FROM rekening5_m 
+                WHERE rekening5_aktif = TRUE 
+                ORDER BY kdrekening5 ASC";
+        $rows = Yii::$app->db->createCommand($sql)->queryAll();
+        $opt = [];
+        foreach ($rows as $r) {
+            $opt[$r['kdrekening5']] = $r['kdrekening5'] . ' - ' . trim($r['nmrekening5']);
+        }
+        return $opt;
     }
 
     public function setDataResult()
@@ -164,6 +181,13 @@ class BukuBesarController extends BaseController
             $queryParams[':noReferensi'] = '%' . trim($this->noReferensi) . '%';
         }
 
+        if (!empty($this->kdRekening5)) {
+            $whereRef1 .= " AND r5.kdrekening5 = :kdRekening5 ";
+            $whereRef2 .= " AND r5.kdrekening5 = :kdRekening5 ";
+            $whereRef3 .= " AND r5.kdrekening5 = :kdRekening5 ";
+            $queryParams[':kdRekening5'] = trim($this->kdRekening5);
+        }
+
         $sql = <<<SQL
         SELECT 
             r5.rekening5_id,
@@ -272,6 +296,17 @@ class BukuBesarController extends BaseController
 
     public function setDataRekening()
     {
+        $whereKd = "";
+        $queryParams = [
+            ':startDate' => $this->dateFrom,
+            ':endDate'   => $this->dateTo,
+        ];
+
+        if (!empty($this->kdRekening5)) {
+            $whereKd = " AND r5.kdrekening5 = :kdRekening5 ";
+            $queryParams[':kdRekening5'] = trim($this->kdRekening5);
+        }
+
         $sql = <<<SQL
         WITH saldo AS (
             SELECT
@@ -347,6 +382,7 @@ class BukuBesarController extends BaseController
             AND r3.rekening3_aktif = TRUE
             AND r4.rekening4_aktif = TRUE
             AND r5.rekening5_aktif = TRUE
+            {$whereKd}
             AND (
                 COALESCE(s.saldo_awal_debit, 0) <> 0
                 OR COALESCE(s.saldo_awal_kredit, 0) <> 0
@@ -355,10 +391,12 @@ class BukuBesarController extends BaseController
             )
         SQL;
 
-        $this->dataRekening = array_column(Yii::$app->db->createCommand($sql)
-            ->bindValue(':startDate', $this->dateFrom)
-            ->bindValue(':endDate', $this->dateTo)
-            ->queryAll(), null, 'kdrekening5');
+        $cmd = Yii::$app->db->createCommand($sql);
+        foreach ($queryParams as $key => $val) {
+            $cmd->bindValue($key, $val);
+        }
+
+        $this->dataRekening = array_column($cmd->queryAll(), null, 'kdrekening5');
 
     }
 
@@ -367,6 +405,7 @@ class BukuBesarController extends BaseController
         $this->dateFrom = Yii::$app->request->get('date_from');
         $this->dateTo = Yii::$app->request->get('date_to');
         $this->noReferensi = Yii::$app->request->get('no_referensi');
+        $this->kdRekening5 = Yii::$app->request->get('kdrekening5');
         if (!empty($this->dateFrom)) {
             $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d') . ' 00:00:00';
         }

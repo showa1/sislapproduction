@@ -12,7 +12,7 @@ use DateTime;
 use DateInterval;
 
 class PersediaanController extends BaseController
-{    
+{
 
     public $dateFrom, $dateTo, $totalCount, $dateMinSatu, $datePlusSatu;
 
@@ -26,13 +26,13 @@ class PersediaanController extends BaseController
      * @return string
      */
     public function actionIndex()
-    {   
+    {
         $this->setupSearch();
 
         $dropdownselect = [
-            'start' =>  Yii::$app->request->get('date_from'),
-            'to' =>  Yii::$app->request->get('date_to'),
-            'ruangan' =>  $this->ruanganSelect,
+            'start' => Yii::$app->request->get('date_from'),
+            'to' => Yii::$app->request->get('date_to'),
+            'ruangan' => $this->ruanganSelect,
             'nama_obatalkes' => $this->namaObatAlkes,
         ];
 
@@ -57,7 +57,7 @@ class PersediaanController extends BaseController
     public function setupRuangan()
     {
         $ruanganid = Yii::$app->request->get('ruangan');
-        if(isset($ruanganid)) {
+        if (isset($ruanganid)) {
             $gudangFarmasi = 0;
             $apotek = 1;
             $unitrumahsakit = 2;
@@ -82,7 +82,7 @@ class PersediaanController extends BaseController
                 $this->ruangan = 'unit rumah sakit';
                 $this->ruanganSelect = 2;
             }
-        }    
+        }
     }
 
     public function setupSearch()
@@ -93,21 +93,21 @@ class PersediaanController extends BaseController
         $this->datePlusSatu = Yii::$app->request->get('date_to');
         $this->namaObatAlkes = trim(Yii::$app->request->get('nama_obatalkes', ''));
         $this->setupRuangan();
-        
+
         if (!empty($this->dateFrom)) {
             $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d') . " 00:00:00";
             $this->dateMinSatu = DateTime::createFromFormat('d-m-Y', $this->dateMinSatu)->format('Y-m-d');
         }
-        
+
         if (!empty($this->dateTo)) {
             $this->dateTo = DateTime::createFromFormat('d-m-Y', $this->dateTo)->format('Y-m-d') . " 23:59:59";
             $this->datePlusSatu = DateTime::createFromFormat('d-m-Y', $this->datePlusSatu)
-                                ->add(new DateInterval('P1D'))
-                                ->format('Y-m-d'); 
+                ->add(new DateInterval('P1D'))
+                ->format('Y-m-d');
         }
 
         $cari = Yii::$app->request->get('cari');
-        
+
         $this->statuscari = !empty($cari) ? true : false;
     }
 
@@ -134,9 +134,9 @@ class PersediaanController extends BaseController
             'params' => $this->params,
             'pagination' => false,  // Disable pagination untuk ekspor semua data
         ]);
-        
+
         $models = $dataProvider->getModels();
-        
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -144,7 +144,7 @@ class PersediaanController extends BaseController
         $sheet->setCellValue('A2', 'Laporan Persediaan');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(18);
         $sheet->getStyle('A2')->getFont()->setBold(true)->setSize(14);
-       
+
         $sheet->setCellValue('A4', 'No');
         $sheet->setCellValue('B4', 'Obat Alkes Aktif');
         $sheet->setCellValue('C4', 'Kode Obat Alkes');
@@ -162,19 +162,16 @@ class PersediaanController extends BaseController
         $sheet->setCellValue('O4', 'Discount');
         $sheet->setCellValue('P4', 'PPN Persen');
         $sheet->setCellValue('Q4', 'Harga Jual');
-        $sheet->setCellValue('R4', 'Stok Awal');
-        $sheet->setCellValue('S4', 'Penerimaan PBF');
-        $sheet->setCellValue('T4', 'Mutasi Ruangan Masuk');
-        $sheet->setCellValue('U4', 'Retur Resep');
-        $sheet->setCellValue('V4', 'Adjustment Plus');
-        $sheet->setCellValue('W4', 'Masuk');
-        $sheet->setCellValue('X4', 'Adjustment Minus');
-        $sheet->setCellValue('Y4', 'Keluar Pasien');
-        $sheet->setCellValue('Z4', 'Mutasi Ruangan Keluar');
-        $sheet->setCellValue('AA4', 'Pemakaian Ruangan');
-        $sheet->setCellValue('AB4', 'Retur PBF');
-        $sheet->setCellValue('AC4', 'Keluar');
-        $sheet->setCellValue('AD4', 'Stok Sekarang');
+        $sheet->setCellValue('R4', 'Stok Bulan Lalu');
+        $sheet->setCellValue('S4', 'Masuk SO');
+        $sheet->setCellValue('T4', 'Masuk Unit');
+        $sheet->setCellValue('U4', 'Masuk PO');
+        $sheet->setCellValue('V4', 'Masuk');
+        $sheet->setCellValue('W4', 'Keluar SO');
+        $sheet->setCellValue('X4', 'Keluar Pasien');
+        $sheet->setCellValue('Y4', 'Keluar Unit');
+        $sheet->setCellValue('Z4', 'Keluar');
+        $sheet->setCellValue('AA4', 'Stok Sekarang');
 
         // Isi Data
         $row = 5; // Mulai dari baris kedua
@@ -197,29 +194,26 @@ class PersediaanController extends BaseController
             $sheet->setCellValue('O' . $row, isset($model['discount']) ? (float) $model['discount'] : '');
             $sheet->setCellValue('P' . $row, isset($model['ppn_persen']) ? (float) $model['ppn_persen'] : '');
             $sheet->setCellValue('Q' . $row, isset($model['hargajual']) ? (float) $model['hargajual'] : '');
-            $sheet->setCellValue('R' . $row, isset($model['stok_awal']) ? (float) $model['stok_awal'] : '');
-            $sheet->setCellValue('S' . $row, isset($model['penerimaan_pbf']) ? (float) $model['penerimaan_pbf'] : '');
-            $sheet->setCellValue('T' . $row, isset($model['mutasi_ruangan_masuk']) ? (float) $model['mutasi_ruangan_masuk'] : '');
-            $sheet->setCellValue('U' . $row, isset($model['retur_resep']) ? (float) $model['retur_resep'] : '');
-            $sheet->setCellValue('V' . $row, isset($model['adjustman_plus']) ? (float) $model['adjustman_plus'] : '');
-            $sheet->setCellValue('W' . $row, isset($model['masuk']) ? (float) $model['masuk'] : '');
-            $sheet->setCellValue('X' . $row, isset($model['adjustman_minus']) ? (float) $model['adjustman_minus'] : '');
-            $sheet->setCellValue('Y' . $row, isset($model['keluar_pasien']) ? (float) $model['keluar_pasien'] : '');
-            $sheet->setCellValue('Z' . $row, isset($model['mutasi_ruangan_keluar']) ? (float) $model['mutasi_ruangan_keluar'] : '');
-            $sheet->setCellValue('AA' . $row, isset($model['pemakaian_ruangan']) ? (float) $model['pemakaian_ruangan'] : '');
-            $sheet->setCellValue('AB' . $row, isset($model['retur_pbf']) ? (float) $model['retur_pbf'] : '');
-            $sheet->setCellValue('AC' . $row, isset($model['keluar']) ? (float) $model['keluar'] : '');
-            $sheet->setCellValue('AD' . $row, isset($model['stok_sekarang']) ? (float) $model['stok_sekarang'] : '');
+            $sheet->setCellValue('R' . $row, isset($model['stok_bulan_lalu']) ? (float) $model['stok_bulan_lalu'] : '');
+            $sheet->setCellValue('S' . $row, isset($model['masuk_so']) ? (float) $model['masuk_so'] : '');
+            $sheet->setCellValue('T' . $row, isset($model['masuk_unit']) ? (float) $model['masuk_unit'] : '');
+            $sheet->setCellValue('U' . $row, isset($model['masuk_po']) ? (float) $model['masuk_po'] : '');
+            $sheet->setCellValue('V' . $row, isset($model['masuk']) ? (float) $model['masuk'] : '');
+            $sheet->setCellValue('W' . $row, isset($model['keluar_so']) ? (float) $model['keluar_so'] : '');
+            $sheet->setCellValue('X' . $row, isset($model['keluar_pasien']) ? (float) $model['keluar_pasien'] : '');
+            $sheet->setCellValue('Y' . $row, isset($model['keluar_unit']) ? (float) $model['keluar_unit'] : '');
+            $sheet->setCellValue('Z' . $row, isset($model['keluar']) ? (float) $model['keluar'] : '');
+            $sheet->setCellValue('AA' . $row, isset($model['stok_sekarang']) ? (float) $model['stok_sekarang'] : '');
             // $sheet->setCellValue('J' . $row, isset($model['bpjskesehatan']) ? number_format($model['bpjskesehatan'], 2, ',', '.') : "");
-            
+
             $row++;
             $i++;
         }
 
-        $sheet->getStyle('M5:AD' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
+        $sheet->getStyle('M5:AA' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
 
-        $sheet->getStyle('A4:AD'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        
+        $sheet->getStyle('A4:AA' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $fileName = 'laporan-persediaan.xlsx';
         $tempFile = tempnam(sys_get_temp_dir(), $fileName);
@@ -244,7 +238,7 @@ class PersediaanController extends BaseController
     {
         $combine = '= :ruangan';
         if ($this->ruangan == 'unit lain') {
-            $combine = 'in (select ruangan_id from ruangan_m where instalasi_id in(2, 3, 4, 5, 6, 7, 17, 38, 74, 76, 82)) ';
+            $combine = 'in (select ruangan_id from ruangan_m where ruangan_id not in(58,59)) ';
         }
 
         if ($this->ruangan == 'unit rumah sakit') {
@@ -255,29 +249,22 @@ class PersediaanController extends BaseController
                 WITH stok_aggregated AS (
                 SELECT 
                     obatalkes_id,
-                    -- Stok Awal: Sebelum Tanggal Awal
-                    SUM(CASE WHEN create_time < :dateminsatu THEN qtystok_in - qtystok_out ELSE 0 END) AS stok_awal,
-                    -- Mutasi Masuk
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NULL AND penerimaandetail_id IS NOT NULL THEN qtystok_in ELSE 0 END) AS penerimaan_pbf,
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND terimamutasidetail_id IS NOT NULL AND tglstok_in IS NOT NULL THEN qtystok_in ELSE 0 END) AS mutasi_ruangan_masuk,
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NOT NULL THEN qtystok_in ELSE 0 END) AS adjustman_plus,
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND returresepdet_id IS NOT NULL AND tglstok_out IS NOT NULL THEN qtystok_out ELSE 0 END) AS retur_resep,
+                    SUM(CASE WHEN create_time < :dateminsatu THEN qtystok_in - qtystok_out ELSE 0 END) AS stok_bulan_lalu,
+                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NOT NULL THEN qtystok_in ELSE 0 END) AS masuk_SO,
+                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NULL AND penerimaandetail_id IS NULL THEN qtystok_in ELSE 0 END) AS masuk_unit,
+                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NULL AND penerimaandetail_id IS NOT NULL THEN qtystok_in ELSE 0 END) AS masuk_PO,
                     SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto THEN qtystok_in ELSE 0 END) AS masuk,
-                    -- Mutasi Keluar
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NOT NULL THEN qtystok_out ELSE 0 END) AS adjustman_minus,
+                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NOT NULL THEN qtystok_out ELSE 0 END) AS keluar_SO,
                     SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND obatalkespasien_id IS NOT NULL THEN qtystok_out ELSE 0 END) AS keluar_pasien,
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND terimamutasidetail_id IS NOT NULL AND tglstok_out IS NOT NULL THEN qtystok_out ELSE 0 END) AS mutasi_ruangan_keluar,
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND returdetail_id IS NOT NULL AND tglstok_out IS NOT NULL THEN qtystok_out ELSE 0 END) AS retur_pbf,
+                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND stokopnamedet_id IS NULL AND obatalkespasien_id IS NULL THEN qtystok_out ELSE 0 END) AS keluar_unit,
                     SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto THEN qtystok_out ELSE 0 END) AS keluar,
-                    SUM(CASE WHEN create_time BETWEEN :datefrom AND :dateto AND pemakaianobatdetail_id IS NOT NULL AND tglstok_out IS NOT NULL THEN qtystok_out ELSE 0 END) AS pemakaian_ruangan,
-                    -- Stok Sekarang: Sampai Tanggal Akhir + 1 Hari
                     SUM(CASE WHEN create_time < :dateplussatu THEN qtystok_in - qtystok_out ELSE 0 END) AS stok_sekarang
                 FROM stokobatalkes_t st
-                WHERE st.ruangan_id ". $combine ."
+                WHERE st.ruangan_id " . $combine . "
                 GROUP BY obatalkes_id
             ),
             zataktif_aggregated AS (
-                SELECT 
+                SELECT 0
                     obatalkes_id, 
                     COALESCE(STRING_AGG(obatalkeszataktif_nama, ', '), '') AS obatalkeszataktif_nama
                 FROM obatalkeszataktif_m
@@ -291,7 +278,7 @@ class PersediaanController extends BaseController
         if (!empty($this->namaObatAlkes)) {
             $where[] = "(om.obatalkes_nama ILIKE :nama_obatalkes OR om.obatalkes_kode ILIKE :nama_obatalkes)";
         }
-        
+
         if (!empty($where)) {
             return " WHERE " . implode(" AND ", $where);
         }
@@ -302,7 +289,7 @@ class PersediaanController extends BaseController
     {
         $whereSql = $this->getWhereCondition();
 
-        $query =  $this->cte() . "
+        $query = $this->cte() . "
             SELECT 
                 om.obatalkes_aktif,
                 om.obatalkes_kode,
@@ -320,17 +307,14 @@ class PersediaanController extends BaseController
                 om.discount,
                 om.ppn_persen,
                 om.hargajual,
-                sa.stok_awal,
-                sa.penerimaan_pbf,
-                sa.mutasi_ruangan_masuk,
-                sa.retur_resep,
-                sa.adjustman_plus,
+                sa.stok_bulan_lalu,
+                sa.masuk_SO,
+                sa.masuk_unit,
+                sa.masuk_PO,
                 sa.masuk,
-                sa.adjustman_minus,
+                sa.keluar_SO,
                 sa.keluar_pasien,
-                sa.mutasi_ruangan_keluar,
-                sa.pemakaian_ruangan,
-                sa.retur_pbf,
+                sa.keluar_unit,
                 sa.keluar,
                 sa.stok_sekarang
             FROM obatalkes_m om
@@ -399,7 +383,7 @@ class PersediaanController extends BaseController
         if (!empty($this->namaObatAlkes)) {
             $command->bindValue(':nama_obatalkes', '%' . $this->namaObatAlkes . '%');
         }
-        
+
         return $command->queryScalar();
     }
 

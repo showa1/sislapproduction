@@ -108,9 +108,9 @@ function num($n) { return number_format((float)$n, 0, ',', '.'); }
         </div>
     </div>
     <div class="col-md-3 mb-3">
-        <div class="card-kpi card-purple">
+        <div class="card-kpi card-purple" data-bs-toggle="modal" data-bs-target="#modalDeadStock">
             <div class="d-flex justify-content-between align-items-start">
-                <div class="kpi-title">Dead Stock <span class="badge bg-success" style="font-size: 0.6rem; vertical-align: text-top; margin-left: 4px;">Real</span></div>
+                <div class="kpi-title">Dead Stock <span class="badge bg-success" style="font-size: 0.6rem; vertical-align: text-top; margin-left: 4px;">Real</span> <small style="font-size:0.65rem;color:#6610f2;">▶ Lihat Detail</small></div>
                 <div class="kpi-icon-box"><i class="bi bi-archive"></i></div>
             </div>
             <div class="kpi-value" style="color:#6610f2;"><?= num($deadstock) ?> <span style="font-size:1rem;color:#718096;font-weight:500;">Item</span></div>
@@ -144,9 +144,9 @@ function num($n) { return number_format((float)$n, 0, ',', '.'); }
         </div>
     </div>
     <div class="col-md-4 mb-3">
-        <div class="card-kpi card-red">
+        <div class="card-kpi card-red" data-bs-toggle="modal" data-bs-target="#modalStockOut">
             <div class="d-flex justify-content-between align-items-start">
-                <div class="kpi-title">Stock Out <span class="badge bg-success" style="font-size: 0.6rem; vertical-align: text-top; margin-left: 4px;">Real</span></div>
+                <div class="kpi-title">Stock Out <span class="badge bg-success" style="font-size: 0.6rem; vertical-align: text-top; margin-left: 4px;">Real</span> <small style="font-size:0.65rem;color:#dc3545;">▶ Lihat Detail</small></div>
                 <div class="kpi-icon-box"><i class="bi bi-x-octagon-fill"></i></div>
             </div>
             <div class="kpi-value text-danger"><?= num($stockout_alert) ?> <span style="font-size:1rem;color:#718096;">Item</span></div>
@@ -343,6 +343,91 @@ function num($n) { return number_format((float)$n, 0, ',', '.'); }
                             <td style="text-align:center;"><?= date('d/m/Y', strtotime($item['tglkadaluarsa'])) ?></td>
                             <td style="text-align:center;font-weight:700;color:<?= $sisa <= 0 ? '#dc3545' : ($sisa <= 30 ? '#d97706' : '#4a5568') ?>;"><?= $sisa <= 0 ? 'EXPIRED' : $sisa ?></td>
                             <td style="text-align:center;"><?= $urgensi ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Dead Stock -->
+<div class="modal fade" id="modalDeadStock" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content" style="border-radius:16px;border:none;">
+            <div class="modal-header" style="background:#f3e8ff;border-radius:16px 16px 0 0;">
+                <h5 class="modal-title" style="color:#6610f2;"><i class="bi bi-archive-fill text-purple me-2"></i>Detail Dead Stock (Tidak Bergerak ≥ 6 Bulan)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Obat / Alkes</th>
+                            <th>Kategori</th>
+                            <th style="text-align:right;">Stok Saat Ini</th>
+                            <th style="text-align:center;">Transaksi Terakhir</th>
+                            <th style="text-align:center;">Durasi Pasif</th>
+                            <th style="text-align:center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($deadstockDetail as $i => $item): 
+                            $lastTrx = !empty($item['last_trx']) ? date('d/m/Y', strtotime($item['last_trx'])) : '—';
+                            $hariPasif = (int)$item['hari_tidak_bergerak'];
+                        ?>
+                        <tr>
+                            <td style="color:#a0aec0;"><?= $i + 1 ?></td>
+                            <td><strong><?= Html::encode($item['obatalkes_nama']) ?></strong></td>
+                            <td><?= Html::encode($item['obatalkes_kategori'] ?? '-') ?></td>
+                            <td style="text-align:right;font-weight:700;color:#6610f2;"><?= num($item['stok']) ?></td>
+                            <td style="text-align:center;"><?= $lastTrx ?></td>
+                            <td style="text-align:center;font-weight:700;color:#dc3545;"><?= $hariPasif ?> Hari</td>
+                            <td style="text-align:center;"><span class="activity-badge badge-out">Tidak Bergerak</span></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Stock Out -->
+<div class="modal fade" id="modalStockOut" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content" style="border-radius:16px;border:none;">
+            <div class="modal-header" style="background:#fef2f2;border-radius:16px 16px 0 0;">
+                <h5 class="modal-title" style="color:#dc3545;"><i class="bi bi-x-octagon-fill text-danger me-2"></i>Detail Item Stock Out (Stok = 0)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Obat / Alkes</th>
+                            <th>Kategori</th>
+                            <th style="text-align:right;">Stok Saat Ini</th>
+                            <th style="text-align:center;">Transaksi Terakhir</th>
+                            <th style="text-align:center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($stockoutDetail as $i => $item): 
+                            $lastTrx = !empty($item['last_trx']) ? date('d/m/Y H:i', strtotime($item['last_trx'])) : '—';
+                        ?>
+                        <tr style="background:#fef2f2;">
+                            <td style="color:#a0aec0;"><?= $i + 1 ?></td>
+                            <td><strong><?= Html::encode($item['obatalkes_nama']) ?></strong></td>
+                            <td><?= Html::encode($item['obatalkes_kategori'] ?? '-') ?></td>
+                            <td style="text-align:right;font-weight:700;color:#dc3545;"><?= num($item['stok']) ?></td>
+                            <td style="text-align:center;"><?= $lastTrx ?></td>
+                            <td style="text-align:center;"><span class="activity-badge badge-out">Stock Out</span></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
