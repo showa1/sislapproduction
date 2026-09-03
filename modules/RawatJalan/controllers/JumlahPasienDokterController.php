@@ -96,7 +96,9 @@ class JumlahPasienDokterController extends BaseController
         $sheet->setCellValue('A4', 'No');
         $sheet->setCellValue('B4', 'Nama Pegawai');
         $sheet->setCellValue('C4', 'Poliklinik / Ruangan');
-        $sheet->setCellValue('D4', 'Jumlah Pasien');
+        $sheet->setCellValue('D4', 'Klinik BPJS / Reguler');
+        $sheet->setCellValue('E4', 'Klinik Eksekutif');
+        $sheet->setCellValue('F4', 'Total Pasien');
         
         // Isi Data
         $row = 5; // Mulai dari baris kedua
@@ -109,13 +111,15 @@ class JumlahPasienDokterController extends BaseController
             $sheet->setCellValue('A' . $row, $i);
             $sheet->setCellValue('B' . $row, $namaPegawai);
             $sheet->setCellValue('C' . $row, $model['ruangan_nama'] ?? '-');
-            $sheet->setCellValue('D' . $row, (int)$model['jumlahpasien']);
+            $sheet->setCellValue('D' . $row, (int)($model['jumlah_bpjs'] ?? 0));
+            $sheet->setCellValue('E' . $row, (int)($model['jumlah_eksekutif'] ?? 0));
+            $sheet->setCellValue('F' . $row, (int)($model['jumlahpasien'] ?? 0));
 
             $row++;
             $i++;
         }
 
-        $sheet->getStyle('A4:D'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('A4:F'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         // Simpan file ke response
         
         $writer = new Xlsx($spreadsheet);
@@ -147,6 +151,8 @@ class JumlahPasienDokterController extends BaseController
                 pm.nama_pegawai,
                 gb.gelarbelakang_nama,
                 STRING_AGG(DISTINCT rm.ruangan_nama, ', ') AS ruangan_nama,
+                COUNT(pt.pendaftaran_id) FILTER (WHERE rm.is_eksekutif IS NOT TRUE) AS jumlah_bpjs,
+                COUNT(pt.pendaftaran_id) FILTER (WHERE rm.is_eksekutif = true) AS jumlah_eksekutif,
                 COUNT(pt.pendaftaran_id) AS jumlahpasien
             FROM pendaftaran_t pt
             JOIN pegawai_m pm ON pm.pegawai_id = pt.pegawai_id
@@ -168,6 +174,7 @@ class JumlahPasienDokterController extends BaseController
     public function queryFilter($query)
     {
         $query .= " WHERE pt.pasienbatalperiksa_id IS NULL
+                    AND rm.instalasi_id = 2
                     AND DATE(pt.tgl_pendaftaran) BETWEEN :datefrom AND :dateto
                     AND (pm.kelompokpegawai_id = 1 OR j.jabatan_nama ILIKE '%dokter%')
                 ";

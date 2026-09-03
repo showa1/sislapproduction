@@ -141,8 +141,26 @@
                                 }
                             ],
                             [
+                                'attribute' => 'jumlah_bpjs',
+                                'label' => 'Klinik BPJS / Reguler',
+                                'headerOptions' => ['style' => 'background: #002D72; color: #fff; border: none; padding: 15px; text-align: center;'],
+                                'contentOptions' => ['style' => 'text-align: center; font-weight: 600; color: #1e293b;'],
+                                'value' => function ($model) {
+                                    return (int)($model['jumlah_bpjs'] ?? 0);
+                                }
+                            ],
+                            [
+                                'attribute' => 'jumlah_eksekutif',
+                                'label' => 'Klinik Eksekutif',
+                                'headerOptions' => ['style' => 'background: #002D72; color: #fff; border: none; padding: 15px; text-align: center;'],
+                                'contentOptions' => ['style' => 'text-align: center; font-weight: 600; color: #1e293b;'],
+                                'value' => function ($model) {
+                                    return (int)($model['jumlah_eksekutif'] ?? 0);
+                                }
+                            ],
+                            [
                                 'attribute' => 'jumlahpasien',
-                                'label' => 'Jumlah Pasien',
+                                'label' => 'Total Pasien',
                                 'headerOptions' => ['style' => 'background: #002D72; color: #fff; border: none; padding: 15px; text-align: center;'],
                                 'contentOptions' => ['style' => 'text-align: center; font-weight: 700; color: #002D72;'],
                             ],
