@@ -132,6 +132,15 @@
                                 }
                             ],
                             [
+                                'attribute' => 'ruangan_nama',
+                                'label' => 'Poliklinik / Ruangan',
+                                'headerOptions' => ['style' => 'background: #002D72; color: #fff; border: none; padding: 15px;'],
+                                'contentOptions' => ['style' => 'font-weight: 500; color: #334155;'],
+                                'value' => function ($model) {
+                                    return !empty($model['ruangan_nama']) ? $model['ruangan_nama'] : '-';
+                                }
+                            ],
+                            [
                                 'attribute' => 'jumlahpasien',
                                 'label' => 'Jumlah Pasien',
                                 'headerOptions' => ['style' => 'background: #002D72; color: #fff; border: none; padding: 15px; text-align: center;'],

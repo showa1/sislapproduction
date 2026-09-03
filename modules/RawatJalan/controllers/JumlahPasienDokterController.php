@@ -95,21 +95,27 @@ class JumlahPasienDokterController extends BaseController
 
         $sheet->setCellValue('A4', 'No');
         $sheet->setCellValue('B4', 'Nama Pegawai');
-        $sheet->setCellValue('C4', 'Jumlah Pasien');
+        $sheet->setCellValue('C4', 'Poliklinik / Ruangan');
+        $sheet->setCellValue('D4', 'Jumlah Pasien');
         
         // Isi Data
         $row = 5; // Mulai dari baris kedua
         $i = 1;
         foreach ($models as $model) {
+            $gelardepan = !empty($model['gelardepan']) ? trim($model['gelardepan']) : '';
+            $gelarbelakang = !empty($model['gelarbelakang_nama']) ? trim($model['gelarbelakang_nama']) : '';
+            $namaPegawai = !empty($model['nama_pegawai']) ? trim($gelardepan . ' ' . $model['nama_pegawai'] . ' ' . $gelarbelakang) : '';
+
             $sheet->setCellValue('A' . $row, $i);
-            $sheet->setCellValue('B' . $row, $model['nama_pegawai']);
-            $sheet->setCellValue('C' . $row, $model['jumlahpasien']);
+            $sheet->setCellValue('B' . $row, $namaPegawai);
+            $sheet->setCellValue('C' . $row, $model['ruangan_nama'] ?? '-');
+            $sheet->setCellValue('D' . $row, (int)$model['jumlahpasien']);
 
             $row++;
             $i++;
         }
 
-        $sheet->getStyle('A4:C'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('A4:D'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         // Simpan file ke response
         
         $writer = new Xlsx($spreadsheet);
@@ -129,39 +135,47 @@ class JumlahPasienDokterController extends BaseController
 
     public function queryKosong()
     {
-        return "Select tariftindakan_id from tariftindakan_m where 1=0";
+        return "SELECT tariftindakan_id FROM tariftindakan_m WHERE 1=0";
     }
 
     public function baseQuery()
     {
-        $query =  "
-            select nama_pegawai,
-            count (pt.pasienadmisi_id) as Jumlahpasien
-            from pasienadmisi_t pat
-            join pendaftaran_t pt on pt.pasien_id = pat.pasien_id
-            join pegawai_m pm on pm.pegawai_id = pt.pegawai_id 
+        $query = "
+            SELECT 
+                pm.pegawai_id,
+                pm.gelardepan,
+                pm.nama_pegawai,
+                gb.gelarbelakang_nama,
+                STRING_AGG(DISTINCT rm.ruangan_nama, ', ') AS ruangan_nama,
+                COUNT(pt.pendaftaran_id) AS jumlahpasien
+            FROM pendaftaran_t pt
+            JOIN pegawai_m pm ON pm.pegawai_id = pt.pegawai_id
+            JOIN ruangan_m rm ON rm.ruangan_id = pt.ruangan_id
+            LEFT JOIN gelarbelakang_m gb ON gb.gelarbelakang_id = pm.gelarbelakang_id
+            LEFT JOIN jabatan_m j ON j.jabatan_id = pm.jabatan_id
         ";
 
         $query = $this->queryFilter($query);
        
         $query .= "
-            group by nama_pegawai
+            GROUP BY pm.pegawai_id, pm.gelardepan, pm.nama_pegawai, gb.gelarbelakang_nama
+            ORDER BY jumlahpasien DESC
         ";
 
         return $query;
-
     }
 
     public function queryFilter($query)
     {
-
-        $query .= " where
-                    pasienbatalperiksa_id is null and pt.pasienadmisi_id is not null
-                    and date(tgl_pendaftaran)  between :datefrom and :dateto
-                    and jabatan_id  = '23' 
+        $query .= " WHERE pt.pasienbatalperiksa_id IS NULL
+                    AND DATE(pt.tgl_pendaftaran) BETWEEN :datefrom AND :dateto
+                    AND (pm.kelompokpegawai_id = 1 OR j.jabatan_nama ILIKE '%dokter%')
                 ";
 
-        $this->params = array_merge($this->params, [':datefrom' => $this->dateFrom, ':dateto' => $this->dateTo]);
+        $this->params = [
+            ':datefrom' => $this->dateFrom,
+            ':dateto' => $this->dateTo,
+        ];
 
         return $query;
     }
@@ -169,19 +183,19 @@ class JumlahPasienDokterController extends BaseController
     public function countQuery()
     {
         $query = "
-            select count(*) as total from (
-                select count(1)
-                from pasienadmisi_t pat
-                join pendaftaran_t pt on pt.pasien_id = pat.pasien_id
-                join pegawai_m pm on pm.pegawai_id = pt.pegawai_id
+            SELECT COUNT(*) AS total FROM (
+                SELECT pm.pegawai_id
+                FROM pendaftaran_t pt
+                JOIN pegawai_m pm ON pm.pegawai_id = pt.pegawai_id
+                JOIN ruangan_m rm ON rm.ruangan_id = pt.ruangan_id
+                LEFT JOIN jabatan_m j ON j.jabatan_id = pm.jabatan_id
         ";
 
         $query = $this->queryFilter($query);
 
         $query .= " 
-                group by nama_pegawai
-                ) as sub_total";
-
+                GROUP BY pm.pegawai_id
+            ) AS sub_total";
 
         $command = Yii::$app->db->createCommand($query);
         $command->bindValue(':datefrom', $this->dateFrom);
@@ -189,5 +203,4 @@ class JumlahPasienDokterController extends BaseController
         
         return $command->queryScalar();
     }
-
 }

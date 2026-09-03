@@ -172,9 +172,14 @@ $resetUrl = Url::to(['penjamin-pasien/index']);
 $urlExport = Url::to(['penjamin-pasien/export']);
 
 $js = <<<JS
-    $('#export-button').on('click', function() {
-        var formData = $('#filter-form').serialize();
-        window.location.href = "$urlExport" + "?" + formData;
+    $('#export-button').on('click', function(e) {
+        e.preventDefault();
+        var formParams = $('#filter-form').serializeArray().filter(function(item) {
+            return item.name !== 'r';
+        });
+        var formData = $.param(formParams);
+        var separator = "$urlExport".indexOf('?') !== -1 ? "&" : "?";
+        window.location.href = "$urlExport" + separator + formData;
     });
 JS;
 $this->registerJs($js);
