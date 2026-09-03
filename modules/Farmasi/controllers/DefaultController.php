@@ -159,6 +159,7 @@ class DefaultController extends BaseController
                    EXTRACT(DAY FROM (tglkadaluarsa - NOW())) as sisa_hari
             FROM obatalkes_m
             WHERE obatalkes_aktif = true AND tglkadaluarsa IS NOT NULL
+              AND tglkadaluarsa >= '2000-01-01'
               AND tglkadaluarsa <= NOW() + INTERVAL '90 days'
             ORDER BY tglkadaluarsa ASC LIMIT 20")->queryAll();
 

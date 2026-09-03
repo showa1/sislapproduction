@@ -6,15 +6,19 @@ use Yii;
 use app\controllers\BaseController;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\web\Response;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use DateTime;
 
 class PenjaminPasienController extends BaseController
 {
-    public function actionIndex()
+    private function buildQueryAndParams($request)
     {
-        $request = Yii::$app->request;
-        
-        // Get filter parameters
         $dateFromRaw = $request->get('date_from');
         $dateToRaw = $request->get('date_to');
         $carabayarId = $request->get('carabayar_id');
@@ -32,8 +36,11 @@ class PenjaminPasienController extends BaseController
             $dateToRaw = date('t-m-Y');
         }
 
-        $dateFrom = DateTime::createFromFormat('d-m-Y', $dateFromRaw)->format('Y-m-d 00:00:00');
-        $dateTo = DateTime::createFromFormat('d-m-Y', $dateToRaw)->format('Y-m-d 23:59:59');
+        $dateFromObj = DateTime::createFromFormat('d-m-Y', $dateFromRaw);
+        $dateToObj = DateTime::createFromFormat('d-m-Y', $dateToRaw);
+
+        $dateFrom = $dateFromObj ? $dateFromObj->format('Y-m-d 00:00:00') : date('Y-m-01 00:00:00');
+        $dateTo = $dateToObj ? $dateToObj->format('Y-m-d 23:59:59') : date('Y-m-t 23:59:59');
 
         // Build dynamic WHERE clause
         $where = [
@@ -101,8 +108,6 @@ class PenjaminPasienController extends BaseController
             LEFT JOIN instalasi_m insi ON insi.instalasi_id = rmi.instalasi_id
             WHERE $whereSql
         ";
-        
-        $count = Yii::$app->db->createCommand($countSql, $params)->queryScalar();
 
         // Main Query
         $sql = "
@@ -138,9 +143,31 @@ class PenjaminPasienController extends BaseController
             ORDER BY pt.tgl_pendaftaran DESC
         ";
 
-        $dataProvider = new SqlDataProvider([
+        return [
             'sql' => $sql,
+            'countSql' => $countSql,
             'params' => $params,
+            'dateFromRaw' => $dateFromRaw,
+            'dateToRaw' => $dateToRaw,
+            'carabayarId' => $carabayarId,
+            'penjaminId' => $penjaminId,
+            'instalasiId' => $instalasiId,
+            'ruanganId' => $ruanganId,
+            'namaPasien' => $namaPasien,
+            'noRekamMedik' => $noRekamMedik,
+        ];
+    }
+
+    public function actionIndex()
+    {
+        $request = Yii::$app->request;
+        $q = $this->buildQueryAndParams($request);
+        
+        $count = Yii::$app->db->createCommand($q['countSql'], $q['params'])->queryScalar();
+
+        $dataProvider = new SqlDataProvider([
+            'sql' => $q['sql'],
+            'params' => $q['params'],
             'totalCount' => $count,
             'pagination' => [
                 'pageSize' => 10,
@@ -156,14 +183,14 @@ class PenjaminPasienController extends BaseController
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'dateFrom' => $dateFromRaw,
-            'dateTo' => $dateToRaw,
-            'carabayarId' => $carabayarId,
-            'penjaminId' => $penjaminId,
-            'instalasiId' => $instalasiId,
-            'ruanganId' => $ruanganId,
-            'namaPasien' => $namaPasien,
-            'noRekamMedik' => $noRekamMedik,
+            'dateFrom' => $q['dateFromRaw'],
+            'dateTo' => $q['dateToRaw'],
+            'carabayarId' => $q['carabayarId'],
+            'penjaminId' => $q['penjaminId'],
+            'instalasiId' => $q['instalasiId'],
+            'ruanganId' => $q['ruanganId'],
+            'namaPasien' => $q['namaPasien'],
+            'noRekamMedik' => $q['noRekamMedik'],
             'carabayarList' => $carabayarList,
             'penjaminList' => $penjaminList,
             'instalasiList' => $instalasiList,
@@ -173,7 +200,88 @@ class PenjaminPasienController extends BaseController
 
     public function actionExport()
     {
-        Yii::$app->session->setFlash('warning', 'Export belum diimplementasikan untuk Laporan Penjamin Pasien.');
-        return $this->redirect(array_merge(['index'], Yii::$app->request->get()));
+        $request = Yii::$app->request;
+        $q = $this->buildQueryAndParams($request);
+
+        $data = Yii::$app->db->createCommand($q['sql'], $q['params'])->queryAll();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Rumah Sakit Priscilla Medical Center');
+        $sheet->setCellValue('A2', 'Laporan Penjamin Pasien');
+        $sheet->setCellValue('A3', 'Periode: ' . $q['dateFromRaw'] . ' s/d ' . $q['dateToRaw']);
+
+        $sheet->getStyle('A1:A3')->getFont()->setBold(true);
+        $sheet->getStyle('A1')->getFont()->setSize(16);
+        $sheet->getStyle('A2')->getFont()->setSize(14);
+
+        $headers = [
+            'No',
+            'Tanggal Pendaftaran',
+            'No Pendaftaran',
+            'No Rekam Medik',
+            'Nama Pasien',
+            'Cara Bayar',
+            'Penjamin',
+            'Instalasi',
+            'Ruangan',
+            'Dokter DPJP',
+            'Total Visit'
+        ];
+
+        $col = 'A';
+        foreach ($headers as $h) {
+            $sheet->setCellValue($col . '5', $h);
+            $col++;
+        }
+
+        $sheet->getStyle('A5:K5')->getFont()->setBold(true);
+        $sheet->getStyle('A5:K5')->getFill()->setFillType(Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('FF002D72');
+        $sheet->getStyle('A5:K5')->getFont()->getColor()->setARGB('FFFFFFFF');
+        $sheet->getStyle('A5:K5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        $rowIdx = 6;
+        $i = 1;
+        foreach ($data as $r) {
+            $sheet->setCellValue('A' . $rowIdx, $i);
+            $sheet->setCellValue('B' . $rowIdx, !empty($r['Tanggal Pendaftaran']) ? date('d/m/Y H:i:s', strtotime($r['Tanggal Pendaftaran'])) : '-');
+            $sheet->setCellValueExplicit('C' . $rowIdx, $r['No Pendaftaran'] ?? '-', DataType::TYPE_STRING);
+            $sheet->setCellValueExplicit('D' . $rowIdx, $r['No Rekam Medik'] ?? '-', DataType::TYPE_STRING);
+            $sheet->setCellValue('E' . $rowIdx, $r['Nama Pasien'] ?? '-');
+            $sheet->setCellValue('F' . $rowIdx, $r['Cara Bayar'] ?? '-');
+            $sheet->setCellValue('G' . $rowIdx, $r['Penjamin'] ?? '-');
+            $sheet->setCellValue('H' . $rowIdx, $r['Instalasi'] ?? '-');
+            $sheet->setCellValue('I' . $rowIdx, $r['Ruangan'] ?? '-');
+            $sheet->setCellValue('J' . $rowIdx, $r['Dokter DPJP'] ?? '-');
+            $sheet->setCellValue('K' . $rowIdx, (int)($r['Total Visit'] ?? 0));
+
+            $rowIdx++;
+            $i++;
+        }
+
+        $lastRow = max(5, $rowIdx - 1);
+        $sheet->getStyle('A5:K' . $lastRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+        foreach (range('A', 'K') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Laporan_Penjamin_Pasien_' . date('Ymd_His') . '.xlsx';
+        $tempFile = tempnam(sys_get_temp_dir(), 'export_penjamin_pasien');
+        $writer->save($tempFile);
+
+        return Yii::$app->response->sendFile($tempFile, $fileName)->on(
+            Response::EVENT_AFTER_SEND,
+            function ($event) {
+                if (file_exists($event->data)) {
+                    @unlink($event->data);
+                }
+            },
+            $tempFile
+        );
     }
 }
+

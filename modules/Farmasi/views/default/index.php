@@ -340,7 +340,7 @@ function num($n) { return number_format((float)$n, 0, ',', '.'); }
                             <td style="color:#a0aec0;"><?= $i + 1 ?></td>
                             <td><strong><?= Html::encode($item['obatalkes_nama']) ?></strong></td>
                             <td><?= Html::encode($item['obatalkes_kategori']) ?></td>
-                            <td style="text-align:center;"><?= date('d/m/Y', strtotime($item['tglkadaluarsa'])) ?></td>
+                            <td style="text-align:center;"><?= !empty($item['tglkadaluarsa']) && ($dt = date_create($item['tglkadaluarsa'])) ? $dt->format('d/m/Y') : '-' ?></td>
                             <td style="text-align:center;font-weight:700;color:<?= $sisa <= 0 ? '#dc3545' : ($sisa <= 30 ? '#d97706' : '#4a5568') ?>;"><?= $sisa <= 0 ? 'EXPIRED' : $sisa ?></td>
                             <td style="text-align:center;"><?= $urgensi ?></td>
                         </tr>
