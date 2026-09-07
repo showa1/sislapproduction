@@ -10,6 +10,7 @@ class Module extends BaseModule
 
     public $menu = [
         ['label' => 'Analisis Kunjungan Closing', 'url' => '/keuangan/analisis-kunjungan/index', 'icon' => 'bi bi-bar-chart-steps'],
+        ['label' => 'Pasien Clinical Pathway', 'url' => '/keuangan/pasien-clinical-pathway/index', 'icon' => 'bi bi-file-earmark-medical'],
         ['label' => 'Pendapatan Pasien', 'url' => '/keuangan/pendapatan-pasien/index', 'icon' => 'bi bi-cash-stack'],
         ['label' => 'Dashboard Pendapatan RI', 'url' => '/keuangan/pendapatan-rawat-inap/index', 'icon' => 'bi bi-hospital'],
         ['label' => 'Revenue', 'url' => '/keuangan/revenue/index', 'icon' => 'bi bi-graph-up-arrow'],
