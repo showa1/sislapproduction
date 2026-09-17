@@ -19,6 +19,7 @@ class Module extends \yii\base\Module
         ['label' => 'Data Pasien Meninggal', 'url' => '/pendaftaran/pasien-meninggal/index', 'icon' => 'bi bi-heartbreak'],
         ['label' => 'Penjamin Pasien', 'url' => '/pendaftaran/penjamin-pasien/index', 'icon' => 'bi bi-person-badge'],
         ['label' => 'Rekapitulasi Pasien per Paket MCU', 'url' => '/pendaftaran/rekapitulasi-pasien-mcu/index', 'icon' => 'bi bi-journal-check'],
+        ['label' => 'Informasi Paket/Pasien', 'url' => '/pendaftaran/informasi-paket-pasien/index', 'icon' => 'bi bi-person-vcard'],
     ];
 
     /**
