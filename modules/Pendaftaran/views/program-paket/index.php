@@ -323,20 +323,10 @@ $urlExport = Url::to(['/pendaftaran/program-paket/export']);
                                         [
                                             'attribute' => 'penjamin_nama',
                                             'label' => 'Penjamin',
-                                            'headerOptions' => ['style' => 'width: 160px; text-align: center;'],
-                                            'contentOptions' => ['style' => 'text-align: center;'],
-                                            'format' => 'raw',
+                                            'headerOptions' => ['style' => 'width: 140px; text-align: center;'],
+                                            'contentOptions' => ['style' => 'text-align: center; font-weight: 500; color: #334155;'],
                                             'value' => function($model) {
-                                                $pj = Html::encode($model['penjamin_nama']);
-                                                $pjLower = strtolower($pj);
-                                                if (strpos($pjLower, 'umum') !== false) {
-                                                    $badgeClass = 'bg-info text-dark';
-                                                } elseif (strpos($pjLower, 'bpjs') !== false) {
-                                                    $badgeClass = 'bg-warning text-dark';
-                                                } else {
-                                                    $badgeClass = 'bg-primary text-white';
-                                                }
-                                                return Html::tag('span', $pj, ['class' => "badge {$badgeClass} px-2 py-1"]);
+                                                return $model['penjamin_nama'] ?? '-';
                                             }
                                         ],
                                         [
