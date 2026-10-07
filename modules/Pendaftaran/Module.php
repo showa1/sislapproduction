@@ -20,6 +20,7 @@ class Module extends \yii\base\Module
         ['label' => 'Penjamin Pasien', 'url' => '/pendaftaran/penjamin-pasien/index', 'icon' => 'bi bi-person-badge'],
         ['label' => 'Rekapitulasi Pasien per Paket MCU', 'url' => '/pendaftaran/rekapitulasi-pasien-mcu/index', 'icon' => 'bi bi-journal-check'],
         ['label' => 'Informasi Paket/Pasien', 'url' => '/pendaftaran/informasi-paket-pasien/index', 'icon' => 'bi bi-person-vcard'],
+        ['label' => 'Program Paket', 'url' => '/pendaftaran/program-paket/index', 'icon' => 'bi bi-box-seam'],
     ];
 
     /**
