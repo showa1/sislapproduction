@@ -29,11 +29,11 @@ class PenggunaanBmhpPerpasienController extends BaseController
 
         $dropdownselect = [
             'start' => Yii::$app->request->get('date_from'),
-            'to'    => Yii::$app->request->get('date_to'),
+            'to' => Yii::$app->request->get('date_to'),
         ];
 
         return $this->render('index', [
-            'dataProvider'   => $this->dataprovider(),
+            'dataProvider' => $this->dataprovider(),
             'dropdownselect' => $dropdownselect,
         ]);
     }
@@ -41,7 +41,7 @@ class PenggunaanBmhpPerpasienController extends BaseController
     public function setupSearch()
     {
         $this->dateFrom = Yii::$app->request->get('date_from');
-        $this->dateTo   = Yii::$app->request->get('date_to');
+        $this->dateTo = Yii::$app->request->get('date_to');
 
         if (!empty($this->dateFrom)) {
             $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d');
@@ -59,8 +59,8 @@ class PenggunaanBmhpPerpasienController extends BaseController
     public function dataprovider()
     {
         return new SqlDataProvider([
-            'sql'        => $this->statuscari ? $this->baseQuery() : $this->queryKosong(),
-            'params'     => $this->params,
+            'sql' => $this->statuscari ? $this->baseQuery() : $this->queryKosong(),
+            'params' => $this->params,
             'totalCount' => $this->statuscari ? $this->countQuery() : 0,
             'pagination' => [
                 'pageSize' => 10,
@@ -73,15 +73,15 @@ class PenggunaanBmhpPerpasienController extends BaseController
         $this->setupSearch();
 
         $dataProvider = new SqlDataProvider([
-            'sql'        => $this->statuscari ? $this->baseQuery() : $this->queryKosong(),
-            'params'     => $this->params,
+            'sql' => $this->statuscari ? $this->baseQuery() : $this->queryKosong(),
+            'params' => $this->params,
             'pagination' => false,
         ]);
 
         $models = $dataProvider->getModels();
 
         $spreadsheet = new Spreadsheet();
-        $sheet       = $spreadsheet->getActiveSheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
         $sheet->setCellValue('A1', 'Rumah Sakit Priscilla Medical Center');
         $sheet->setCellValue('A2', 'Laporan Penggunaan BMHP / Pasien');
@@ -99,13 +99,15 @@ class PenggunaanBmhpPerpasienController extends BaseController
         $sheet->setCellValue('F5', 'Cara Bayar');
         $sheet->setCellValue('G5', 'Diagnosa');
         $sheet->setCellValue('H5', 'BMHP yang Digunakan');
+        $sheet->setCellValue('I5', 'Total Harga Netto');
+        $sheet->setCellValue('J5', 'Total Harga Jual');
 
         $headerStyle = [
-            'font'      => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-            'fill'      => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => '002D72']],
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => '002D72']],
             'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrapText' => true],
         ];
-        $sheet->getStyle('A5:H5')->applyFromArray($headerStyle);
+        $sheet->getStyle('A5:J5')->applyFromArray($headerStyle);
 
         $sheet->getColumnDimension('A')->setWidth(6);
         $sheet->getColumnDimension('B')->setWidth(20);
@@ -115,9 +117,11 @@ class PenggunaanBmhpPerpasienController extends BaseController
         $sheet->getColumnDimension('F')->setWidth(20);
         $sheet->getColumnDimension('G')->setWidth(40);
         $sheet->getColumnDimension('H')->setWidth(55);
+        $sheet->getColumnDimension('I')->setWidth(22);
+        $sheet->getColumnDimension('J')->setWidth(22);
 
         $row = 6;
-        $i   = 1;
+        $i = 1;
         foreach ($models as $model) {
             $sheet->setCellValue('A' . $row, $i);
             $sheet->setCellValue('B' . $row, $model['no_pendaftaran'] ?? '');
@@ -127,6 +131,11 @@ class PenggunaanBmhpPerpasienController extends BaseController
             $sheet->setCellValue('F' . $row, $model['carabayar_nama'] ?? '');
             $sheet->setCellValue('G' . $row, $model['diagnosa'] ?? '-');
             $sheet->setCellValue('H' . $row, $model['obat'] ?? '-');
+            $sheet->setCellValue('I' . $row, (float)($model['total_harga_netto'] ?? 0));
+            $sheet->setCellValue('J' . $row, (float)($model['total_harga_jual'] ?? 0));
+
+            $sheet->getStyle('I' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $sheet->getStyle('J' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
 
             $sheet->getStyle('G' . $row)->getAlignment()->setWrapText(true);
             $sheet->getStyle('H' . $row)->getAlignment()->setWrapText(true);
@@ -135,9 +144,9 @@ class PenggunaanBmhpPerpasienController extends BaseController
             $i++;
         }
 
-        $sheet->getStyle('A5:H' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('A5:J' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
-        $writer   = new Xlsx($spreadsheet);
+        $writer = new Xlsx($spreadsheet);
         $fileName = 'laporan-penggunaan-bmhp-per-pasien.xlsx';
         $tempFile = tempnam(sys_get_temp_dir(), $fileName);
         $writer->save($tempFile);
@@ -237,7 +246,7 @@ class PenggunaanBmhpPerpasienController extends BaseController
     {
         $this->params = [
             ':datefrom' => $this->dateFrom,
-            ':dateto'   => $this->dateTo,
+            ':dateto' => $this->dateTo,
         ];
     }
 
@@ -264,5 +273,6 @@ class PenggunaanBmhpPerpasienController extends BaseController
         $command->bindValue(':dateto', $this->dateTo);
 
         return $command->queryScalar();
+
     }
 }

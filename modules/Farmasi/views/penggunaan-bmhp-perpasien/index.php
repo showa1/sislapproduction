@@ -224,6 +224,28 @@
                                     return $html;
                                 },
                             ],
+                            [
+                                'attribute'      => 'total_harga_netto',
+                                'label'          => 'Total Harga Netto',
+                                'headerOptions'  => ['style' => 'background: #002D72; color: #fff; border: none; padding: 15px; text-align: right; white-space: nowrap;'],
+                                'contentOptions' => ['style' => 'text-align: right; vertical-align: top !important; font-weight: 600; color: #374151; white-space: nowrap;'],
+                                'value'          => function ($model) {
+                                    return isset($model['total_harga_netto']) && $model['total_harga_netto'] !== null
+                                        ? number_format((float)$model['total_harga_netto'], 2, ',', '.')
+                                        : '0,00';
+                                },
+                            ],
+                            [
+                                'attribute'      => 'total_harga_jual',
+                                'label'          => 'Total Harga Jual',
+                                'headerOptions'  => ['style' => 'background: #002D72; color: #fff; border: none; padding: 15px; text-align: right; white-space: nowrap;'],
+                                'contentOptions' => ['style' => 'text-align: right; vertical-align: top !important; font-weight: 600; color: #002D72; white-space: nowrap;'],
+                                'value'          => function ($model) {
+                                    return isset($model['total_harga_jual']) && $model['total_harga_jual'] !== null
+                                        ? number_format((float)$model['total_harga_jual'], 2, ',', '.')
+                                        : '0,00';
+                                },
+                            ],
                         ],
                         'layout'  => "{items}\n<div class='p-4 d-flex justify-content-between align-items-center flex-wrap gap-3'>
                                     <div style='color: #64748b; font-size: 0.9rem;'>{summary}</div>
