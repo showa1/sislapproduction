@@ -11,7 +11,7 @@ use Yii;
 use DateTime;
 
 class JumlahPasienDokterController extends BaseController
-{    
+{
 
     public $dateFrom, $dateTo, $totalCount, $jenistarif;
 
@@ -25,12 +25,12 @@ class JumlahPasienDokterController extends BaseController
      * @return string
      */
     public function actionIndex()
-    {   
+    {
         $this->setupSearch();
 
         $dropdownselect = [
-            'start' =>  Yii::$app->request->get('date_from'),
-            'to' =>  Yii::$app->request->get('date_to'),
+            'start' => Yii::$app->request->get('date_from'),
+            'to' => Yii::$app->request->get('date_to'),
         ];
 
         return $this->render('index', [
@@ -44,17 +44,17 @@ class JumlahPasienDokterController extends BaseController
     {
         $this->dateFrom = Yii::$app->request->get('date_from');
         $this->dateTo = Yii::$app->request->get('date_to');
-        
+
         if (!empty($this->dateFrom)) {
-            $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d');      
+            $this->dateFrom = DateTime::createFromFormat('d-m-Y', $this->dateFrom)->format('Y-m-d');
         }
-        
+
         if (!empty($this->dateTo)) {
-            $this->dateTo = DateTime::createFromFormat('d-m-Y', $this->dateTo)->format('Y-m-d');      
+            $this->dateTo = DateTime::createFromFormat('d-m-Y', $this->dateTo)->format('Y-m-d');
         }
 
         $cari = Yii::$app->request->get('cari');
-        
+
         $this->statuscari = !empty($cari) ? true : false;
     }
 
@@ -82,9 +82,9 @@ class JumlahPasienDokterController extends BaseController
             'params' => $this->params,
             'pagination' => false,  // Disable pagination untuk ekspor semua data
         ]);
-        
+
         $models = $dataProvider->getModels();
-        
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -99,7 +99,7 @@ class JumlahPasienDokterController extends BaseController
         $sheet->setCellValue('D4', 'Klinik BPJS / Reguler');
         $sheet->setCellValue('E4', 'Klinik Eksekutif');
         $sheet->setCellValue('F4', 'Total Pasien');
-        
+
         // Isi Data
         $row = 5; // Mulai dari baris kedua
         $i = 1;
@@ -111,17 +111,17 @@ class JumlahPasienDokterController extends BaseController
             $sheet->setCellValue('A' . $row, $i);
             $sheet->setCellValue('B' . $row, $namaPegawai);
             $sheet->setCellValue('C' . $row, $model['ruangan_nama'] ?? '-');
-            $sheet->setCellValue('D' . $row, (int)($model['jumlah_bpjs'] ?? 0));
-            $sheet->setCellValue('E' . $row, (int)($model['jumlah_eksekutif'] ?? 0));
-            $sheet->setCellValue('F' . $row, (int)($model['jumlahpasien'] ?? 0));
+            $sheet->setCellValue('D' . $row, (int) ($model['jumlah_bpjs'] ?? 0));
+            $sheet->setCellValue('E' . $row, (int) ($model['jumlah_eksekutif'] ?? 0));
+            $sheet->setCellValue('F' . $row, (int) ($model['jumlahpasien'] ?? 0));
 
             $row++;
             $i++;
         }
 
-        $sheet->getStyle('A4:F'.($row -1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('A4:F' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         // Simpan file ke response
-        
+
         $writer = new Xlsx($spreadsheet);
         $fileName = 'lap-jml-pasien-per-dokter.xlsx';
         $tempFile = tempnam(sys_get_temp_dir(), $fileName);
@@ -162,7 +162,7 @@ class JumlahPasienDokterController extends BaseController
         ";
 
         $query = $this->queryFilter($query);
-       
+
         $query .= "
             GROUP BY pm.pegawai_id, pm.gelardepan, pm.nama_pegawai, gb.gelarbelakang_nama
             ORDER BY jumlahpasien DESC
@@ -207,7 +207,7 @@ class JumlahPasienDokterController extends BaseController
         $command = Yii::$app->db->createCommand($query);
         $command->bindValue(':datefrom', $this->dateFrom);
         $command->bindValue(':dateto', $this->dateTo);
-        
+
         return $command->queryScalar();
     }
 }

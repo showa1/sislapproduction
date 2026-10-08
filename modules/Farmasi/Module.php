@@ -10,6 +10,7 @@ class Module extends BaseModule
 
     public $menu = [
         ['label' => 'Penggunaan Obat Perpasien', 'url' => '/farmasi/penggunaan-obat-perpasien/index', 'icon' => 'bi bi-prescription2'],
+        ['label' => 'Penggunaan BMHP/Pasien', 'url' => '/farmasi/penggunaan-bmhp-perpasien/index', 'icon' => 'bi bi-capsule'],
         ['label' => 'Laporan Persediaan', 'url' => '/farmasi/persediaan/index', 'icon' => 'bi bi-boxes'],
         ['label' => 'Laporan Stok Opname', 'url' => '/farmasi/stokopname/index', 'icon' => 'bi bi-clipboard2-pulse'],
         ['label' => 'Laporan Minimal Stok', 'url' => '/farmasi/minimal-stok/index', 'icon' => 'bi bi-exclamation-triangle'],

@@ -157,6 +157,7 @@ class ProgramPaketController extends BaseController
                 OR pm.no_rekam_medik ILIKE :search 
                 OR pt.no_pendaftaran ILIKE :search
                 OR dt.daftartindakan_nama ILIKE :search
+                OR pt.keterangan_pendaftaran ILIKE :search
             )";
             $params[':search'] = '%' . $search . '%';
         }
@@ -174,6 +175,7 @@ class ProgramPaketController extends BaseController
                 pm.jeniskelamin,
                 cb.carabayar_nama AS cara_bayar,
                 COALESCE(pj.penjamin_nama, 'UMUM') AS penjamin_nama,
+                pt.keterangan_pendaftaran,
                 dt.daftartindakan_id,
                 dt.daftartindakan_kode,
                 dt.daftartindakan_nama,
@@ -302,7 +304,6 @@ class ProgramPaketController extends BaseController
         $request = Yii::$app->request;
         $q = $this->buildQueryAndParams($request);
 
-        // Jika export dipanggil tanpa pencarian aktif, jadikan statusCari true untuk export sesuai filter yang dipilih
         if (!$q['statusCari']) {
             $request->setQueryParams(array_merge($request->getQueryParams(), ['cari' => '1']));
             $q = $this->buildQueryAndParams($request);
@@ -330,6 +331,7 @@ class ProgramPaketController extends BaseController
             'JK',
             'Cara Bayar',
             'Penjamin',
+            'Keterangan Pendaftaran',
             'Kode Tindakan',
             'Nama Tindakan',
             'Qty',
@@ -345,10 +347,10 @@ class ProgramPaketController extends BaseController
             $col++;
         }
 
-        $sheet->getStyle('A5:O5')->getFont()->setBold(true);
-        $sheet->getStyle('A5:O5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF002D72');
-        $sheet->getStyle('A5:O5')->getFont()->getColor()->setARGB('FFFFFFFF');
-        $sheet->getStyle('A5:O5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('A5:P5')->getFont()->setBold(true);
+        $sheet->getStyle('A5:P5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF002D72');
+        $sheet->getStyle('A5:P5')->getFont()->getColor()->setARGB('FFFFFFFF');
+        $sheet->getStyle('A5:P5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $rowIdx = 6;
         $i = 1;
@@ -363,15 +365,16 @@ class ProgramPaketController extends BaseController
             $sheet->setCellValue('F' . $rowIdx, $r['jeniskelamin'] ?? '-');
             $sheet->setCellValue('G' . $rowIdx, $r['cara_bayar'] ?? '-');
             $sheet->setCellValue('H' . $rowIdx, $r['penjamin_nama'] ?? '-');
-            $sheet->setCellValueExplicit('I' . $rowIdx, $r['daftartindakan_kode'] ?? '-', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-            $sheet->setCellValue('J' . $rowIdx, $r['daftartindakan_nama'] ?? '-');
-            $sheet->setCellValue('K' . $rowIdx, (float)($r['qty_tindakan'] ?? 1));
-            $sheet->setCellValue('L' . $rowIdx, (float)($r['tarif_satuan'] ?? 0));
-            $sheet->setCellValue('M' . $rowIdx, (float)($r['total_tarif'] ?? 0));
-            $sheet->setCellValue('N' . $rowIdx, $r['ruangan_nama'] ?? '-');
-            $sheet->setCellValue('O' . $rowIdx, $r['nama_dokter'] ?? '-');
+            $sheet->setCellValue('I' . $rowIdx, $r['keterangan_pendaftaran'] ?? '-');
+            $sheet->setCellValueExplicit('J' . $rowIdx, $r['daftartindakan_kode'] ?? '-', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $sheet->setCellValue('K' . $rowIdx, $r['daftartindakan_nama'] ?? '-');
+            $sheet->setCellValue('L' . $rowIdx, (float)($r['qty_tindakan'] ?? 1));
+            $sheet->setCellValue('M' . $rowIdx, (float)($r['tarif_satuan'] ?? 0));
+            $sheet->setCellValue('N' . $rowIdx, (float)($r['total_tarif'] ?? 0));
+            $sheet->setCellValue('O' . $rowIdx, $r['ruangan_nama'] ?? '-');
+            $sheet->setCellValue('P' . $rowIdx, $r['nama_dokter'] ?? '-');
 
-            $sheet->getStyle('L' . $rowIdx . ':M' . $rowIdx)->getNumberFormat()->setFormatCode('#,##0');
+            $sheet->getStyle('M' . $rowIdx . ':N' . $rowIdx)->getNumberFormat()->setFormatCode('#,##0');
 
             $grandTotalTarif += (float)($r['total_tarif'] ?? 0);
             $rowIdx++;
@@ -380,16 +383,16 @@ class ProgramPaketController extends BaseController
 
         // Summary Row
         $sheet->setCellValue('A' . $rowIdx, 'TOTAL NOMINAL TARIF');
-        $sheet->mergeCells('A' . $rowIdx . ':L' . $rowIdx);
-        $sheet->setCellValue('M' . $rowIdx, $grandTotalTarif);
-        $sheet->getStyle('M' . $rowIdx)->getNumberFormat()->setFormatCode('#,##0');
-        $sheet->getStyle('A' . $rowIdx . ':O' . $rowIdx)->getFont()->setBold(true);
-        $sheet->getStyle('A' . $rowIdx . ':O' . $rowIdx)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFE9ECEF');
+        $sheet->mergeCells('A' . $rowIdx . ':M' . $rowIdx);
+        $sheet->setCellValue('N' . $rowIdx, $grandTotalTarif);
+        $sheet->getStyle('N' . $rowIdx)->getNumberFormat()->setFormatCode('#,##0');
+        $sheet->getStyle('A' . $rowIdx . ':P' . $rowIdx)->getFont()->setBold(true);
+        $sheet->getStyle('A' . $rowIdx . ':P' . $rowIdx)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFE9ECEF');
 
         $lastRow = max(5, $rowIdx);
-        $sheet->getStyle('A5:O' . $lastRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->getStyle('A5:P' . $lastRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        foreach (range('A', 'O') as $columnID) {
+        foreach (range('A', 'P') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 

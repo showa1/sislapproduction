@@ -330,6 +330,23 @@ $urlExport = Url::to(['/pendaftaran/program-paket/export']);
                                             }
                                         ],
                                         [
+                                            'attribute' => 'keterangan_pendaftaran',
+                                            'label' => 'Ket. Pendaftaran',
+                                            'headerOptions' => ['style' => 'width: 180px; text-align: center;'],
+                                            'contentOptions' => ['style' => 'text-align: left; font-size: 13px; color: #475569;'],
+                                            'format' => 'raw',
+                                            'value' => function($model) {
+                                                $ket = trim($model['keterangan_pendaftaran'] ?? '');
+                                                if (empty($ket)) {
+                                                    return Html::tag('span', '-', ['class' => 'text-muted']);
+                                                }
+                                                return Html::tag('span', Html::encode($ket), [
+                                                    'class' => 'badge bg-light text-dark border px-2 py-1',
+                                                    'style' => 'font-size: 12px; font-weight: 500; white-space: normal; text-align: left;'
+                                                ]);
+                                            }
+                                        ],
+                                        [
                                             'attribute' => 'daftartindakan_nama',
                                             'label' => 'Nama Tindakan',
                                             'format' => 'raw',
