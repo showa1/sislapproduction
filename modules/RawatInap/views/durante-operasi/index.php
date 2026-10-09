@@ -7,6 +7,11 @@
     $this->title = 'Durante Operasi';
     $this->params['breadcrumbs'][] = $this->title;
 
+    // Register Select2 Assets
+    $this->registerCssFile('@web/template/vendors/select2/select2.min.css');
+    $this->registerCssFile('@web/template/vendors/select2-bootstrap-theme/select2-bootstrap.min.css');
+    $this->registerJsFile('@web/template/vendors/select2/select2.min.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+
     $this->registerCss("
         .custom-gridview thead th {
             background-color: #002D72 !important;
@@ -60,6 +65,38 @@
             font-weight: 500;
             line-height: 1.4;
         }
+        /* Custom Select2 Styling */
+        .select2-container--bootstrap .select2-selection--single {
+            height: 38px !important;
+            padding: 5px 12px !important;
+            border: 1px solid grey !important;
+            border-radius: 6px !important;
+            font-size: 0.95rem !important;
+            background-color: #ffffff !important;
+        }
+        .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+            line-height: 26px !important;
+            color: #1e293b !important;
+            padding-left: 0 !important;
+        }
+        .select2-container--bootstrap .select2-selection--single .select2-selection__arrow {
+            height: 36px !important;
+            right: 10px !important;
+        }
+        .select2-container--bootstrap.select2-container--focus .select2-selection,
+        .select2-container--bootstrap.select2-container--open .select2-selection {
+            border-color: #002D72 !important;
+            box-shadow: 0 0 0 3px rgba(0, 45, 114, 0.12) !important;
+        }
+        .select2-dropdown {
+            border-radius: 8px !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+            border: 1px solid #cbd5e1 !important;
+            z-index: 1060 !important;
+        }
+        .select2-results__option--highlighted[aria-selected] {
+            background-color: #002D72 !important;
+        }
     ");
 
     $resetUrl = Url::to(['durante-operasi/index']);
@@ -91,7 +128,7 @@
                 <?= Html::hiddenInput('cari', 'aktif'); ?>
 
                 <div class="row align-items-end">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-lg-4 col-md-6 mb-3">
                         <label class="form-label" style="font-weight: 600; color: #4a5568;">
                             <i class="bi bi-calendar3 me-2" style="color: #002D72;"></i>Tanggal Tindakan
                         </label>
@@ -123,18 +160,28 @@
                             ],
                         ]); ?>
                     </div>
-                    <div class="col-md-6 mb-3 d-flex gap-2 align-items-end">
+                    <div class="col-lg-5 col-md-6 mb-3">
+                        <label class="form-label" style="font-weight: 600; color: #4a5568;">
+                            <i class="bi bi-scissors me-2" style="color: #002D72;"></i>Tindakan Operasi
+                        </label>
+                        <?= Html::dropDownList('tindakan_id', $dropdownselect['tindakan_id'] ?? '', $listTindakan ?? [], [
+                            'prompt' => '-- Semua Tindakan Operasi --',
+                            'class'  => 'form-select select2-tindakan',
+                            'id'     => 'filter-tindakan',
+                        ]) ?>
+                    </div>
+                    <div class="col-lg-3 col-md-12 mb-3 d-flex gap-2 align-items-end justify-content-lg-start">
                         <?= Html::submitButton('<i class="bi bi-search me-2"></i> Cari', [
-                            'class' => 'btn px-4',
+                            'class' => 'btn px-3',
                             'style' => 'background: #002D72; color: #fff; border-radius: 8px; font-weight: 600;'
                         ]) ?>
                         <?= Html::a('<i class="bi bi-arrow-counterclockwise me-2"></i> Ulang', $resetUrl, [
-                            'class' => 'btn px-4',
+                            'class' => 'btn px-3',
                             'style' => 'border: 1px solid #002D72; color: #002D72; background: #fff; border-radius: 8px; font-weight: 600;'
                         ]) ?>
                         <?= Html::button('<i class="bi bi-file-earmark-excel me-2"></i> Export', [
                             'id'    => 'export-button',
-                            'class' => 'btn px-4',
+                            'class' => 'btn px-3',
                             'style' => 'background: #6DC536; color: #fff; border-radius: 8px; font-weight: 600; border: none;'
                         ]) ?>
                     </div>
@@ -312,10 +359,21 @@
 $urlExport = Url::to(['durante-operasi/export']);
 
 $js = "
+    if ($.fn.select2) {
+        $('.select2-tindakan').select2({
+            placeholder: '-- Semua Tindakan Operasi --',
+            allowClear: true,
+            width: '100%',
+            theme: 'bootstrap'
+        });
+    }
+
     $('#export-button').on('click', function() {
-        let date_from = document.getElementsByName('date_from')[0].value;
-        let date_to   = document.getElementsByName('date_to')[0].value;
-        window.location.href = '$urlExport' + '&date_from=' + date_from + '&date_to=' + date_to + '&cari=aktif';
+        let date_from   = document.getElementsByName('date_from')[0] ? document.getElementsByName('date_from')[0].value : '';
+        let date_to     = document.getElementsByName('date_to')[0] ? document.getElementsByName('date_to')[0].value : '';
+        let tindakan_id = $('#filter-tindakan').val() || '';
+        let url = '$urlExport' + '&date_from=' + encodeURIComponent(date_from) + '&date_to=' + encodeURIComponent(date_to) + '&tindakan_id=' + encodeURIComponent(tindakan_id) + '&cari=aktif';
+        window.location.href = url;
     });
 ";
 $this->registerJs($js);

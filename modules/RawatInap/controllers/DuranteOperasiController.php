@@ -13,6 +13,7 @@ class DuranteOperasiController extends BaseController
 {
     public $dateFrom;
     public $dateTo;
+    public $tindakanId;
     public $statuscari;
     public $params = [];
 
@@ -24,20 +25,52 @@ class DuranteOperasiController extends BaseController
         $this->setupSearch();
 
         $dropdownselect = [
-            'start' => Yii::$app->request->get('date_from'),
-            'to'    => Yii::$app->request->get('date_to'),
+            'start'       => Yii::$app->request->get('date_from'),
+            'to'          => Yii::$app->request->get('date_to'),
+            'tindakan_id' => $this->tindakanId,
         ];
 
         return $this->render('index', [
             'dataProvider'   => $this->dataprovider(),
             'dropdownselect' => $dropdownselect,
+            'listTindakan'   => $this->getOptTindakanOperasi(),
         ]);
+    }
+
+    public function getOptTindakanOperasi()
+    {
+        $sql = "
+            SELECT DISTINCT 
+                dm.daftartindakan_id, 
+                dm.daftartindakan_kode, 
+                dm.daftartindakan_nama
+            FROM daftartindakan_m dm
+            WHERE dm.daftartindakan_id IN (
+                SELECT DISTINCT tt.daftartindakan_id 
+                FROM rencanaoperasi_t rt 
+                JOIN tindakanpelayanan_t tt ON tt.tindakanpelayanan_id = rt.tindakanpelayanan_id 
+                WHERE tt.daftartindakan_id IS NOT NULL
+            )
+            OR (
+                dm.daftartindakan_aktif = TRUE 
+                AND (dm.kelompoktindakan_id = 2 OR dm.daftartindakan_kode LIKE 'OP%')
+            )
+            ORDER BY dm.daftartindakan_nama ASC
+        ";
+        $rows = Yii::$app->db->createCommand($sql)->queryAll();
+        $opt = [];
+        foreach ($rows as $r) {
+            $kode = !empty($r['daftartindakan_kode']) ? '[' . trim($r['daftartindakan_kode']) . '] ' : '';
+            $opt[$r['daftartindakan_id']] = $kode . trim($r['daftartindakan_nama']);
+        }
+        return $opt;
     }
 
     public function setupSearch()
     {
-        $this->dateFrom = Yii::$app->request->get('date_from');
-        $this->dateTo   = Yii::$app->request->get('date_to');
+        $this->dateFrom   = Yii::$app->request->get('date_from');
+        $this->dateTo     = Yii::$app->request->get('date_to');
+        $this->tindakanId = Yii::$app->request->get('tindakan_id');
 
         if (!empty($this->dateFrom)) {
             $parsed = DateTime::createFromFormat('d-m-Y', $this->dateFrom);
@@ -76,7 +109,7 @@ class DuranteOperasiController extends BaseController
 
     public function baseQuery()
     {
-        $this->queryFilter();
+        $whereConditions = $this->buildWhereConditions();
 
         $query = "
             SELECT 
@@ -100,23 +133,44 @@ class DuranteOperasiController extends BaseController
             JOIN carabayar_m cm ON cm.carabayar_id = pt.carabayar_id
             LEFT JOIN tindakanpelayanan_t tt ON tt.tindakanpelayanan_id = rt.tindakanpelayanan_id
             LEFT JOIN daftartindakan_m dm ON dm.daftartindakan_id = tt.daftartindakan_id
-            WHERE DATE(tt.tgl_tindakan) BETWEEN :datefrom AND :dateto
+            WHERE {$whereConditions}
             ORDER BY tt.tgl_tindakan DESC, pt.tgl_pendaftaran DESC
         ";
 
         return $query;
     }
 
-    public function queryFilter()
+    public function buildWhereConditions()
     {
-        $this->params = [
-            ':datefrom' => $this->dateFrom,
-            ':dateto'   => $this->dateTo,
-        ];
+        $this->params = [];
+        $where = [];
+
+        if (!empty($this->dateFrom) && !empty($this->dateTo)) {
+            $where[] = "DATE(tt.tgl_tindakan) BETWEEN :datefrom AND :dateto";
+            $this->params[':datefrom'] = $this->dateFrom;
+            $this->params[':dateto']   = $this->dateTo;
+        } elseif (!empty($this->dateFrom)) {
+            $where[] = "DATE(tt.tgl_tindakan) >= :datefrom";
+            $this->params[':datefrom'] = $this->dateFrom;
+        } elseif (!empty($this->dateTo)) {
+            $where[] = "DATE(tt.tgl_tindakan) <= :dateto";
+            $this->params[':dateto'] = $this->dateTo;
+        } else {
+            $where[] = "1=1";
+        }
+
+        if (!empty($this->tindakanId)) {
+            $where[] = "dm.daftartindakan_id = :tindakanid";
+            $this->params[':tindakanid'] = $this->tindakanId;
+        }
+
+        return implode(' AND ', $where);
     }
 
     public function countQuery()
     {
+        $whereConditions = $this->buildWhereConditions();
+
         $query = "
             SELECT COUNT(*)
             FROM rencanaoperasi_t rt
@@ -125,12 +179,13 @@ class DuranteOperasiController extends BaseController
             JOIN carabayar_m cm ON cm.carabayar_id = pt.carabayar_id
             LEFT JOIN tindakanpelayanan_t tt ON tt.tindakanpelayanan_id = rt.tindakanpelayanan_id
             LEFT JOIN daftartindakan_m dm ON dm.daftartindakan_id = tt.daftartindakan_id
-            WHERE DATE(tt.tgl_tindakan) BETWEEN :datefrom AND :dateto
+            WHERE {$whereConditions}
         ";
 
         $command = Yii::$app->db->createCommand($query);
-        $command->bindValue(':datefrom', $this->dateFrom);
-        $command->bindValue(':dateto', $this->dateTo);
+        foreach ($this->params as $param => $val) {
+            $command->bindValue($param, $val);
+        }
 
         return $command->queryScalar();
     }
@@ -160,6 +215,18 @@ class DuranteOperasiController extends BaseController
             : '-';
         $sheet->setCellValue('A3', 'Periode : ' . $periodeText);
         $sheet->getStyle('A3')->getFont()->setSize(11);
+
+        if (!empty($this->tindakanId)) {
+            $namaTindakan = Yii::$app->db->createCommand("
+                SELECT CONCAT(COALESCE(CONCAT('[', daftartindakan_kode, '] '), ''), daftartindakan_nama) 
+                FROM daftartindakan_m 
+                WHERE daftartindakan_id = :id
+            ")->bindValue(':id', $this->tindakanId)->queryScalar();
+            if ($namaTindakan) {
+                $sheet->setCellValue('A4', 'Tindakan Operasi : ' . $namaTindakan);
+                $sheet->getStyle('A4')->getFont()->setSize(11)->setBold(true);
+            }
+        }
 
         $headers = [
             'A5' => 'No',
