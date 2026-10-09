@@ -311,6 +311,19 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                     </li>
                     <?php endif; ?>
 
+                    <?php if (isset(Yii::$app->controller->module) && Yii::$app->controller->module->id === 'rawatinap'): ?>
+                    <li class="nav-item nav-category">
+                        <span class="nav-link">Rawat Inap</span>
+                    </li>
+
+                    <li class="nav-item menu-item-searchable <?= ($currentRoute == '/rawatinap/dashboard/index') ? 'active' : '' ?>">
+                        <a class="nav-link <?= ($currentRoute == '/rawatinap/dashboard/index') ? 'active' : '' ?>" href="<?= Url::to(['/rawatinap/dashboard/index']) ?>">
+                            <i class="bi bi-speedometer2"></i>
+                            <span class="menu-title">Dashboard Rawat Inap</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
+
                     <li class="nav-item nav-category">
                         <span class="nav-link">Laporan</span>
                     </li>
@@ -319,8 +332,9 @@ $this->registerCssFile('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font
                         <?php
                         $menuUrl = Url::to([$value['url']]);
                         $isActive = ($currentRoute == $value['url']) ? 'active' : '';
-                        // Lewati "Dashboard Laboratorium" dari Module->menu agar tidak muncul dobel di sini
+                        // Lewati Dashboard dari Module->menu agar tidak muncul dobel di sini
                         if ($value['url'] === '/laboratorium/dashboard/index') continue;
+                        if ($value['url'] === '/rawatinap/dashboard/index') continue;
                         ?>
                         <li class="nav-item menu-item-searchable <?= $isActive ?>">
                             <a class="nav-link <?= $isActive ?>" href="<?= $menuUrl ?>">
