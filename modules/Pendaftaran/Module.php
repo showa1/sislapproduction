@@ -21,6 +21,7 @@ class Module extends \yii\base\Module
         ['label' => 'Rekapitulasi Pasien per Paket MCU', 'url' => '/pendaftaran/rekapitulasi-pasien-mcu/index', 'icon' => 'bi bi-journal-check'],
         ['label' => 'Informasi Paket/Pasien', 'url' => '/pendaftaran/informasi-paket-pasien/index', 'icon' => 'bi bi-person-vcard'],
         ['label' => 'Program Paket', 'url' => '/pendaftaran/program-paket/index', 'icon' => 'bi bi-box-seam'],
+        ['label' => 'Laporan Paket MCU & Program Paket', 'url' => '/pendaftaran/laporan-paket-mcu/index', 'icon' => 'bi bi-bar-chart-line'],
     ];
 
     /**
