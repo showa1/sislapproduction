@@ -19,6 +19,7 @@ class Module extends BaseModule
         ['label' => 'Neraca Saldo', 'url' => '/keuangan/neraca-saldo/index', 'icon' => 'bi bi-scales'],
         ['label' => 'Buku Besar', 'url' => '/keuangan/buku-besar/index', 'icon' => 'bi bi-journal-text'],
         ['label' => 'Jurnal', 'url' => '/keuangan/jurnal/index', 'icon' => 'bi bi-journal-check'],
+        ['label' => 'Informasi Jurnal', 'url' => '/keuangan/informasi-jurnal/index', 'icon' => 'bi bi-journal-bookmark'],
         ['label' => 'Audit Log Akses', 'url' => '/keuangan/log-akses/index', 'icon' => 'bi bi-shield-lock'],
     ];
     
