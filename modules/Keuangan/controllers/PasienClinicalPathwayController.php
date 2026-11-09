@@ -94,10 +94,10 @@ class PasienClinicalPathwayController extends BaseController
                 kr.kamarruangan_nokamar,
                 kr.kamarruangan_nobed,
                 COALESCE(tagihan.total_tagihan, 0) AS total_tagihan,
-                COALESCE(ek.totalklaim, 0) AS total_klaim,
-                80 AS persentase,
-                ROUND(COALESCE(ek.totalklaim, 0) * 0.8, 2) AS total_pagu,
-                ROUND((COALESCE(ek.totalklaim, 0) * 0.8) - COALESCE(tagihan.total_tagihan, 0), 2) AS selisih
+                COALESCE(cp.total_klaim, pp.total_inacbg, 0) AS total_klaim,
+                COALESCE(cp.persen, 80) AS persentase,
+                COALESCE(cp.total_pagu, ROUND((COALESCE(cp.total_klaim, pp.total_inacbg, 0) * (COALESCE(cp.persen, 80) / 100.0))::numeric, 2), 0) AS total_pagu,
+                ROUND((COALESCE(cp.total_pagu, (COALESCE(cp.total_klaim, pp.total_inacbg, 0) * (COALESCE(cp.persen, 80) / 100.0))))::numeric - COALESCE(tagihan.total_tagihan, 0)::numeric, 2) AS selisih
             FROM pendaftaran_t pt
             JOIN pasien_m pm ON pm.pasien_id = pt.pasien_id
             LEFT JOIN pasienadmisi_t pat ON pat.pendaftaran_id = pt.pendaftaran_id
@@ -114,16 +114,18 @@ class PasienClinicalPathwayController extends BaseController
             LEFT JOIN pegawai_m dpjp ON dpjp.pegawai_id = COALESCE(pat.pegawai_id, pt.pegawai_id)
             LEFT JOIN kelaspelayanan_m kls ON kls.kelaspelayanan_id = COALESCE(pat.kelaspelayanan_id, pt.kelaspelayanan_id)
             LEFT JOIN jeniskasuspenyakit_m kp ON kp.jeniskasuspenyakit_id = pt.jeniskasuspenyakit_id
+            LEFT JOIN clinicalpatway_m cp ON cp.clinicalpatway_id = pt.clinicalpatway_id
             LEFT JOIN (
                 SELECT pendaftaran_id, SUM(total_tarifakhir) AS total_tagihan
                 FROM tindakanpelayanan_t
                 GROUP BY pendaftaran_id
             ) tagihan ON tagihan.pendaftaran_id = pt.pendaftaran_id
             LEFT JOIN (
-                SELECT pendaftaran_id, MAX(totalklaim) AS totalklaim
-                FROM eklaim_v
+                SELECT pendaftaran_id, MAX(total_inacbg) AS total_inacbg
+                FROM pembayaranpelayanan_t
+                WHERE total_inacbg > 0
                 GROUP BY pendaftaran_id
-            ) ek ON ek.pendaftaran_id = pt.pendaftaran_id
+            ) pp ON pp.pendaftaran_id = pt.pendaftaran_id
             WHERE $whereClause
             ORDER BY pt.tgl_pendaftaran DESC
         ";
