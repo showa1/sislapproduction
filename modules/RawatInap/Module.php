@@ -11,6 +11,8 @@ class Module extends BaseModule
 
     public $menu = [
         ['label' => 'Dashboard Rawat Inap', 'url' => '/rawatinap/dashboard/index', 'icon' => 'bi bi-speedometer2'],
+        ['label' => 'Laporan BOR', 'url' => '/rawatinap/bor/index', 'icon' => 'bi bi-bar-chart-line'],
+        ['label' => 'Laporan LOS', 'url' => '/rawatinap/los/index', 'icon' => 'bi bi-clock-history'],
         ['label' => 'Informasi Hari Rawat', 'url' => '/rawatinap/informasi-hari-rawat/index', 'icon' => 'bi bi-info-square'],
         ['label' => 'Durante Operasi', 'url' => '/rawatinap/durante-operasi/index', 'icon' => 'bi bi-scissors'],
     ];

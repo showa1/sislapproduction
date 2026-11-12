@@ -15,4 +15,9 @@ return [
     // Lalu tempel hasilnya di bawah ini.
     // ============================================================
     'keuangan_password_hash' => '$2y$10$WeVrkLkccq1JrDDLR2rv/u4j/EGyO3HAmGx3Qs43V7nGpmwvTrQIK',
+
+    // ============================================================
+    // KAPASITAS TEMPAT TIDUR (TT) SIOP UNTUK PERHITUNGAN BOR
+    // ============================================================
+    'kapasitas_tt_siop' => 102,
 ];
