@@ -153,11 +153,11 @@ $this->registerCss("
                     <div class="d-flex align-items-center">
                         <div class="fs-1 me-3"><i class="bi bi-percent"></i></div>
                         <div>
-                            <div class="fs-6 opacity-75">Rata-Rata BOR Tahun <?= Html::encode($tahun) ?></div>
+                            <div class="fs-6 opacity-75">BOR Kumulatif Tahun <?= Html::encode($tahun) ?></div>
                             <div class="fs-3 fw-bold">
-                                <?= number_format($summary['bor_bulan_aktif'], 2, ',', '.') ?>%
+                                <?= number_format($summary['bor_tahunan'], 2, ',', '.') ?>%
                                 <span class="fs-6 fw-normal">
-                                    (<?= number_format($summary['total_hari_perawatan'], 1, ',', '.') ?> HP)
+                                    (<?= number_format($summary['total_hari_perawatan'], 2, ',', '.') ?> HP)
                                 </span>
                             </div>
                         </div>
@@ -174,7 +174,7 @@ $this->registerCss("
                         <div>
                             <div class="fs-6 opacity-75">Bulan Aktif (Tahun <?= Html::encode($tahun) ?>)</div>
                             <div class="fs-3 fw-bold">
-                                <?= (int)$summary['bulan_aktif'] ?> <span class="fs-6 fw-normal">Bulan (<?= number_format($summary['total_pasien'], 0, ',', '.') ?> Pasien)</span>
+                                <?= (int)$summary['bulan_aktif'] ?> <span class="fs-6 fw-normal">Bulan</span>
                             </div>
                         </div>
                     </div>
@@ -248,18 +248,18 @@ $this->registerCss("
                                         <th style="width:40px;">No</th>
                                         <th style="min-width:250px; text-align:left;">Indikator / Komponen BOR</th>
                                         <?php foreach ($bulanLabels as $bLabel): ?>
-                                            <th style="width:58px;"><?= $bLabel ?></th>
+                                            <th style="width:65px;"><?= $bLabel ?></th>
                                         <?php endforeach; ?>
                                         <th style="width:110px;">Total / Rata-rata</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- 1. Jumlah Pasien Pulang -->
+                                    <!-- 1. Jumlah Pasien Dirawat (jumlah_pasien) -->
                                     <tr>
                                         <td class="text-center">1</td>
-                                        <td><strong>Jumlah Pasien Pulang (KRS)</strong></td>
+                                        <td><strong>Jumlah Pasien Dirawat (Pasien)</strong></td>
                                         <?php for ($m = 1; $m <= 12; $m++): ?>
-                                            <?php $v = (int)$monthly[$m]['jumlah_pasien']; ?>
+                                            <?php $v = (int)($monthly[$m]['jumlah_pasien'] ?? 0); ?>
                                             <td class="td-bulan">
                                                 <?php if ($v > 0): ?>
                                                     <span class="badge-count nonzero"><?= number_format($v, 0, ',', '.') ?></span>
@@ -268,74 +268,57 @@ $this->registerCss("
                                                 <?php endif; ?>
                                             </td>
                                         <?php endfor; ?>
-                                        <td class="td-total"><?= number_format($summary['total_pasien'], 0, ',', '.') ?></td>
+                                        <td class="td-total"><?= number_format($summary['total_pasien'] ?? 0, 0, ',', '.') ?></td>
                                     </tr>
 
-                                    <!-- 2. Total Jam Perawatan -->
+                                    <!-- 2. Total Hari Perawatan (total_hari_perawatan) -->
                                     <tr>
                                         <td class="text-center">2</td>
-                                        <td><strong>Total Jam Perawatan (Jam)</strong></td>
-                                        <?php for ($m = 1; $m <= 12; $m++): ?>
-                                            <?php $v = (float)$monthly[$m]['total_jam']; ?>
-                                            <td class="td-bulan">
-                                                <?php if ($v > 0): ?>
-                                                    <span class="badge-count nonzero"><?= number_format($v, 1, ',', '.') ?></span>
-                                                <?php else: ?>
-                                                    <span class="badge-count zero">-</span>
-                                                <?php endif; ?>
-                                            </td>
-                                        <?php endfor; ?>
-                                        <td class="td-total"><?= number_format($summary['total_jam'], 1, ',', '.') ?></td>
-                                    </tr>
-
-                                    <!-- 3. Total Hari Perawatan (HP = Total Jam / 24) -->
-                                    <tr>
-                                        <td class="text-center">3</td>
                                         <td><strong>Total Hari Perawatan / HP (Hari)</strong></td>
                                         <?php for ($m = 1; $m <= 12; $m++): ?>
-                                            <?php $v = (float)$monthly[$m]['hari_perawatan']; ?>
+                                            <?php $v = (float)($monthly[$m]['total_hari_perawatan'] ?? 0); ?>
                                             <td class="td-bulan">
                                                 <?php if ($v > 0): ?>
-                                                    <span class="badge-count nonzero"><?= number_format($v, 1, ',', '.') ?></span>
+                                                    <span class="badge-count nonzero"><?= number_format($v, 2, ',', '.') ?></span>
                                                 <?php else: ?>
                                                     <span class="badge-count zero">-</span>
                                                 <?php endif; ?>
                                             </td>
                                         <?php endfor; ?>
-                                        <td class="td-total"><?= number_format($summary['total_hari_perawatan'], 1, ',', '.') ?></td>
+                                        <td class="td-total"><?= number_format($summary['total_hari_perawatan'], 2, ',', '.') ?></td>
                                     </tr>
 
-                                    <!-- 4. Kapasitas Tempat Tidur (TT SIOP) -->
+                                    <!-- 3. Kapasitas Tempat Tidur (jumlah_tt) -->
                                     <tr>
-                                        <td class="text-center">4</td>
+                                        <td class="text-center">3</td>
                                         <td><strong>Kapasitas Tempat Tidur SIOP (TT)</strong></td>
                                         <?php for ($m = 1; $m <= 12; $m++): ?>
                                             <td class="td-bulan">
-                                                <span class="badge-count static"><?= (int)$monthly[$m]['jumlah_tt'] ?></span>
+                                                <span class="badge-count static"><?= (int)($monthly[$m]['jumlah_tt'] ?? $jumlahTT) ?></span>
                                             </td>
                                         <?php endfor; ?>
                                         <td class="td-total"><?= (int)$summary['jumlah_tt'] ?> TT</td>
                                     </tr>
 
-                                    <!-- 5. Jumlah Hari dalam Bulan -->
+                                    <!-- 4. Jumlah Hari Periode (jumlah_hari_periode) -->
                                     <tr>
-                                        <td class="text-center">5</td>
-                                        <td><strong>Jumlah Hari dalam Bulan (Hari)</strong></td>
+                                        <td class="text-center">4</td>
+                                        <td><strong>Jumlah Hari Periode (Hari)</strong></td>
                                         <?php for ($m = 1; $m <= 12; $m++): ?>
                                             <td class="td-bulan">
-                                                <span class="badge-count static"><?= (int)$monthly[$m]['jumlah_hari_bulan'] ?></span>
+                                                <span class="badge-count static"><?= (int)($monthly[$m]['jumlah_hari_periode'] ?? 0) ?></span>
                                             </td>
                                         <?php endfor; ?>
                                         <td class="td-total"><?= (int)$summary['total_hari_kalender'] ?> Hari</td>
                                     </tr>
 
-                                    <!-- 6. Kapasitas Hari Tempat Tidur (TT x Hari) -->
+                                    <!-- 5. Kapasitas Hari Tempat Tidur (jumlah_tt * jumlah_hari_periode) -->
                                     <tr>
-                                        <td class="text-center">6</td>
+                                        <td class="text-center">5</td>
                                         <td><strong>Kapasitas Hari Tempat Tidur (TT &times; Hari)</strong></td>
                                         <?php for ($m = 1; $m <= 12; $m++): ?>
                                             <td class="td-bulan">
-                                                <span class="badge-count static"><?= number_format($monthly[$m]['kapasitas_hari_tt'], 0, ',', '.') ?></span>
+                                                <span class="badge-count static"><?= number_format((int)($monthly[$m]['kapasitas_hari_tt'] ?? 0), 0, ',', '.') ?></span>
                                             </td>
                                         <?php endfor; ?>
                                         <td class="td-total"><?= number_format($summary['total_kapasitas_hari_tt'], 0, ',', '.') ?></td>
@@ -345,19 +328,16 @@ $this->registerCss("
                                     <tr>
                                         <td colspan="2" class="td-label">BOR (BED OCCUPANCY RATE) (%)</td>
                                         <?php for ($m = 1; $m <= 12; $m++): ?>
-                                            <td><?= number_format($monthly[$m]['bor'], 2, ',', '.') ?>%</td>
+                                            <td><?= number_format((float)($monthly[$m]['bor_persen'] ?? 0), 2, ',', '.') ?>%</td>
                                         <?php endfor; ?>
-                                        <td title="Rata-rata BOR pada bulan aktif (Setahun penuh: <?= number_format($summary['bor_tahunan'], 2, ',', '.') ?>%)">
-                                            <?= number_format($summary['bor_bulan_aktif'], 2, ',', '.') ?>%
-                                        </td>
+                                        <td><?= number_format($summary['bor_tahunan'], 2, ',', '.') ?>%</td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
                         <div class="mt-2 text-muted small">
                             <i class="bi bi-info-circle me-1"></i>
-                            Rumus BOR: <strong>(Total Hari Perawatan / (Kapasitas TT SIOP [<?= (int)$jumlahTT ?>] &times; Jumlah Hari dalam Bulan)) &times; 100%</strong>
-                            — dimana Total Hari Perawatan dihitung dari <code>Total Jam Rawat / 24</code> pada tahun <strong><?= Html::encode($tahun) ?></strong>.
+                            Perhitungan menggunakan pemotongan periode per bulan (<code>GREATEST(tgladmisi, tgl_awal)</code> s/d <code>LEAST(COALESCE(tglpulang, NOW()), tgl_akhir)</code> dibagi <code>86400</code> detik) dengan <code>p.tgl_awal &lt;= CURRENT_DATE</code> dan <code>jumlah_tt = <?= (int)$jumlahTT ?></code>.
                         </div>
                     </div>
                 </div>
@@ -367,4 +347,3 @@ $this->registerCss("
 
     </div>
 </div>
-
