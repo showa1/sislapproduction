@@ -64,7 +64,7 @@ class InformasiPaketPasienController extends BaseController
             JOIN pasien_m p ON pt.pasien_id = p.pasien_id
             LEFT JOIN penjaminpasien_m pj ON pt.penjamin_id = pj.penjamin_id
             WHERE DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
-              AND (tp.tipepaket_nama ILIKE '%MCU%' OR tp.tipepaket_nama ILIKE '%PAKET%')
+              AND tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
 
         $countSql = "
@@ -75,7 +75,7 @@ class InformasiPaketPasienController extends BaseController
             JOIN pasien_m p ON pt.pasien_id = p.pasien_id
             LEFT JOIN penjaminpasien_m pj ON pt.penjamin_id = pj.penjamin_id
             WHERE DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
-              AND (tp.tipepaket_nama ILIKE '%MCU%' OR tp.tipepaket_nama ILIKE '%PAKET%')
+              AND tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
 
         $params = [
@@ -130,7 +130,7 @@ class InformasiPaketPasienController extends BaseController
         $q = $this->buildQueryAndParams($request);
 
         try {
-            $totalCount = (int)Yii::$app->db->createCommand($q['countSql'], $q['countParams'])->queryScalar();
+            $totalCount = (int) Yii::$app->db->createCommand($q['countSql'], $q['countParams'])->queryScalar();
         } catch (\Exception $e) {
             $totalCount = 0;
         }
@@ -148,7 +148,7 @@ class InformasiPaketPasienController extends BaseController
         $listPaketSql = "
             SELECT tipepaket_id, tipepaket_nama
             FROM tipepaket_m
-            WHERE (tipepaket_nama ILIKE '%MCU%' OR tipepaket_nama ILIKE '%PAKET%')
+            WHERE tipepaket_nama NOT ILIKE '%NON PAKET%' AND tipepaket_id NOT IN (1, 62) AND (tipepaket_aktif = true OR tipepaket_aktif IS NULL)
             ORDER BY tipepaket_nama ASC
         ";
         $listPaketData = Yii::$app->db->createCommand($listPaketSql)->queryAll();
@@ -179,7 +179,7 @@ class InformasiPaketPasienController extends BaseController
             JOIN laporanpelayananmcu_v lpm ON tp.tipepaket_id = lpm.tipepaket_id
             JOIN pendaftaran_t pt ON lpm.pendaftaran_id = pt.pendaftaran_id
             WHERE DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
-              AND (tp.tipepaket_nama ILIKE '%MCU%' OR tp.tipepaket_nama ILIKE '%PAKET%')
+              AND tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
         $summaryData = Yii::$app->db->createCommand($summarySql, [
             ':date_from' => $q['dateFrom'],
@@ -210,7 +210,7 @@ class InformasiPaketPasienController extends BaseController
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         $sheet->setCellValue('A1', 'Rumah Sakit Priscilla Medical Center');
         $sheet->setCellValue('A2', 'Laporan Informasi Detail Pasien per Paket MCU');
         $sheet->setCellValue('A3', 'Periode: ' . date('d/m/Y', strtotime($q['dateFrom'])) . ' s/d ' . date('d/m/Y', strtotime($q['dateTo'])));
@@ -243,7 +243,7 @@ class InformasiPaketPasienController extends BaseController
             $sheet->setCellValue('F' . $rowIdx, $r['penjamin'] ?? '-');
             $sheet->setCellValue('G' . $rowIdx, $r['id_paket'] ?? '-');
             $sheet->setCellValue('H' . $rowIdx, $r['nama_paket_mcu'] ?? '-');
-            $sheet->setCellValue('I' . $rowIdx, (float)($r['tarif_per_paket'] ?? 0));
+            $sheet->setCellValue('I' . $rowIdx, (float) ($r['tarif_per_paket'] ?? 0));
             $sheet->getStyle('I' . $rowIdx)->getNumberFormat()->setFormatCode('#,##0');
 
             $rowIdx++;
@@ -261,7 +261,7 @@ class InformasiPaketPasienController extends BaseController
 
         $lastRow = max(5, $rowIdx);
         $sheet->getStyle('A5:I' . $lastRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-        
+
         foreach (range('A', 'I') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }

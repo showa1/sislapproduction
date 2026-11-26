@@ -57,13 +57,13 @@ class RekapitulasiPasienMcuController extends BaseController
             FROM tipepaket_m tp
             LEFT JOIN laporanpelayananmcu_v lpm ON tp.tipepaket_id = lpm.tipepaket_id
                 AND DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
-            WHERE (tp.tipepaket_nama ILIKE '%MCU%' OR tp.tipepaket_nama ILIKE '%PAKET%')
+            WHERE tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
 
         $countSql = "
             SELECT COUNT(DISTINCT tp.tipepaket_id)
             FROM tipepaket_m tp
-            WHERE (tp.tipepaket_nama ILIKE '%MCU%' OR tp.tipepaket_nama ILIKE '%PAKET%')
+            WHERE tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
 
         $params = [
@@ -127,7 +127,7 @@ class RekapitulasiPasienMcuController extends BaseController
                 FROM tipepaket_m tp
                 LEFT JOIN laporanpelayananmcu_v lpm ON tp.tipepaket_id = lpm.tipepaket_id
                     AND DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
-                WHERE (tp.tipepaket_nama ILIKE '%MCU%' OR tp.tipepaket_nama ILIKE '%PAKET%')
+                WHERE tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
                 GROUP BY tp.tipepaket_id
             ) t
             JOIN tipepaket_m tp ON t.tipepaket_id = tp.tipepaket_id
