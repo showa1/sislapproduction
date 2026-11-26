@@ -53,10 +53,12 @@ class RekapitulasiPasienMcuController extends BaseController
                 tp.tipepaket_id,
                 tp.tipepaket_nama AS nama_paket_mcu,
                 tp.tarifpaket AS tarif_per_paket,
-                COUNT(DISTINCT lpm.pendaftaran_id) AS jumlah_pasien
+                COUNT(DISTINCT pt.pendaftaran_id) AS jumlah_pasien
             FROM tipepaket_m tp
             LEFT JOIN laporanpelayananmcu_v lpm ON tp.tipepaket_id = lpm.tipepaket_id
                 AND DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
+            LEFT JOIN pendaftaran_t pt ON lpm.pendaftaran_id = pt.pendaftaran_id
+                AND pt.pasienbatalperiksa_id IS NULL
             WHERE tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
 
@@ -123,10 +125,12 @@ class RekapitulasiPasienMcuController extends BaseController
                 COUNT(DISTINCT tp.tipepaket_id) AS total_paket,
                 SUM(t.jumlah_pasien) AS total_pasien
             FROM (
-                SELECT tp.tipepaket_id, COUNT(DISTINCT lpm.pendaftaran_id) AS jumlah_pasien
+                SELECT tp.tipepaket_id, COUNT(DISTINCT pt.pendaftaran_id) AS jumlah_pasien
                 FROM tipepaket_m tp
                 LEFT JOIN laporanpelayananmcu_v lpm ON tp.tipepaket_id = lpm.tipepaket_id
                     AND DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
+                LEFT JOIN pendaftaran_t pt ON lpm.pendaftaran_id = pt.pendaftaran_id
+                    AND pt.pasienbatalperiksa_id IS NULL
                 WHERE tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
                 GROUP BY tp.tipepaket_id
             ) t

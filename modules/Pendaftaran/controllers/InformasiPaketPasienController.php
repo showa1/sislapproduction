@@ -64,6 +64,7 @@ class InformasiPaketPasienController extends BaseController
             JOIN pasien_m p ON pt.pasien_id = p.pasien_id
             LEFT JOIN penjaminpasien_m pj ON pt.penjamin_id = pj.penjamin_id
             WHERE DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
+              AND pt.pasienbatalperiksa_id IS NULL
               AND tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
 
@@ -75,6 +76,7 @@ class InformasiPaketPasienController extends BaseController
             JOIN pasien_m p ON pt.pasien_id = p.pasien_id
             LEFT JOIN penjaminpasien_m pj ON pt.penjamin_id = pj.penjamin_id
             WHERE DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
+              AND pt.pasienbatalperiksa_id IS NULL
               AND tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
 
@@ -179,6 +181,7 @@ class InformasiPaketPasienController extends BaseController
             JOIN laporanpelayananmcu_v lpm ON tp.tipepaket_id = lpm.tipepaket_id
             JOIN pendaftaran_t pt ON lpm.pendaftaran_id = pt.pendaftaran_id
             WHERE DATE(lpm.tgl_tindakan) BETWEEN :date_from AND :date_to
+              AND pt.pasienbatalperiksa_id IS NULL
               AND tp.tipepaket_nama NOT ILIKE '%NON PAKET%' AND tp.tipepaket_id NOT IN (1, 62) AND (tp.tipepaket_aktif = true OR tp.tipepaket_aktif IS NULL)
         ";
         $summaryData = Yii::$app->db->createCommand($summarySql, [
